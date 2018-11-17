@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
     app.setApplicationName("cube");
     app.setApplicationVersion("0.1");
 
-
+//
 #ifndef QT_NO_OPENGL
     std::cout << "debut constructeur" << std::endl;
    // windowsinput wip(0);
