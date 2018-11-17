@@ -91,7 +91,7 @@ MainWidget::~MainWidget()
 
 void MainWidget::keyPressEvent (QKeyEvent * event)
 {
-/*    if(event->key() == Qt::Key_Q)
+    if(event->key() == Qt::Key_Q)
            x++;
 
     if(event->key() == Qt::Key_D)
@@ -120,7 +120,7 @@ void MainWidget::keyPressEvent (QKeyEvent * event)
     if(event->key() == Qt::Key_Left){
         rotationAxis = QVector3D(0,-1,0);
         angularSpeed = 0.5;
-    }*/
+    }
 }
 
 void MainWidget::changeSeason(int a)
@@ -192,7 +192,9 @@ void MainWidget::initializeGL()
     // Enable back face culling
     glEnable(GL_CULL_FACE);
 //! [2]
-    scene = new Terrain;
+    scene = new BaseObject;
+    Terrain t = Terrain();
+    scene->AddChild(t);
     //scene->AddChild(new Terrain());
     //scene.CreateGeometry();//start with the basic level of details
     rotation = QQuaternion::fromAxisAndAngle(1,0,0,135);
@@ -293,4 +295,5 @@ void MainWidget::paintGL()
     // Draw cube geometry
     //geometries->drawMeshGeometry(&program);
     scene->Render(&program);//old version of this is drawTerrainGeometry();
+    std::cout << " a " << std::endl;
 }

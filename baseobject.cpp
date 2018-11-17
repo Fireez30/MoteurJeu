@@ -243,8 +243,4 @@ void BaseObject::CreateGeometry(){
     meshSize = indices.size();
 
     f.close();
-
-    for (unsigned i = 0; i < childs.size(); i++){
-        childs[i].CreateGeometry();
-    }
 }
