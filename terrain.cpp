@@ -9,11 +9,13 @@
 #include <QVector3D>
 #include <QTime>
 
-Terrain::Terrain(){
+Terrain::Terrain() : BaseObject(0){
+    Terrain::CreateGeometry();
 }
 
 void Terrain::CreateGeometry()
 {
+    std::cout << "Terrain, create geometry " << std::endl;
     QImage img;
     img.load("hmap3.png");
     VertexData vertices[256];
@@ -47,7 +49,7 @@ void Terrain::CreateGeometry()
 }
 
 void Terrain::Render(QOpenGLShaderProgram *program){
-    std::cout << "Testtt" << std::endl;
+        std::cout << "Terrain, render " << std::endl;
     // Tell OpenGL which VBOs to use
     arrayBuf.bind();
     indexBuf.bind();

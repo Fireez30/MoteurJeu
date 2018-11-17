@@ -36,6 +36,7 @@ public :
     static int id;
 
     BaseObject();
+    BaseObject(int id);
     BaseObject(QQuaternion rot,QVector3D geo);
     ~BaseObject();
     void SetRotation(QQuaternion r);
@@ -52,8 +53,8 @@ public :
     void chooseLOD(QVector3D cam);
     void SetParent(BaseObject* b);
     void SetChildAtIndex(BaseObject c, unsigned i);
-    void CreateGeometry();
-    void Render(QOpenGLShaderProgram *program);
+    virtual void CreateGeometry();
+    virtual void Render(QOpenGLShaderProgram *program);
     void UpdatePositionInSpace();
 };
 

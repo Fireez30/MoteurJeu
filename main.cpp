@@ -74,10 +74,10 @@ int main(int argc, char *argv[])
 
 #ifndef QT_NO_OPENGL
     std::cout << "debut constructeur" << std::endl;
-    windowsinput wip(0);
-    wip.showF();
-  //  MainWidget widget(0,10);
-  //  widget.show();
+   // windowsinput wip(0);
+   // wip.showF();
+    MainWidget widget(0,100);
+    widget.show();
 #else
     QLabel note("OpenGL Support required");
     note.show();

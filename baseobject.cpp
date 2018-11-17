@@ -22,6 +22,16 @@ BaseObject::BaseObject() : indexBuf(QOpenGLBuffer::IndexBuffer){
     CreateGeometry();
 }
 
+BaseObject::BaseObject(int id) : indexBuf(QOpenGLBuffer::IndexBuffer){
+    initializeOpenGLFunctions();
+    rotation = QQuaternion(0,0,0,0);
+    position = QVector3D(0,0,0);
+    arrayBuf.create();
+    indexBuf.create();
+    id++;
+    meshFile = "mesh.obj";
+}
+
 BaseObject::BaseObject(QQuaternion rot,QVector3D geo) : indexBuf(QOpenGLBuffer::IndexBuffer){
     initializeOpenGLFunctions();
     rotation = rot;
@@ -29,6 +39,7 @@ BaseObject::BaseObject(QQuaternion rot,QVector3D geo) : indexBuf(QOpenGLBuffer::
     arrayBuf.create();
     indexBuf.create();
     id++;
+    CreateGeometry();
 }
 
 BaseObject::~BaseObject(){
@@ -105,7 +116,7 @@ void BaseObject::UpdatePositionInSpace(){
 
 void BaseObject::Render(QOpenGLShaderProgram *program)
 {
-     std::cout << "Testtt222s" << std::endl;
+     std::cout << "BaseObject, Render " << std::endl;
     int size = 0;
     // Tell OpenGL which VBOs to use
     switch (lod){
@@ -166,7 +177,7 @@ void BaseObject::chooseLOD(QVector3D cam){
 }
 
 void BaseObject::CreateGeometry(){
-
+    std::cout << "BaseObject, create geometry " << std::endl;
     std::vector<GLushort> indices;
     std::vector<QVector2D> textureCoords;
     std::vector<QVector3D> vertexCoords;

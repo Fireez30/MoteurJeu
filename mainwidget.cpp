@@ -192,8 +192,8 @@ void MainWidget::initializeGL()
     // Enable back face culling
     glEnable(GL_CULL_FACE);
 //! [2]
-    scene = new BaseObject;
-    scene->AddChild(new Terrain());
+    scene = new Terrain;
+    //scene->AddChild(new Terrain());
     //scene.CreateGeometry();//start with the basic level of details
     rotation = QQuaternion::fromAxisAndAngle(1,0,0,135);
     // Use QBasicTimer because its faster than QTimer
@@ -293,5 +293,4 @@ void MainWidget::paintGL()
     // Draw cube geometry
     //geometries->drawMeshGeometry(&program);
     scene->Render(&program);//old version of this is drawTerrainGeometry();
-    std::cout << "child count" << scene->GetChilds().size()  << std::endl;
 }
