@@ -50,6 +50,7 @@
 
 #include "mainwidget.h"
 #include "terrain.h"
+#include "object2d.h"
 #include <QMouseEvent>
 #include <GL/gl.h>
 #include <QKeyEvent>
@@ -192,8 +193,8 @@ void MainWidget::initializeGL()
     // Enable back face culling
     glEnable(GL_CULL_FACE);
 //! [2]
-    scene = new BaseObject;
-    Terrain t = Terrain();
+    scene = new Object2D;
+    Terrain* t = new Terrain;
     scene->AddChild(t);
     //scene->AddChild(new Terrain());
     //scene.CreateGeometry();//start with the basic level of details

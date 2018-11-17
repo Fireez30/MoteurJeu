@@ -27,7 +27,7 @@ protected:
     QVector3D realPosition;
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
-    vector<BaseObject> childs;
+    vector<BaseObject*> childs;
     BaseObject* parent;
     int lod;
     string meshFile;
@@ -36,7 +36,6 @@ public :
     static int id;
 
     BaseObject();
-    BaseObject(int id);
     BaseObject(QQuaternion rot,QVector3D geo);
     ~BaseObject();
     void SetRotation(QQuaternion r);
@@ -45,16 +44,16 @@ public :
     QVector3D GetPosition();
     void Rotate(QQuaternion r);
     void Translate(QVector3D v);
-    void SetChilds(vector<BaseObject> v);
-    void AddChild(BaseObject c);
-    vector<BaseObject> GetChilds();
-    BaseObject GetChildAtIndex(unsigned i);
+    void SetChilds(vector<BaseObject*> v);
+    void AddChild(BaseObject* c);
+    vector<BaseObject*> GetChilds();
+    BaseObject* GetChildAtIndex(unsigned i);
     BaseObject* GetParent();
     void chooseLOD(QVector3D cam);
     void SetParent(BaseObject* b);
-    void SetChildAtIndex(BaseObject c, unsigned i);
-    virtual void CreateGeometry();
-    virtual void Render(QOpenGLShaderProgram *program);
+    void SetChildAtIndex(BaseObject* c, unsigned i);
+    virtual void CreateGeometry() = 0;
+    virtual void Render(QOpenGLShaderProgram *program) = 0;
     void UpdatePositionInSpace();
 };
 

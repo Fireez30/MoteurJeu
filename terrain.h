@@ -7,8 +7,8 @@
 
 public :
      Terrain();
-     virtual void CreateGeometry();
-     virtual void Render(QOpenGLShaderProgram *program);
+     void CreateGeometry() override;
+     void Render(QOpenGLShaderProgram *program) override;
  };
 
 #endif // TERRAIN_H

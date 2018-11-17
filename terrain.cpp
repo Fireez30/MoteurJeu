@@ -9,8 +9,8 @@
 #include <QVector3D>
 #include <QTime>
 
-Terrain::Terrain() : BaseObject(0){
-    Terrain::CreateGeometry();
+Terrain::Terrain(){
+    CreateGeometry();
 }
 
 void Terrain::CreateGeometry()
