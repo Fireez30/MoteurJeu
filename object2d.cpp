@@ -88,7 +88,7 @@ void Object2D::CreateGeometry()
     }
 }
 
-void Object2D::Render(QOpenGLShaderProgram *program){
+void Object2D::Render(QOpenGLShaderProgram *program,QMatrix4x4 projection){
     std::cout << "Object2D, Render " << std::endl;
    int size = 0;
    // Tell OpenGL which VBOs to use
@@ -117,6 +117,13 @@ void Object2D::Render(QOpenGLShaderProgram *program){
    // Offset for position
    quintptr offset = 0;
 
+   QMatrix4x4 matrix;
+   matrix.translate(realPosition.x(), realPosition.y(), realPosition.z());
+   matrix.rotate(realRotation);
+   // Set modelview-projection matrix
+   program->setUniformValue("mvp_matrix", projection * matrix);
+//! [6]
+//!
    // Tell OpenGL programmable pipeline how to locate vertex position data
    int vertexLocation = program->attributeLocation("a_position");
    program->enableAttributeArray(vertexLocation);
@@ -134,6 +141,6 @@ void Object2D::Render(QOpenGLShaderProgram *program){
    //Render stuff here (render the loaded mesh)
    for (unsigned i = 0; i < childs.size(); i++){
        //we can optimize here (view dependant, too far from camera , ...)
-       childs[i]->Render(program);
+       childs[i]->Render(program,projection);
    }
 }

@@ -195,6 +195,7 @@ void MainWidget::initializeGL()
 //! [2]
     scene = new Object2D;
     Terrain* t = new Terrain;
+    //t->Translate(QVector3D(10,0,0));
     scene->AddChild(t);
     //scene->AddChild(new Terrain());
     //scene.CreateGeometry();//start with the basic level of details
@@ -280,6 +281,7 @@ void MainWidget::paintGL()
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
     texture->bind();
 //! [6]
     // Calculate model view transformation
@@ -295,6 +297,6 @@ void MainWidget::paintGL()
 
     // Draw cube geometry
     //geometries->drawMeshGeometry(&program);
-    scene->Render(&program);//old version of this is drawTerrainGeometry();
+    scene->Render(&program,projection);//old version of this is drawTerrainGeometry();
     std::cout << " a " << std::endl;
 }

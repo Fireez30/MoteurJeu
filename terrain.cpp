@@ -46,10 +46,16 @@ void Terrain::CreateGeometry()
      // Transfer index data to VBO 1
      indexBuf.bind();
      indexBuf.allocate(indices, 15*15*6 * sizeof(GLushort));
+
+     for (unsigned i = 0; i < childs.size(); i++){
+         //we can optimize here (view dependant, too far from camera , ...)
+         childs[i]->CreateGeometry();
+     }
 }
 
-void Terrain::Render(QOpenGLShaderProgram *program){
+void Terrain::Render(QOpenGLShaderProgram *program,QMatrix4x4 projection){
         std::cout << "Terrain, render " << std::endl;
+
     // Tell OpenGL which VBOs to use
     arrayBuf.bind();
     indexBuf.bind();
@@ -57,6 +63,11 @@ void Terrain::Render(QOpenGLShaderProgram *program){
     // Offset for position
     quintptr offset = 0;
 
+    QMatrix4x4 matrix;
+    matrix.translate(realPosition.x(), realPosition.y(), realPosition.z());
+    matrix.rotate(realRotation);
+    // Set modelview-projection matrix
+    program->setUniformValue("mvp_matrix", projection * matrix);
     // Tell OpenGL programmable pipeline how to locate vertex position data
     int vertexLocation = program->attributeLocation("a_position");
     program->enableAttributeArray(vertexLocation);
@@ -72,4 +83,9 @@ void Terrain::Render(QOpenGLShaderProgram *program){
 
     // Draw cube geometry using indices from VBO 1
     glDrawElements(GL_TRIANGLES, 15*15*6, GL_UNSIGNED_SHORT, 0);
+
+    for (unsigned i = 0; i < childs.size(); i++){
+        //we can optimize here (view dependant, too far from camera , ...)
+        childs[i]->Render(program,projection);
+    }
 }

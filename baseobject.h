@@ -32,6 +32,7 @@ protected:
     int lod;
     string meshFile;
     int meshSize;
+
 public :
     static int id;
 
@@ -53,7 +54,7 @@ public :
     void SetParent(BaseObject* b);
     void SetChildAtIndex(BaseObject* c, unsigned i);
     virtual void CreateGeometry() = 0;
-    virtual void Render(QOpenGLShaderProgram *program) = 0;
+    virtual void Render(QOpenGLShaderProgram *program,QMatrix4x4 projection) = 0;
     void UpdatePositionInSpace();
 };
 

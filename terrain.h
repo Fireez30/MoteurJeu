@@ -8,7 +8,7 @@
 public :
      Terrain();
      void CreateGeometry() override;
-     void Render(QOpenGLShaderProgram *program) override;
+     void Render(QOpenGLShaderProgram *program,QMatrix4x4 projection) override;
  };
 
 #endif // TERRAIN_H

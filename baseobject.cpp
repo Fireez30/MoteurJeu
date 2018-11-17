@@ -18,6 +18,8 @@ BaseObject::BaseObject() : indexBuf(QOpenGLBuffer::IndexBuffer){
     arrayBuf.create();
     indexBuf.create();
     id++;
+    realRotation = rotation;
+    realPosition = position;
     meshFile = "mesh.obj";
 }
 
@@ -29,6 +31,8 @@ BaseObject::BaseObject(QQuaternion rot,QVector3D geo) : indexBuf(QOpenGLBuffer::
     arrayBuf.create();
     indexBuf.create();
     id++;
+    realRotation = rotation;
+    realPosition = position;
 }
 
 BaseObject::~BaseObject(){
@@ -54,10 +58,12 @@ QVector3D BaseObject::GetPosition(){
 
 void BaseObject::Rotate(QQuaternion r){
     rotation *= r;
+    UpdatePositionInSpace();
 }
 
 void BaseObject::Translate(QVector3D v){
     position += v;
+    UpdatePositionInSpace();
 }
 
 void BaseObject::SetChilds(vector<BaseObject*> v){
@@ -92,9 +98,10 @@ void BaseObject::SetParent(BaseObject* b){
 void BaseObject::UpdatePositionInSpace(){
     realRotation = rotation;//used not to update several times the rotation
     realPosition = position;//used not to update several times the position
-
-    realRotation *= parent->GetRotation();
-    realPosition += parent->GetPosition();
+    if (parent){
+        realRotation *= parent->GetRotation();
+        realPosition += parent->GetPosition();
+    }
     for (unsigned i = 0; i < childs.size(); i++){
         childs[i]->UpdatePositionInSpace();
     }
