@@ -45,13 +45,14 @@ public :
     void Rotate(QQuaternion r);
     void Translate(QVector3D v);
     void SetChilds(vector<BaseObject> v);
+    void AddChild(BaseObject c);
     vector<BaseObject> GetChilds();
     BaseObject GetChildAtIndex(unsigned i);
     BaseObject* GetParent();
     void chooseLOD(QVector3D cam);
     void SetParent(BaseObject* b);
     void SetChildAtIndex(BaseObject c, unsigned i);
-    void CreateGeometry(QVector3D cam);
+    void CreateGeometry();
     void Render(QOpenGLShaderProgram *program);
     void UpdatePositionInSpace();
 };

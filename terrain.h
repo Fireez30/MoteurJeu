@@ -2,10 +2,11 @@
 #define TERRAIN_H
 #include "baseobject.h"
 
- class Terrain : BaseObject
+ class Terrain : public BaseObject
  {
 
 public :
+     Terrain();
      void CreateGeometry();
      void Render(QOpenGLShaderProgram *program);
  };

@@ -9,6 +9,9 @@
 #include <QVector3D>
 #include <QTime>
 
+Terrain::Terrain(){
+}
+
 void Terrain::CreateGeometry()
 {
     QImage img;
@@ -44,6 +47,7 @@ void Terrain::CreateGeometry()
 }
 
 void Terrain::Render(QOpenGLShaderProgram *program){
+    std::cout << "Testtt" << std::endl;
     // Tell OpenGL which VBOs to use
     arrayBuf.bind();
     indexBuf.bind();

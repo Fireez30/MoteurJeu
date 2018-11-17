@@ -20,7 +20,7 @@ void main()
     // Pass texture coordinate to fragment shader
     // Value will be automatically interpolated to fragments inside polygon faces
     v_texcoord = a_texcoord;
-    color = vec4(a_position.z*200,a_position.z*0,a_position.z*0,1);
-    //color = vec4(basecolor.x,basecolor.y,basecolor.z,1);
+    //color = vec4(a_position.z*200,a_position.z*0,a_position.z*0,1);
+    color = vec4(200,0,0,1);
 }
 //! [0]

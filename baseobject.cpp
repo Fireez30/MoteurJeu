@@ -18,6 +18,8 @@ BaseObject::BaseObject() : indexBuf(QOpenGLBuffer::IndexBuffer){
     arrayBuf.create();
     indexBuf.create();
     id++;
+    meshFile = "mesh.obj";
+    CreateGeometry();
 }
 
 BaseObject::BaseObject(QQuaternion rot,QVector3D geo) : indexBuf(QOpenGLBuffer::IndexBuffer){
@@ -62,6 +64,10 @@ void BaseObject::SetChilds(vector<BaseObject> v){
     childs = v;
 }
 
+void BaseObject::AddChild(BaseObject c){
+    childs.push_back(c);
+}
+
 vector<BaseObject> BaseObject::GetChilds(){
     return childs;
 }
@@ -99,10 +105,30 @@ void BaseObject::UpdatePositionInSpace(){
 
 void BaseObject::Render(QOpenGLShaderProgram *program)
 {
-     //PAS A JOUR, CF GEOMETRY ENGINE
+     std::cout << "Testtt222s" << std::endl;
+    int size = 0;
     // Tell OpenGL which VBOs to use
-    arrayBuf.bind();
-    indexBuf.bind();
+    switch (lod){
+        case 0:
+            arrayBuf.bind();
+            indexBuf.bind();
+            size = meshSize;
+            break;
+/*
+        case 1:
+            arrayBuf1.bind();
+            indexBuf1.bind();
+            size = meshSize1;
+            break;
+
+        case 2:
+            arrayBuf2.bind();
+            indexBuf2.bind();
+            size = meshSize2;
+            break;
+            */
+    }
+
 
     // Offset for position
     quintptr offset = 0;
@@ -121,7 +147,6 @@ void BaseObject::Render(QOpenGLShaderProgram *program)
     program->setAttributeBuffer(texcoordLocation, GL_FLOAT, offset, 2, sizeof(VertexData));
 
     // Draw cube geometry using indices from VBO 1
-    glDrawElements(GL_TRIANGLE_STRIP, meshSize * 3, GL_UNSIGNED_SHORT, 0);
     //Render stuff here (render the loaded mesh)
     for (unsigned i = 0; i < childs.size(); i++){
         //we can optimize here (view dependant, too far from camera , ...)
@@ -140,12 +165,12 @@ void BaseObject::chooseLOD(QVector3D cam){
         lod = 0;
 }
 
-void BaseObject::CreateGeometry(QVector3D cam){
-    //PAS A JOUR, CF GEOMETRY ENGINE
+void BaseObject::CreateGeometry(){
+
     std::vector<GLushort> indices;
     std::vector<QVector2D> textureCoords;
     std::vector<QVector3D> vertexCoords;
-    string file = ""+lod+meshFile;//a file has different LODs represented as different files with the lod before the name of the file
+    std::string file = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\0" + meshFile;//LOD 0.
     QFile f(file.data());
     if (!f.open(QIODevice::ReadOnly)){
          std::cout<< " Erreur lors de l'ouverture du fichier" << endl;
@@ -157,35 +182,40 @@ void BaseObject::CreateGeometry(QVector3D cam){
     {
         f.readLine(filter,256);
     }
-
     char line[64];
     int res = f.readLine(line,64);
-    while (res != -1){
-        std::cout << "Ligne lue = " << line << endl;
+    while (res != EOF){
+        std::cout << "res = " << res << endl;
     if (line[0] == 'v' && line[1] == 't'){//case of the texture
         float x,y;
-        sscanf_s(line,"%s%s ",NULL,NULL);//dont read v and t
-        sscanf_s(line,"%f %f",&x,&y);//read both coordinates
+        //sscanf(line,"%s%s ",NULL,NULL);//dont read v and t
+        sscanf(line,"vt %f %f %f",&x,&y,NULL);//read both coordinates
         textureCoords.push_back(QVector2D(x,y));
     }//end of texture
     else if (line[0] == 'v' && line[1] != 'n'){//case of coord
         float x,y,z;
-        sscanf_s(line,"%s ",NULL);//dont read v
-        sscanf_s(line,"%f %f %f",&x,&y,&z);//read the 3 coordinates
+        //sscanf(line,"%s ",NULL);//dont read v
+        sscanf(line,"v %f %f %f",&x,&y,&z);//read the 3 coordinates
+        std::cout << " coord " << x << y << z << std::endl;
         vertexCoords.push_back(QVector3D(x,y,z));
     }//end of coords
     else if (line[0] == 'f'){//if its indices of a triangle (f vertx/vertex/vertex text/text/text norm/norm/norm)
         GLushort v1,v2,v3;//vertex indices
-        sscanf_s(line,"%s ",NULL);//dont read f
-        sscanf_s(line,"%d/",&v1);//read the indice 1
-        sscanf_s(line,"%d/",&v2);
-        sscanf_s(line,"%d/ ",&v3);
+       // sscanf(line,"%s ",NULL);//dont read f
+       // sscanf(line,"%hu/",&v1);//read the indice 1
+       // sscanf(line,"%hu/",&v2);
+       // sscanf(line,"%hu/ ",&v3);
+        sscanf(line,"f %hu %hu %hu %hu %hu %hu %hu %hu %hu",&v1,&v2,&v3,NULL,NULL,NULL,NULL,NULL,NULL);
         indices.push_back(v1);
         indices.push_back(v2);
         indices.push_back(v3);
-    }//end of faces
-    }//end of lines
-
+    }//end of faces, the rest of the lines are not used
+    res = f.readLine(line,64);
+    }
+    //end of lines
+    for (int i = 0; i < vertexCoords.size(); i++){
+        std::cout << "v " << vertexCoords[i].x() << " " << vertexCoords[i].y() << " " << vertexCoords[i].x() << std::endl;
+    }
     //now we create vertexdata structure
     VertexData vertexs[vertexCoords.size()];
     for (unsigned i = 0; i < vertexCoords.size(); i++){
@@ -199,11 +229,11 @@ void BaseObject::CreateGeometry(QVector3D cam){
     indexBuf.bind();
     indexBuf.allocate(indices.data(), indices.size() * sizeof(GLushort));//data() = array of vector elements
 
-    meshSize = vertexCoords.size();
+    meshSize = indices.size();
 
     f.close();
 
     for (unsigned i = 0; i < childs.size(); i++){
-        childs[i].CreateGeometry(cam);
+        childs[i].CreateGeometry();
     }
 }
