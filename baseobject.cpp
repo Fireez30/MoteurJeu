@@ -102,6 +102,8 @@ void BaseObject::UpdatePositionInSpace(){
         realRotation *= parent->GetRotation();
         realPosition += parent->GetPosition();
     }
+
+    //update bounding box leftcorner !
     for (unsigned i = 0; i < childs.size(); i++){
         childs[i]->UpdatePositionInSpace();
     }

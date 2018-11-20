@@ -8,6 +8,7 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
+#include "boundingbox.h"
 
 using namespace std;
 
@@ -29,6 +30,7 @@ protected:
     QOpenGLBuffer indexBuf;
     vector<BaseObject*> childs;
     BaseObject* parent;
+    BoundingBox collider;
     int lod;
     string meshFile;
     int meshSize;
@@ -55,6 +57,7 @@ public :
     void SetChildAtIndex(BaseObject* c, unsigned i);
     virtual void CreateGeometry() = 0;
     virtual void Render(QOpenGLShaderProgram *program,QMatrix4x4 projection) = 0;
+    virtual void CreateCollider() = 0;
     void UpdatePositionInSpace();
 };
 

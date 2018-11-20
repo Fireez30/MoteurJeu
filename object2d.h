@@ -10,6 +10,7 @@ public :
     Object2D();
     void CreateGeometry() override;
     void Render(QOpenGLShaderProgram *program,QMatrix4x4 projection) override;
+    void CreateCollider() override;
 };
 
 #endif // OBJECT2D_H

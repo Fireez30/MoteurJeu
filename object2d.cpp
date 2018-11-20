@@ -11,6 +11,12 @@
 
 Object2D::Object2D(){
     CreateGeometry();
+    CreateCollider();
+}
+
+void Object2D::CreateCollider(){
+    //compute leftcorner pos
+    // create the bounding box (give leftcorner, height, width and 1 if obstacle
 }
 
 void Object2D::CreateGeometry()
