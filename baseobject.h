@@ -30,7 +30,7 @@ protected:
     QOpenGLBuffer indexBuf;
     vector<BaseObject*> childs;
     BaseObject* parent;
-    BoundingBox collider;
+    //BoundingBox collider;
     int lod;
     string meshFile;
     int meshSize;

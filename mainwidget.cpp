@@ -49,6 +49,7 @@
 ****************************************************************************/
 
 #include "mainwidget.h"
+#include "player.h"
 #include "terrain.h"
 #include "object2d.h"
 #include <QMouseEvent>
@@ -195,6 +196,8 @@ void MainWidget::initializeGL()
 //! [2]
     scene = new Object2D;
     Terrain* t = new Terrain;
+    Player* p = new Player;
+    t->AddChild(p);
     //t->Translate(QVector3D(10,0,0));
     scene->AddChild(t);
     //scene->AddChild(new Terrain());
@@ -243,7 +246,7 @@ void MainWidget::initShaders()
 void MainWidget::initTextures()
 {
     // Load cube.png image
-    texture = new QOpenGLTexture(QImage("hmap3.png"));
+    texture = new QOpenGLTexture(QImage("sprites.png")); //chargement de la sprite sheet ici
 
     // Set nearest filtering mode for texture minification
     texture->setMinificationFilter(QOpenGLTexture::Nearest);
@@ -292,11 +295,10 @@ void MainWidget::paintGL()
     // Set modelview-projection matrix
     program.setUniformValue("mvp_matrix", projection * matrix);
 //! [6]
-    // Use texture unit 0 which contains cube.png
+    // Use texture unit 0 which contains sprite sheet
     program.setUniformValue("texture", 0);
 
     // Draw cube geometry
     //geometries->drawMeshGeometry(&program);
     scene->Render(&program,projection);//old version of this is drawTerrainGeometry();
-    std::cout << " a " << std::endl;
 }

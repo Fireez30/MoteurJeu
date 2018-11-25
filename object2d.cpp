@@ -144,6 +144,7 @@ void Object2D::Render(QOpenGLShaderProgram *program,QMatrix4x4 projection){
    program->setAttributeBuffer(texcoordLocation, GL_FLOAT, offset, 2, sizeof(VertexData));
 
    // Draw cube geometry using indices from VBO 1
+   //manque le draw la
    //Render stuff here (render the loaded mesh)
    for (unsigned i = 0; i < childs.size(); i++){
        //we can optimize here (view dependant, too far from camera , ...)

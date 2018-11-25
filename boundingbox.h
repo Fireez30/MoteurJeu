@@ -14,6 +14,6 @@ public :
 
     void Translate(QVector3D q);
     bool CollisionTest(BoundingBox b);
-}
+};
 
 #endif // BOUNDINGBOX_H

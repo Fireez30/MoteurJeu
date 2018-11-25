@@ -53,6 +53,10 @@ void Terrain::CreateGeometry()
      }
 }
 
+void Terrain::CreateCollider(){
+
+}
+
 void Terrain::Render(QOpenGLShaderProgram *program,QMatrix4x4 projection){
         std::cout << "Terrain, render " << std::endl;
 
