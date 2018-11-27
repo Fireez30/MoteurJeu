@@ -16,15 +16,29 @@ Terrain::Terrain(){
 void Terrain::CreateGeometry()
 {
     std::cout << "Terrain, create geometry " << std::endl;
-    QImage img;
-    img.load("hmap3.png");
     VertexData vertices[256];
      int index = 0;
 
     for(int i=0;i<16;i++){
+        int indexT = 0;
         for(int j=0;j<16;j++){
-             vertices[index] = {QVector3D(-8.0+(float)(i), -8.0+(float)(j),qGray(img.pixel(i*(img.width()-1)/15.0,(j*(img.height()-1)/15.0)))/255.0), QVector2D((float)(i)/(float)(15.0), (float)(j)/(float)(15.0))};
+            QVector2D d;
+            if (indexT == 0){
+                d = QVector2D(355,2);
+            }
+            if (indexT == 1){
+                 d = QVector2D(355,17);
+            }
+            if (indexT == 2){
+                 d = QVector2D(370,2);
+            }
+            else{
+                 d = QVector2D(370,17);
+            }
+             vertices[index] = {QVector3D(-8.0+(float)(i), -8.0+(float)(j),0), d};
              index++;
+             indexT++;
+             indexT = indexT%4;
          }
      }
      GLushort indices[15*15*6];

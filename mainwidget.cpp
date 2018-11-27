@@ -194,12 +194,10 @@ void MainWidget::initializeGL()
     // Enable back face culling
     glEnable(GL_CULL_FACE);
 //! [2]
-    scene = new Object2D;
-    Terrain* t = new Terrain;
+    scene = new Terrain;
     Player* p = new Player;
-    t->AddChild(p);
+    scene->AddChild(p);
     //t->Translate(QVector3D(10,0,0));
-    scene->AddChild(t);
     //scene->AddChild(new Terrain());
     //scene.CreateGeometry();//start with the basic level of details
     rotation = QQuaternion::fromAxisAndAngle(1,0,0,135);

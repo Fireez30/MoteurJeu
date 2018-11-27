@@ -40,6 +40,7 @@ void Player::CreateGeometry()
 }
 
 void Player::Render(QOpenGLShaderProgram *program, QMatrix4x4 projection){
+    std::cout << " Player render" << std::endl;
     arrayBuf.bind();
     indexBuf.bind();
 
