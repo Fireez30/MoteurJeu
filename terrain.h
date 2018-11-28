@@ -11,10 +11,11 @@ struct Room
 
  class Terrain : public BaseObject
  {
-     vector<vector<VertexData>> v;
+     vector<VertexData*> v;
 public :
      Terrain();
      void CreateGeometry() override;
+     void CreateGeometry(std::vector<Room> r);
      void CreateCollider() override;
      void Render(QOpenGLShaderProgram *program,QMatrix4x4 projection) override;
  };
