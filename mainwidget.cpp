@@ -61,6 +61,9 @@
 #include <iostream>
 #include <QVector3D>
 #include <QTime>
+#include <QDir>
+#include <QString>
+#include <time.h>
 
 bool start = true;
 int initial_time = time (NULL);
@@ -123,6 +126,168 @@ void MainWidget::keyPressEvent (QKeyEvent * event)
         rotationAxis = QVector3D(0,-1,0);
         angularSpeed = 0.5;
     }
+}
+
+bool isDirectionNextToBoss(int x,int y, int dir){
+    int offsetx = 0;
+    int offsety = 0;
+    switch (dir){//compute new coordinates using direction
+        case 0:
+            offsety = -25;
+            break;
+
+        case 1:
+            offsetx = -25;
+            break;
+
+        case 2:
+            offsety = 25;
+            break;
+
+        default:
+            offsetx = 25;
+            break;
+    }
+    return (x+offsetx+25 == 0 && y+offsety == -25) || (x+offsetx-25 == 0 && y+offsety == -25) || (x+offsetx == 0 && y+offsety+25 == -25) || (x+offsetx == 0 && y+offsety-25 == -25);
+    //return (x+offsetx == 0 && y+offsety == -25);}
+}
+std::vector<Room> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> droite
+    std::vector<Room> result = std::vector<Room>();
+    QString path = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms\\";
+    QStringList rooms = QDir(path).entryList();
+    std::cout << "taille room : " << rooms.size() << std::endl;
+    srand (time(NULL));//init random
+    std::cout << "After  init random" << std::endl;
+    int maxdist = 5;
+    int dist = 0;
+    int x = 0;//x in tile-coordinates (used for generation)
+    int y = 0;//y in tile-coordinates (used for generation)
+    std::cout << "Before start push" << std::endl;
+    result.push_back({"start.oel",x,y});//stockage initial
+    std::cout << "Before boss push" << std::endl;
+    result.push_back({"boss.oel",x,y-25});//boss
+    int direction = rand()%3 + 1;//start direction
+    switch (direction){//compute new coordinates using direction
+        case 1:
+            x-=25;//right
+            break;
+
+        case 2:
+            y+=25;//bottom
+            break;
+
+        default:
+            x+=25;//left
+            break;
+    }
+    std::cout << "Before while" << std::endl;
+    while (dist < maxdist){
+        dist++;
+        if (dist == maxdist){//if we reached the end generate key room
+            std::cout << "reached end" << std::endl;
+            result.push_back({"key.oel",x,y});
+            break;
+        }
+        int dir = direction;
+        if (rand()%100 < 25){
+            std::cout << "Si change direction" << std::endl;
+            direction = rand()%4;//choose a new direction which is not the same
+            while (direction-dir == 2 || direction-dir == -2 || direction==dir || isDirectionNextToBoss(x,y,direction)){//if we face down, dont go down or up, same for left right....
+                std::cout << "PRINCIPAL mauvaise direction tirée " << std::endl;
+                direction = rand()%4;
+            }
+        }//after decinding of the new direction
+        //create new secondary way
+        std::cout << "avant tirage test secondaire " << std::endl;
+        if ((rand()%100) < (100*((maxdist-dist)/(float)maxdist)))//cant be 100/0
+        {
+            std::cout << "si secondaire" << std::endl;
+            int newx = x;//dont use principal coordinates
+            int newy = y;//dont use principal coordinates
+            int secondarydir = rand()%4;//choose a direction
+            while (secondarydir == direction || secondarydir-dir == 2 || secondarydir-dir == -2 || isDirectionNextToBoss(newx,newy,secondarydir)){//if we face down, dont go down or up, same for left right....
+                secondarydir = rand()%4;
+                std::cout << "SECONDAIRE mauvaise direction tirée " << std::endl;
+            }
+            std::cout << "SECONDAIRE Enfin trouvé la bonne direction " << std::endl;
+            int offsetx = 0;
+            int offsety = 0;
+            switch (secondarydir){//compute new coordinates using direction
+                case 0:
+                    offsety = -25;
+                    break;
+
+                case 1:
+                    offsetx = -25;
+                    break;
+
+                case 2:
+                    offsety = 25;
+                    break;
+
+                default:
+                    offsetx = 25;
+                    break;
+            }
+            int max = rand()%3 + 1;
+            int beg = 0;
+            while (beg < max){
+                beg++;
+                if (isDirectionNextToBoss(newx,newy,secondarydir))//if were going next to the boss room stop
+                    break;
+                std::cout << "generation salle secondaire" << std::endl;
+                newx+= offsetx;
+                newy+= offsety;
+                int room = rand() % rooms.size();
+                bool flag = true;
+                for (int i=0; i < result.size(); i++)//test if room doesnt exist
+                {
+                    std::cout << "secondary room test " << std::endl;
+                    if (result[i].x == newx && result[i].y == newy)
+                        flag = false;
+                }
+
+                if (flag){
+                    std::cout << "secondary room is ok " << std::endl;
+                    result.push_back({rooms[room].toStdString(),newx,newy});
+                }
+                else
+                    break;//cancel while
+            }//end secondary way generation
+        }//end of secondary test
+        std::cout << "secondary generation finie ou inexistante " << std::endl;
+        //generate the actual room
+        for (int i=0; i < result.size(); i++)//test if room doesnt exist
+        {
+            if (result[i].x == x && result[i].y == y && result[i].path != "start.oel" && result[i].path != "boss.oel")//if there is a room which is not boss/start
+            {result.erase(result.begin()+i);//erase the secondary room
+                std::cout << "necessaire de supprimer une salle " << std::endl;}
+        }
+        std::cout << "apres test existance principal " << std::endl;
+        int room = rand() % rooms.size();// bug ici
+        std::cout << "push next principal room " << std::endl;
+        result.push_back({rooms[room].toStdString(),x,y});
+        //update x y coordinates
+        switch (direction){//compute new coordinates using direction
+            case 0:
+                y-=25;
+                break;
+
+            case 1:
+                x-=25;
+                break;
+
+            case 2:
+                y+=25;
+                break;
+
+            default:
+                x+=25;
+                break;
+        }
+    }
+
+    return result;
 }
 
 void MainWidget::changeSeason(int a)
@@ -194,15 +359,25 @@ void MainWidget::initializeGL()
     // Enable back face culling
     glEnable(GL_CULL_FACE);
 //! [2]
+//!
+//!
+    std::cout << "Before Terrain" << std::endl;
     scene = new Terrain;
+    std::cout << "Before Player" << std::endl;
     Player* p = new Player;
+    std::cout << "Before Add" << std::endl;
     scene->AddChild(p);
     //t->Translate(QVector3D(10,0,0));
     //scene->AddChild(new Terrain());
     //scene.CreateGeometry();//start with the basic level of details
     rotation = QQuaternion::fromAxisAndAngle(1,0,0,135);
     // Use QBasicTimer because its faster than QTimer
-
+    std::cout << "Before Generation" << std::endl;
+    std::vector<Room> r = generateLevel();
+    std::cout << "Before Affichage" << std::endl;
+    for (unsigned i = 0; i < r.size(); i++){
+        std::cout << "Salle " << r[i].path << " at x : " << r[i].x/25 << " and y : " << r[i].y/25 << std::endl;
+    }
     timer.start(1000/max_fps, this);
 }
 //! [3]

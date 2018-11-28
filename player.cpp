@@ -10,6 +10,7 @@
 #include <QTime>
 
 Player::Player(){
+    initializeOpenGLFunctions();
     CreateGeometry();
 }
 
@@ -21,6 +22,7 @@ void Player::CreateCollider(){
 
 void Player::CreateGeometry()
 {
+   // std::cout << "Player create geometry" << std::endl;
     VertexData vertices[4]= {
         {QVector3D(0.0f, 0.0f,  0.0f), QVector2D(326.0f, 462.0f)},
         {QVector3D(0.0f, 1.0f, 0.0f), QVector2D(341.0f, 462.0f)},
@@ -40,7 +42,7 @@ void Player::CreateGeometry()
 }
 
 void Player::Render(QOpenGLShaderProgram *program, QMatrix4x4 projection){
-    std::cout << " Player render" << std::endl;
+    // std::cout << " Player render" << std::endl;
     arrayBuf.bind();
     indexBuf.bind();
 

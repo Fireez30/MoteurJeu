@@ -10,12 +10,14 @@
 #include <QTime>
 
 Terrain::Terrain(){
+    initializeOpenGLFunctions();
     CreateGeometry();
+    v = vector<vector<VertexData>>();
 }
 
 void Terrain::CreateGeometry()
 {
-    std::cout << "Terrain, create geometry " << std::endl;
+    // std::cout << "Terrain, create geometry " << std::endl;
     VertexData vertices[256];
      int index = 0;
 
@@ -72,7 +74,7 @@ void Terrain::CreateCollider(){
 }
 
 void Terrain::Render(QOpenGLShaderProgram *program,QMatrix4x4 projection){
-        std::cout << "Terrain, render " << std::endl;
+        // std::cout << "Terrain, render " << std::endl;
 
     // Tell OpenGL which VBOs to use
     arrayBuf.bind();
