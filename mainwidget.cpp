@@ -155,6 +155,12 @@ std::vector<Room> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> dro
     std::vector<Room> result = std::vector<Room>();
     QString path = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms\\";
     QStringList rooms = QDir(path).entryList();
+    for (int i = 0; i < rooms.size(); i++){
+        string s = rooms[i].toStdString();
+        if (s.find(".oel") != string::npos){//si c'est pas un fichier niveau ogmo
+            rooms.removeAt(i);//removeit
+        }
+    }
     std::cout << "taille room : " << rooms.size() << std::endl;
     srand (time(NULL));//init random
     std::cout << "After  init random" << std::endl;
