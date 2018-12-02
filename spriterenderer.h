@@ -7,6 +7,7 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
+#include <QOpenGLTexture>
 
 struct VertexData
 {
@@ -22,11 +23,13 @@ protected :
     QVector3D position;
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
+    QOpenGLTexture *texture;
     float time;
 
 public :
     SpriteRenderer();
     SpriteRenderer(std::string p,QVector2D coords,float time,QVector3D pos);
+    void initTextures();
     ~SpriteRenderer();
     std::string GetSpritePath();
     void ChangeSprite();
