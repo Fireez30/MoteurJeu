@@ -9,6 +9,7 @@ protected:
     bool wall;
 
 public :
+    Tile(Tile const&);
     Tile(QVector2D pos);
     Tile(bool type,QVector2D pos);
 };

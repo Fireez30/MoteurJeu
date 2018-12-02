@@ -8,11 +8,6 @@ Room::Room(){
     interacts = std::vector<Interactable2D>();
 }
 
-Room::Room(std::vector<Tile> t,std::vector<Door> d):tiles(t),doors(d){
-    collisions  = std::vector<Hitbox>();
-    interacts = std::vector<Interactable2D>();
-}
-
 Room::~Room(){
     tiles.clear();
     doors.clear();

@@ -2,18 +2,6 @@
 #define TERRAIN_H
 #include "baseobject.h"
 #include <vector>
-struct Rooms
-{
-    std::string path;
-    int x;
-    int y;
-};
-
-struct VertexData
-{
-    QVector3D position;
-    QVector2D texCoord;
-};
 
  class Terrain : public BaseObject
  {
@@ -22,7 +10,6 @@ struct VertexData
 public :
      Terrain();
      void CreateGeometry() override;
-     void CreateGeometry(std::vector<Rooms> r);
      void CreateCollider() override;
      void Render(QOpenGLShaderProgram *program,QMatrix4x4 projection) override;
      void bindArrays();

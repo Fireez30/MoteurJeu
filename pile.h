@@ -15,7 +15,7 @@ protected:
 public :
     Pile(QVector2D pos);
     Pile(QVector2D pos,float r, float c, float l, int d);
-    virtual void Affect(Ennemi e) = 0;
+    virtual void Affect() = 0;
     float GetRange();
     float GetConeAngle();
     float GetLifepan();

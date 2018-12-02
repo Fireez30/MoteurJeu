@@ -18,7 +18,6 @@ protected:
 
 public :
     Room();
-    Room(std::vector<Tile> t,std::vector<Door> d);
     ~Room();
     void Render(QOpenGLShaderProgram *program);
     void ComputeHitboxes();

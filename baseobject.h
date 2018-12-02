@@ -9,7 +9,7 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
 #include "boundingbox.h"
-
+#include "vertexdata.h"
 using namespace std;
 
 

@@ -9,6 +9,7 @@ protected:
     bool locked;
 
 public :
+    Door(Door const&);
     Door(QVector2D pos);
     Door(QVector2D pos, bool state);
     bool IsLocked();

@@ -18,7 +18,7 @@ Terrain::Terrain(){
     CreateGeometry();
 }
 
-void Terrain::CreateGeometry(std::vector<Rooms> r)
+void Terrain::CreateGeometry()
 {
 
 
@@ -41,11 +41,6 @@ void Terrain::CreateGeometry(std::vector<Rooms> r)
     // Transfer index data to VBO 1
     indexBuf.bind();
     indexBuf.allocate(indices, 15*15*6 * sizeof(GLushort));
-}
-
-void Terrain::CreateGeometry()
-{
-
 }
 
 void Terrain::CreateCollider(){

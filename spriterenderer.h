@@ -8,6 +8,7 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
+#include "vertexdata.h"
 
 struct Rooms
 {
@@ -16,11 +17,6 @@ struct Rooms
     int y;
 };
 
-struct VertexData
-{
-    QVector3D position;
-    QVector2D texCoord;
-};
 
 class SpriteRenderer : protected QOpenGLFunctions{
 protected :
@@ -34,6 +30,7 @@ protected :
     float time;
 
 public :
+    SpriteRenderer(const SpriteRenderer&);
     SpriteRenderer();
     SpriteRenderer(std::string p,QVector2D coords,float time,QVector3D pos);
     void initTextures();
