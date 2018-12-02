@@ -17,25 +17,9 @@ Terrain::Terrain(){
     CreateGeometry();
 }
 
-void Terrain::CreateGeometry(std::vector<Room> r)
+void Terrain::CreateGeometry(std::vector<Rooms> r)
 {
-    for(unsigned i = 0; i < r.size(); i++){
-        VertexData v2[25*15];//construction des positions des points dans la scène
-        tinyxml2::XMLDocument doc;
-        doc.LoadFile(r[i].path.data());
-        tinyxml2::XMLElement* d = doc.RootElement();//<level width height>
-        const char* walls = d[0].GetText();
-        int index = 0;
-        for (int i = 0; i < 15;i++){
-            for (int j = 0; j < 25;j++){
-                if (walls[0] == 1){
-                    v2[index] = {QVector3D(i,j,0),QVector2D(0,0)};
-                }
-                index++;
-            }
-        }
-        v.push_back(v2);
-    }
+
 
     GLushort indices[15*15*6];
     for(int j=0;j<15;j++){

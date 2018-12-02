@@ -9,6 +9,13 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 
+struct Rooms
+{
+    std::string path;
+    int x;
+    int y;
+};
+
 struct VertexData
 {
     QVector3D position;

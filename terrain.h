@@ -2,7 +2,7 @@
 #define TERRAIN_H
 #include "baseobject.h"
 #include <vector>
-struct Room
+struct Rooms
 {
     std::string path;
     int x;
@@ -16,7 +16,7 @@ struct Room
 public :
      Terrain();
      void CreateGeometry() override;
-     void CreateGeometry(std::vector<Room> r);
+     void CreateGeometry(std::vector<Rooms> r);
      void CreateCollider() override;
      void Render(QOpenGLShaderProgram *program,QMatrix4x4 projection) override;
      void bindArrays();
