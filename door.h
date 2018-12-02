@@ -4,6 +4,8 @@
 #include "interactable2d.h"
 
 class Door : public Interactable2D{
+
+protected:
     bool locked;
 
 public :

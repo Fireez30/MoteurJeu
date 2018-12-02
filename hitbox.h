@@ -4,6 +4,7 @@
 #include <QVector2D>
 
 class Hitbox {
+
 protected :
     QVector2D leftCorner;
     int width;

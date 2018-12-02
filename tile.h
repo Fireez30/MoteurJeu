@@ -4,6 +4,8 @@
 #include "base2d.h"
 
 class Tile : public Base2D{
+
+protected:
     bool wall;
 
 public :

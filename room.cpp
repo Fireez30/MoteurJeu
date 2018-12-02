@@ -13,6 +13,13 @@ Room::Room(std::vector<Tile> t,std::vector<Door> d):tiles(t),doors(d){
     interacts = std::vector<Interactable2D>();
 }
 
+Room::~Room(){
+    tiles.clear();
+    doors.clear();
+    collisions.clear();
+    interacts.clear();
+}
+
 void Room::ReadFile(std::vector<Rooms> r,int index){
         tinyxml2::XMLDocument doc;
         doc.LoadFile(r[index].path.data());
