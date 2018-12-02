@@ -21,11 +21,14 @@ void Room::ReadFile(std::vector<Rooms> r,int index){
         int xmlIndex = 0;
         for (int i = 0; i < 15;i++){
             for (int j = 0; j < 25;j++){
-                if (walls[xmlIndex] == 1){
-                   tiles.push_back(Tile(QVector2D(i,j)));
+                if (walls[xmlIndex] == 1){//sol
+                   tiles.push_back(Tile(QVector2D(i,j)));//pas un mur
                 }
-                if (walls[xmlIndex] == 2){
-                    doors.push_back(Door(QVector2D(i,j),false));
+                if (walls[xmlIndex] == 2){//sol
+                   tiles.push_back(Tile(true,QVector2D(i,j)));//un mur
+                }
+                if (walls[xmlIndex] == 3){//portes
+                    doors.push_back(Door(QVector2D(i,j),false));//default unlocked
                  }
                 xmlIndex++;
             }
