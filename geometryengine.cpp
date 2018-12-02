@@ -58,12 +58,7 @@
 #include <iostream>
 #include <QFile>
 #include <iostream>
-struct VertexData
-{
-    QVector3D position;
-    QVector2D texCoord;
-};
-
+#include "spriterenderer.h"
 //! [0]
 GeometryEngine::GeometryEngine()
     : indexBuf(QOpenGLBuffer::IndexBuffer),indexBuf1(QOpenGLBuffer::IndexBuffer),indexBuf2(QOpenGLBuffer::IndexBuffer)

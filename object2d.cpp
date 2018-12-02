@@ -13,6 +13,12 @@ Object2D::Object2D(){
     CreateGeometry();
     CreateCollider();
 }
+struct VertexData
+{
+    QVector3D position;
+    QVector2D texCoord;
+};
+
 
 void Object2D::CreateCollider(){
     //compute leftcorner pos

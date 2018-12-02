@@ -12,11 +12,7 @@
 
 using namespace std;
 
-struct VertexData
-{
-    QVector3D position;
-    QVector2D texCoord;
-};
+
 
 class BaseObject : protected QOpenGLFunctions
 {

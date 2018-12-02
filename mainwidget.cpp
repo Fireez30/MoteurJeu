@@ -64,6 +64,7 @@
 #include <QDir>
 #include <QString>
 #include <time.h>
+#include "room.h"
 
 bool start = true;
 int initial_time = time (NULL);
@@ -151,8 +152,8 @@ bool isDirectionNextToBoss(int x,int y, int dir){
     return (x+offsetx+25 == 0 && y+offsety == -25) || (x+offsetx-25 == 0 && y+offsety == -25) || (x+offsetx == 0 && y+offsety+25 == -25) || (x+offsetx == 0 && y+offsety-25 == -25);
     //return (x+offsetx == 0 && y+offsety == -25);}
 }
-std::vector<Room> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> droite
-    std::vector<Room> result = std::vector<Room>();
+std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> droite
+    std::vector<Rooms> result = std::vector<Rooms>();
     QString path = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms\\";
     QStringList rooms = QDir(path).entryList();
     for (int i = 0; i < rooms.size(); i++){
@@ -368,22 +369,20 @@ void MainWidget::initializeGL()
 //!
 //!
     std::cout << "Before Terrain" << std::endl;
-    scene = new Terrain;
+    scene = new Room;
     std::cout << "Before Player" << std::endl;
-    Player* p = new Player;
-    std::cout << "Before Add" << std::endl;
-    scene->AddChild(p);
     //t->Translate(QVector3D(10,0,0));
     //scene->AddChild(new Terrain());
     //scene.CreateGeometry();//start with the basic level of details
     rotation = QQuaternion::fromAxisAndAngle(1,0,0,135);
     // Use QBasicTimer because its faster than QTimer
     std::cout << "Before Generation" << std::endl;
-    std::vector<Room> r = generateLevel();
+    std::vector<Rooms> r = generateLevel();
     std::cout << "Before Affichage" << std::endl;
-    for (unsigned i = 0; i < r.size(); i++){
-        std::cout << "Salle " << r[i].path << " at x : " << r[i].x/25 << " and y : " << r[i].y/25 << std::endl;
-    }
+    //for (unsigned i = 0; i < r.size(); i++){
+      //  std::cout << "Salle " << r[i].path << " at x : " << r[i].x/25 << " and y : " << r[i].y/25 << std::endl;
+    //}
+    scene->ReadFile(r,0);
     timer.start(1000/max_fps, this);
 }
 //! [3]
@@ -479,5 +478,5 @@ void MainWidget::paintGL()
 
     // Draw cube geometry
     //geometries->drawMeshGeometry(&program);
-    scene->Render(&program,projection);//old version of this is drawTerrainGeometry();
+    scene->Render(&program);//old version of this is drawTerrainGeometry();
 }

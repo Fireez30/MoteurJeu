@@ -62,6 +62,7 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include <QTime>
+#include "room.h"
 
 class GeometryEngine;
 
@@ -105,7 +106,7 @@ private:
     QOpenGLShaderProgram program;
     //GeometryEngine *geometries;
     QOpenGLTexture *texture;
-    BaseObject *scene;
+    Room *scene;
     QMatrix4x4 projection;
 
 public slots:

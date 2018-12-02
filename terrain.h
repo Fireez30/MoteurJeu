@@ -9,6 +9,12 @@ struct Rooms
     int y;
 };
 
+struct VertexData
+{
+    QVector3D position;
+    QVector2D texCoord;
+};
+
  class Terrain : public BaseObject
  {
      vector<VertexData*> v;

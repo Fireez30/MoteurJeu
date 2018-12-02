@@ -9,6 +9,13 @@
 #include <QVector3D>
 #include <QTime>
 
+struct VertexData
+{
+    QVector3D position;
+    QVector2D texCoord;
+};
+
+
 Player::Player(){
     initializeOpenGLFunctions();
     CreateGeometry();
