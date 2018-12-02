@@ -1,10 +1,10 @@
 #include "movable.h"
 
-Movable::Movable():speed(1),direction(0,0){
+Movable::Movable():Interactable2D(QVector2D(0,0)),speed(1),direction(0,0){
 
 }
 
-Movable::Movable(float x, float y,float sp):speed(sp),direction(x,y){
+Movable::Movable(float x, float y,float sp,QVector2D pos):Interactable2D(pos),speed(sp),direction(x,y){
 
 }
 

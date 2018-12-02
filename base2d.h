@@ -8,7 +8,7 @@ class Base2D{
 
 protected:
     QVector3D position;
-    SpriteRenderer sprite;
+    SpriteRenderer renderer;
 
 public :
     Base2D();

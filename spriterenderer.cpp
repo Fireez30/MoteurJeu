@@ -6,7 +6,7 @@ SpriteRenderer::SpriteRenderer():spritePath("sprite.png"),timer(),spriteCoords(0
     indexBuf.create();
 }
 
-SpriteRenderer::SpriteRenderer(std::string p,QVector2D coords,float t):spritePath(p),timer(),spriteCoords(coords),indexBuf(QOpenGLBuffer::IndexBuffer),time(t){
+SpriteRenderer::SpriteRenderer(std::string p,QVector2D coords,float t,QVector3D pos):spritePath(p),timer(),spriteCoords(coords),indexBuf(QOpenGLBuffer::IndexBuffer),time(t),position(pos){
     initializeOpenGLFunctions();
     arrayBuf.create();
     indexBuf.create();
@@ -34,24 +34,29 @@ float SpriteRenderer::GetYCoord(){
 
 void SpriteRenderer::CreateGeometry(){
     //compute a VertexData array
-    VertexData v2[25*15];
+    VertexData v2[4] ={
+        {position,spriteCoords},{QVector3D(position.x()+1,position.y(),0),QVector2D(spriteCoords.x()+16,spriteCoords.y())},
+        {QVector3D(position.x(),position.y()+1,0),QVector2D(spriteCoords.x(),spriteCoords.y()+16)},
+        {QVector3D(position.x()+1,position.y()+1,0),QVector2D(spriteCoords.x()+16,spriteCoords.y()+16)}
+    };
     //compute indices
-    GLushort indices[15*15*6];
+    GLushort indices[6] = {//2 triangles
+      0 , 1 , 2 , 1 , 2 , 3
+    };//(top left top right bottom left) (top right bottom left bottom right)
     // Transfer vertex data to VBO 0
 
     arrayBuf.bind();
-    arrayBuf.allocate(v2, 25*15 * sizeof(VertexData));
+    arrayBuf.allocate(v2, 4 * sizeof(VertexData));
 
     // Transfer index data to VBO 1
     indexBuf.bind();
-    indexBuf.allocate(indices, 15*15*6 * sizeof(GLushort));
+    indexBuf.allocate(indices, 6 * sizeof(GLushort));
 }
 
 void SpriteRenderer::Render(QOpenGLShaderProgram *program){
     // Tell OpenGL which VBOs to use
     arrayBuf.bind();
     indexBuf.bind();
-
     // Offset for position
     quintptr offset = 0;
 
@@ -69,5 +74,5 @@ void SpriteRenderer::Render(QOpenGLShaderProgram *program){
     program->setAttributeBuffer(texcoordLocation, GL_FLOAT, offset, 2, sizeof(VertexData));
 
     // Draw cube geometry using indices from VBO 1
-    glDrawElements(GL_TRIANGLES, 15*15*6, GL_UNSIGNED_SHORT, 0);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 }

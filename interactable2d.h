@@ -10,7 +10,7 @@ protected:
     Hitbox collider;
 
 public :
-    Interactable2D();
+    Interactable2D(QVector2D pos);
     virtual ~Interactable2D();
     virtual void OnTriggerEnter(Hitbox other) = 0;//abstract
 };

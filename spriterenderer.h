@@ -19,13 +19,14 @@ protected :
     std::string spritePath;
     QTimer timer;
     QVector2D spriteCoords;
+    QVector3D position;
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
     float time;
 
 public :
     SpriteRenderer();
-    SpriteRenderer(std::string p,QVector2D coords,float time);
+    SpriteRenderer(std::string p,QVector2D coords,float time,QVector3D pos);
     ~SpriteRenderer();
     std::string GetSpritePath();
     void ChangeSprite();

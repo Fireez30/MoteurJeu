@@ -19,5 +19,5 @@ void Base2D::Translate(QVector3D dir){
 }
 
 void Base2D::Render(QOpenGLShaderProgram *program){
-    sprite.Render(program);
+    renderer.Render(program);
 }

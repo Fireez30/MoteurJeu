@@ -2,7 +2,6 @@
 #define MOVABLE_H
 
 #include "interactable2d.h"
-#include <QVector2D>
 
 class Movable: public Interactable2D
 {
@@ -12,7 +11,7 @@ protected :
 
 public :
     Movable();
-    Movable(float x, float y,float sp);
+    Movable(float x, float y,float sp,QVector2D pos);
     QVector2D GetDirection();
     float GetSpeed();
     void ChangeSpeed(float s);
