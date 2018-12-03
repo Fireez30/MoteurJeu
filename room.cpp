@@ -18,13 +18,19 @@ Room::~Room(){
 
 void Room::ReadFile(std::vector<Rooms> r,int index){
         tinyxml2::XMLDocument doc;
-        doc.LoadFile(r[index].path.data());
+        if (doc.LoadFile(("C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms\\"+r[index].path).data()) == false){
+                std::cout << "ca plante !" << std::endl;
+            }//pose soucis !
+
         std::cout << "Path jusqu'au fichier level :" << r[index].path << std::endl;
+        std::cout << "avant de print le doc" << std::endl;
+        doc.Print();
         tinyxml2::XMLElement* d = doc.RootElement();//<level width height>
        // std::cout << "Size doc : " << d->
         std::cout << " Succes " << std::endl;//appelé
-        std::cout << "layer mur :" << d->GetText() << std::endl; //pas appelé !!!!
-        const char* walls = d[0].GetText();//wall layer
+        std::cout << "layer mur1 :" << d->FirstChild()->Value() << std::endl; //renvoie "Murs"
+         std::cout << "layer mur1 :" << d->FirstChild()->FirstChild()->Value() << std::endl; //CE UQIL FAUT
+        const char* walls = d->FirstChild()->FirstChild()->Value();//wall layer
         std::cout << "récupération du layer mur réussie" << std::endl;
         int xmlIndex = 0;
         for (int i = 0; i < 15;i++){
