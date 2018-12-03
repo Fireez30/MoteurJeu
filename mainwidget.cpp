@@ -383,6 +383,7 @@ void MainWidget::initializeGL()
       //  std::cout << "Salle " << r[i].path << " at x : " << r[i].x/25 << " and y : " << r[i].y/25 << std::endl;
     //}
     scene->ReadFile(r,0);
+    std::cout << "tiles size : " << scene->GetTiles().size() << std::endl;
     std::cout << "Apres ReadFile" << std::endl;
     timer.start(1000/max_fps, this);
 }

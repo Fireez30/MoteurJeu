@@ -16,6 +16,10 @@ Room::~Room(){
     interacts.clear();
 }
 
+std::vector<Tile> Room::GetTiles(){
+    return tiles;
+}
+
 void Room::ReadFile(std::vector<Rooms> r,int index){
         tinyxml2::XMLDocument doc;
         if (doc.LoadFile(("C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms\\"+r[index].path).data()) == false){
@@ -35,21 +39,23 @@ void Room::ReadFile(std::vector<Rooms> r,int index){
         int xmlIndex = 0;
         for (int i = 0; i < 15;i++){
             for (int j = 0; j < 25;j++){
-                if (walls[xmlIndex] == 1){//sol
+                if (walls[xmlIndex] == '1'){//sol
+                   std::cout << "sol;" << std::endl;
                    Tile t = Tile(QVector2D(i,j));
                    tiles.push_back(t);//pas un mur
                 }
-                if (walls[xmlIndex] == 2){//sol
+                if (walls[xmlIndex] == '2'){//sol
                    Tile t = Tile(true,QVector2D(i,j));
                    tiles.push_back(t);//un mur
                 }
-                if (walls[xmlIndex] == 3){//portes
+                if (walls[xmlIndex] == '3'){//portes
                     Door d = Door(QVector2D(i,j),false);
                     doors.push_back(d);//default unlocked
                  }
                 xmlIndex++;
             }
         }
+        std::cout << "XmlIndex = " << xmlIndex << std::endl;
 }
 void Room::Render(QOpenGLShaderProgram *program){
     for (int i = 0; i < tiles.size(); i++){

@@ -22,6 +22,7 @@ public :
     void Render(QOpenGLShaderProgram *program);
     void ComputeHitboxes();
     void ReadFile(std::vector<Rooms> r,int index);
+    std::vector<Tile> GetTiles();
 };
 
 #endif // ROOM_H
