@@ -1,6 +1,6 @@
 #include "spriterenderer.h"
-
-SpriteRenderer::SpriteRenderer():spritePath("sprite.png"),timer(),spriteCoords(0,0),indexBuf(QOpenGLBuffer::IndexBuffer),time(100),texture(0){
+#include <iostream>
+SpriteRenderer::SpriteRenderer():spritePath("sprites.png"),timer(),spriteCoords(9.0/16.0,0),indexBuf(QOpenGLBuffer::IndexBuffer),time(100),texture(0){
     initializeOpenGLFunctions();
     arrayBuf.create();
     indexBuf.create();
@@ -23,7 +23,10 @@ SpriteRenderer::~SpriteRenderer(){
 void SpriteRenderer::initTextures()
 {
     // Load cube.png image
-    texture = new QOpenGLTexture(QImage(spritePath.data())); //chargement de la sprite sheet ici
+    QImage img;
+    std::string s = "D:\\Git\\MoteurJeu\\"+spritePath;
+    img.load(s.data());
+    texture = new QOpenGLTexture(QImage(img)); //chargement de la sprite sheet ici
 
     // Set nearest filtering mode for texture minification
     texture->setMinificationFilter(QOpenGLTexture::Nearest);
@@ -54,9 +57,9 @@ float SpriteRenderer::GetYCoord(){
 void SpriteRenderer::CreateGeometry(){
     //compute a VertexData array
     VertexData v2[4] ={
-        {position,spriteCoords},{QVector3D(position.x()+1,position.y(),0),QVector2D(spriteCoords.x()+1.0,spriteCoords.y())},
-        {QVector3D(position.x(),position.y()+1,0),QVector2D(spriteCoords.x(),spriteCoords.y()+1.0)},
-        {QVector3D(position.x()+1,position.y()+1,0),QVector2D(spriteCoords.x()+1.0,spriteCoords.y()+1.0)}
+        {position,spriteCoords},{QVector3D(position.x()+1,position.y(),0),QVector2D(spriteCoords.x()+1.0/16.0,spriteCoords.y())},
+        {QVector3D(position.x(),position.y()+1,0),QVector2D(spriteCoords.x(),spriteCoords.y()+1.0/16.0)},
+        {QVector3D(position.x()+1,position.y()+1,0),QVector2D(spriteCoords.x()+1.0/16.0,spriteCoords.y()+1.0/16.0)}
     };
     //compute indices
     GLushort indices[6] = {//2 triangles

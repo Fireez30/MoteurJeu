@@ -22,7 +22,7 @@ std::vector<Tile> Room::GetTiles(){
 
 void Room::ReadFile(std::vector<Rooms> r,int index){
         tinyxml2::XMLDocument doc;
-        if (doc.LoadFile(("C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms\\"+r[index].path).data()) == false){
+        if (doc.LoadFile(("D:\\Git\\MoteurJeu\\Rooms\\"+r[index].path).data()) == false){
                 std::cout << "ca plante !" << std::endl;
             }//pose soucis !
 
@@ -37,19 +37,21 @@ void Room::ReadFile(std::vector<Rooms> r,int index){
         const char* walls = d->FirstChild()->FirstChild()->Value();//wall layer
         std::cout << "récupération du layer mur réussie" << std::endl;
         int xmlIndex = 0;
+        //int xRoom = r[index].x, yRoom = r[index].y;
+        int xRoom = 0, yRoom = 0;
         for (int i = 0; i < 15;i++){
             for (int j = 0; j < 25;j++){
                 if (walls[xmlIndex] == '1'){//sol
                    std::cout << "sol;" << std::endl;
-                   Tile t = Tile(QVector2D(i,j));
+                   Tile t = Tile(QVector2D(i+xRoom,j+yRoom));
                    tiles.push_back(t);//pas un mur
                 }
-                if (walls[xmlIndex] == '2'){//sol
-                   Tile t = Tile(true,QVector2D(i,j));
+                else if (walls[xmlIndex] == '2'){//mur
+                   Tile t = Tile(true,QVector2D(i+xRoom,j+yRoom));
                    tiles.push_back(t);//un mur
                 }
-                if (walls[xmlIndex] == '3'){//portes
-                    Door d = Door(QVector2D(i,j),false);
+                else if (walls[xmlIndex] == '3'){//portes
+                    Door d = Door(QVector2D(i+xRoom,j+yRoom),false);
                     doors.push_back(d);//default unlocked
                  }
                 xmlIndex++;

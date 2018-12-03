@@ -78,7 +78,7 @@ public:
 
     float x = 0.0;
     float y = 0.0;
-    float z = -30.0;
+    float z = 5.0;
     int hmapsize = 0;
 
     explicit MainWidget(QWidget *parent = 0,int maxfps=60,int saison=0);

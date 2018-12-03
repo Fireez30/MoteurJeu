@@ -154,7 +154,7 @@ bool isDirectionNextToBoss(int x,int y, int dir){
 }
 std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> droite
     std::vector<Rooms> result = std::vector<Rooms>();
-    QString path = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms\\";
+    QString path = "D:\\Git\\MoteurJeu\\Rooms";
     QStringList rooms = QDir(path).entryList();
     for (int i = 0; i < rooms.size(); i++){
         string s = rooms[i].toStdString();
@@ -470,7 +470,7 @@ void MainWidget::paintGL()
     // Calculate model view transformation
     QMatrix4x4 matrix;
     matrix.translate(x, y, z);
-    matrix.rotate(rotation);
+    //matrix.rotate(rotation);
 
     // Set modelview-projection matrix
     program.setUniformValue("mvp_matrix", projection * matrix);
