@@ -1,10 +1,13 @@
 #include "spriterenderer.h"
 #include <iostream>
+#include <QDebug>
+
 SpriteRenderer::SpriteRenderer():spritePath("sprites.png"),timer(),spriteCoords(9.0/16.0,0),indexBuf(QOpenGLBuffer::IndexBuffer),time(100),texture(0){
     initializeOpenGLFunctions();
     arrayBuf.create();
     indexBuf.create();
     initTextures();
+    CreateGeometry();
 }
 
 SpriteRenderer::SpriteRenderer(std::string p,QVector2D coords,float t,QVector3D pos):spritePath(p),timer(),spriteCoords(coords),indexBuf(QOpenGLBuffer::IndexBuffer),time(t),position(pos),texture(0){
@@ -12,6 +15,7 @@ SpriteRenderer::SpriteRenderer(std::string p,QVector2D coords,float t,QVector3D 
     arrayBuf.create();
     indexBuf.create();
     initTextures();
+    CreateGeometry();
 }
 
 SpriteRenderer::~SpriteRenderer(){
@@ -24,7 +28,7 @@ void SpriteRenderer::initTextures()
 {
     // Load cube.png image
     QImage img;
-    std::string s = "D:\\Git\\MoteurJeu\\"+spritePath;
+    std::string s = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\"+spritePath;
     img.load(s.data());
     texture = new QOpenGLTexture(QImage(img)); //chargement de la sprite sheet ici
 
@@ -55,6 +59,7 @@ float SpriteRenderer::GetYCoord(){
 }
 
 void SpriteRenderer::CreateGeometry(){
+    qDebug() << "SpriteRender - CreateGeometry";
     //compute a VertexData array
     VertexData v2[4] ={
         {position,spriteCoords},{QVector3D(position.x()+1,position.y(),0),QVector2D(spriteCoords.x()+1.0/16.0,spriteCoords.y())},
@@ -76,9 +81,18 @@ void SpriteRenderer::CreateGeometry(){
 }
 
 void SpriteRenderer::Render(QOpenGLShaderProgram *program){
+    qDebug() << "SpriteRender - Render";
     // Tell OpenGL which VBOs to use
-    arrayBuf.bind();
-    indexBuf.bind();
+    if (arrayBuf.bind() == false){
+        std::cout << "AHHH!\n";
+        std::cout << "AHHH!\n";
+        std::cout << "AHHH!\n";
+    };
+    if (indexBuf.bind() == false){
+        std::cout << "EHHH!\n";
+        std::cout << "EHHH!\n";
+        std::cout << "EHHH!\n";
+    };
     // Offset for position
     quintptr offset = 0;
 

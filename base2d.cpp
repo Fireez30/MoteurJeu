@@ -1,4 +1,5 @@
 #include "base2d.h"
+#include <iostream>
 
 Base2D::Base2D():position(0,0,0),renderer(){
 }
@@ -19,5 +20,6 @@ void Base2D::Translate(QVector3D dir){
 }
 
 void Base2D::Render(QOpenGLShaderProgram *program){
+    qDebug() << "Base2D - Render";
     renderer.Render(program);
 }

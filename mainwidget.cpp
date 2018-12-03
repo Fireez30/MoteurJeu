@@ -154,13 +154,18 @@ bool isDirectionNextToBoss(int x,int y, int dir){
 }
 std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> droite
     std::vector<Rooms> result = std::vector<Rooms>();
-    QString path = "D:\\Git\\MoteurJeu\\Rooms";
+    QString path = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms";
     QStringList rooms = QDir(path).entryList();
     for (int i = 0; i < rooms.size(); i++){
         string s = rooms[i].toStdString();
-        if (s.find(".oel") != string::npos){//si c'est pas un fichier niveau ogmo
+        if (s.find(".oel") == string::npos || s == ".."){//si c'est pas un fichier niveau ogmo
             rooms.removeAt(i);//removeit
         }
+    }
+    std::cout << "display " << std::endl;
+    for (int i = 0; i < rooms.size(); i++){
+        string s = rooms[i].toStdString();
+        std::cout << s << endl;
     }
     std::cout << "taille room : " << rooms.size() << std::endl;
     srand (time(NULL));//init random
@@ -374,7 +379,7 @@ void MainWidget::initializeGL()
     //t->Translate(QVector3D(10,0,0));
     //scene->AddChild(new Terrain());
     //scene.CreateGeometry();//start with the basic level of details
-    //rotation = QQuaternion::fromAxisAndAngle(1,0,0,135);
+    //rotation = QQuaternion::fromAxisAndAngle(1,0,0,-35);
     // Use QBasicTimer because its faster than QTimer
     std::cout << "Before Generation" << std::endl;
     std::vector<Rooms> r = generateLevel();
@@ -385,6 +390,9 @@ void MainWidget::initializeGL()
     scene->ReadFile(r,0);
     std::cout << "tiles size : " << scene->GetTiles().size() << std::endl;
     std::cout << "Apres ReadFile" << std::endl;
+    /*for (int i = 0;i < scene->GetTiles().size();i++){
+        std::cout << "Tile at x :" << scene->GetTiles()[i].GetPosition().x() <<"at y :" << scene->GetTiles()[i].GetPosition().y() << std::endl;
+    }*/
     timer.start(1000/max_fps, this);
 }
 //! [3]
@@ -447,7 +455,7 @@ void MainWidget::resizeGL(int w, int h)
     qreal aspect = qreal(w) / qreal(h ? h : 1);
 
     // Set near plane to 3.0, far plane to 7.0, field of view 45 degrees
-    const qreal zNear = 1.0, zFar = 100.0, fov = 45.0;
+    const qreal zNear = 1.0, zFar = 100.0, fov = 90.0;
 
     // Reset projection
     projection.setToIdentity();
@@ -470,7 +478,7 @@ void MainWidget::paintGL()
     // Calculate model view transformation
     QMatrix4x4 matrix;
     matrix.translate(x, y, z);
-    //matrix.rotate(rotation);
+    matrix.rotate(rotation);
 
     // Set modelview-projection matrix
     program.setUniformValue("mvp_matrix", projection * matrix);
@@ -481,4 +489,5 @@ void MainWidget::paintGL()
     // Draw cube geometry
     //geometries->drawMeshGeometry(&program);
     scene->Render(&program);//old version of this is drawTerrainGeometry();
+    std::cout << "----" << std::endl;
 }
