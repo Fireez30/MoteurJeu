@@ -374,7 +374,7 @@ void MainWidget::initializeGL()
     //t->Translate(QVector3D(10,0,0));
     //scene->AddChild(new Terrain());
     //scene.CreateGeometry();//start with the basic level of details
-    rotation = QQuaternion::fromAxisAndAngle(1,0,0,135);
+    //rotation = QQuaternion::fromAxisAndAngle(1,0,0,135);
     // Use QBasicTimer because its faster than QTimer
     std::cout << "Before Generation" << std::endl;
     std::vector<Rooms> r = generateLevel();

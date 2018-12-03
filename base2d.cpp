@@ -1,6 +1,6 @@
 #include "base2d.h"
 
-Base2D::Base2D():position(0,0,0){
+Base2D::Base2D():position(0,0,0),renderer(){
 }
 
 Base2D::Base2D(float x, float y, float z):position(x,y,z){
