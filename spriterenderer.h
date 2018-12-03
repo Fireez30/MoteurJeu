@@ -19,9 +19,9 @@ struct Rooms
 
 
 class SpriteRenderer : protected QOpenGLFunctions{
+
 protected :
     std::string spritePath;
-    QTimer timer;
     QVector2D spriteCoords;
     QVector3D position;
     QOpenGLBuffer arrayBuf;
@@ -29,8 +29,10 @@ protected :
     QOpenGLTexture *texture;
     float time;
 
+
 public :
-    SpriteRenderer(const SpriteRenderer&);
+    SpriteRenderer(const SpriteRenderer&) = delete;
+    QTimer timer;
     SpriteRenderer();
     SpriteRenderer(std::string p,QVector2D coords,float time,QVector3D pos);
     void initTextures();

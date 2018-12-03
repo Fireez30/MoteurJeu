@@ -20,3 +20,7 @@ void Door::OnTriggerEnter(Hitbox other){
     //if its open
     //change room
 }
+
+Door::Door(const Door& d):Interactable2D(QVector2D(d.position.x(),d.position.y())),locked(d.locked){
+
+}

@@ -11,7 +11,6 @@ protected:
     SpriteRenderer renderer;
 
 public :
-    Base2D(const Base2D&);
     Base2D();
     Base2D(float x, float y, float z);
     //Base2D(Base2D const &);
