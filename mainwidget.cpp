@@ -378,11 +378,12 @@ void MainWidget::initializeGL()
     // Use QBasicTimer because its faster than QTimer
     std::cout << "Before Generation" << std::endl;
     std::vector<Rooms> r = generateLevel();
-    std::cout << "Before Affichage" << std::endl;
+    //std::cout << "Before Affichage" << std::endl;
     //for (unsigned i = 0; i < r.size(); i++){
       //  std::cout << "Salle " << r[i].path << " at x : " << r[i].x/25 << " and y : " << r[i].y/25 << std::endl;
     //}
     scene->ReadFile(r,0);
+    std::cout << "Apres ReadFile" << std::endl;
     timer.start(1000/max_fps, this);
 }
 //! [3]

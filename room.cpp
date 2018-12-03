@@ -1,5 +1,6 @@
 #include "room.h"
 #include "door.h"
+#include <iostream>
 
 Room::Room(){
     tiles = std::vector<Tile>();
@@ -18,8 +19,13 @@ Room::~Room(){
 void Room::ReadFile(std::vector<Rooms> r,int index){
         tinyxml2::XMLDocument doc;
         doc.LoadFile(r[index].path.data());
+        std::cout << "Path jusqu'au fichier level :" << r[index].path << std::endl;
         tinyxml2::XMLElement* d = doc.RootElement();//<level width height>
+       // std::cout << "Size doc : " << d->
+        std::cout << " Succes " << std::endl;//appelé
+        std::cout << "layer mur :" << d->GetText() << std::endl; //pas appelé !!!!
         const char* walls = d[0].GetText();//wall layer
+        std::cout << "récupération du layer mur réussie" << std::endl;
         int xmlIndex = 0;
         for (int i = 0; i < 15;i++){
             for (int j = 0; j < 25;j++){
