@@ -30,28 +30,31 @@ void Room::ReadFile(std::vector<Rooms> r,int index){
         tinyxml2::XMLElement* d = doc.RootElement();//<level width height>
         const char* walls = d->FirstChild()->FirstChild()->Value();//wall layer
         int xmlIndex = 0;
-        int xRoom = 0, yRoom = 0;
-        for (int i = 0; i < 15;i++){
-            for (int j = 0; j < 25;j++){
+        int xRoom = r[index].x;
+        int yRoom = r[index].y;
+        for (int i = 0; i < 15;i++){//y
+            for (int j = 0; j < 25;j++){//x
                 if (walls[xmlIndex] == '1'){//sol
-                   Tile t = Tile(QVector2D(i+xRoom,j+yRoom));
+                   Tile t = Tile(QVector2D(j+yRoom,i+xRoom));
+                   std::cout << "x : " << (j+yRoom) << " y: " << (i+xRoom) << std::endl; // CES COORDS C'est DE LA MERDE
                    tiles.push_back(t);//pas un mur
                 }
                 else if (walls[xmlIndex] == '2'){//mur
-                   Tile t = Tile(true,QVector2D(i+xRoom,j+yRoom));
+                   Tile t = Tile(true,QVector2D(j+yRoom,i+xRoom));
                    tiles.push_back(t);//un mur
                 }
                 else if (walls[xmlIndex] == '3'){//portes
-                    Door d = Door(QVector2D(i+xRoom,j+yRoom),false);
+                    Door d = Door(QVector2D(j+yRoom,i+xRoom),false);
                     doors.push_back(d);//default unlocked
                  }
                 xmlIndex++;
             }
+            xmlIndex++;//retour chariot
         }
         std::cout << "XmlIndex = " << xmlIndex << std::endl;
 }
 void Room::Render(QOpenGLShaderProgram *program){
-    qDebug() << "Room - Render" << "size = " << tiles.size();
+    //qDebug() << "Room - Render" << "size = " << tiles.size();
     for (int i = 0; i < tiles.size(); i++){
         tiles[i].Render(program);
     }

@@ -1,10 +1,10 @@
 #include "base2d.h"
 #include <iostream>
 
-Base2D::Base2D():position(0,0,0),renderer(){
+Base2D::Base2D():position(0,0,0),renderer(position){
 }
 
-Base2D::Base2D(float x, float y, float z):position(x,y,z){
+Base2D::Base2D(float x, float y, float z):position(x,y,z),renderer(position){
 }
 
 void Base2D::SetPosition(QVector3D pos){
@@ -20,6 +20,6 @@ void Base2D::Translate(QVector3D dir){
 }
 
 void Base2D::Render(QOpenGLShaderProgram *program){
-    qDebug() << "Base2D - Render";
+    //qDebug() << "Base2D - Render x " << position.x() << " y " << position.y();
     renderer.Render(program);
 }

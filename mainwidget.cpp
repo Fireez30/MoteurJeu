@@ -118,7 +118,7 @@ void MainWidget::keyPressEvent (QKeyEvent * event)
     if(event->key() == Qt::Key_U)
           angularSpeed = 0;
 
-    if(event->key() == Qt::Key_Right){
+  /*  if(event->key() == Qt::Key_Right){
         rotationAxis = QVector3D(0,1,0);
         angularSpeed = 0.5;
     }
@@ -126,7 +126,7 @@ void MainWidget::keyPressEvent (QKeyEvent * event)
     if(event->key() == Qt::Key_Left){
         rotationAxis = QVector3D(0,-1,0);
         angularSpeed = 0.5;
-    }
+    }*/
 }
 
 bool isDirectionNextToBoss(int x,int y, int dir){
@@ -155,18 +155,19 @@ bool isDirectionNextToBoss(int x,int y, int dir){
 std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> droite
     std::vector<Rooms> result = std::vector<Rooms>();
     QString path = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms";
-    QStringList rooms = QDir(path).entryList();
-    for (int i = 0; i < rooms.size(); i++){
+    QStringList rooms = QDir(path).entryList(QStringList() << "*.oel",QDir::Files);//suppose to give only oel files
+   /* for (int i = 0; i < rooms.size(); i++){
         string s = rooms[i].toStdString();
-        if (s.find(".oel") == string::npos || s == ".."){//si c'est pas un fichier niveau ogmo
+        std::cout << s << endl;
+        if (s.find(".oel") == string::npos || s.find("..") != string::npos){//si c'est pas un fichier niveau ogmo
             rooms.removeAt(i);//removeit
         }
-    }
-    std::cout << "display " << std::endl;
+    }*/
+    /*std::cout << "display " << std::endl;
     for (int i = 0; i < rooms.size(); i++){
         string s = rooms[i].toStdString();
         std::cout << s << endl;
-    }
+    }*/
     std::cout << "taille room : " << rooms.size() << std::endl;
     srand (time(NULL));//init random
     std::cout << "After  init random" << std::endl;

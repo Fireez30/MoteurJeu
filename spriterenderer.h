@@ -33,7 +33,7 @@ protected :
 public :
     SpriteRenderer(const SpriteRenderer&) = delete;
     QTimer timer;
-    SpriteRenderer();
+    SpriteRenderer(QVector3D pos);
     SpriteRenderer(std::string p,QVector2D coords,float time,QVector3D pos);
     void initTextures();
     ~SpriteRenderer();

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <QDebug>
 
-SpriteRenderer::SpriteRenderer():spritePath("sprites.png"),timer(),spriteCoords(9.0/16.0,0),indexBuf(QOpenGLBuffer::IndexBuffer),time(100),texture(0){
+SpriteRenderer::SpriteRenderer(QVector3D pos):spritePath("sprites.png"),timer(),spriteCoords(9.0/16.0,0),indexBuf(QOpenGLBuffer::IndexBuffer),time(100),texture(0),position(pos){
     initializeOpenGLFunctions();
     arrayBuf.create();
     indexBuf.create();
@@ -81,7 +81,7 @@ void SpriteRenderer::CreateGeometry(){
 }
 
 void SpriteRenderer::Render(QOpenGLShaderProgram *program){
-    qDebug() << "SpriteRender - Render";
+    //qDebug() << "SpriteRender - Render";
     // Tell OpenGL which VBOs to use
     if (arrayBuf.bind() == false){
         std::cout << "AHHH!\n";
