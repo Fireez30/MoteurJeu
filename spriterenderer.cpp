@@ -7,7 +7,6 @@ SpriteRenderer::SpriteRenderer(QVector3D pos):spritePath("sprites.png"),timer(),
     arrayBuf.create();
     indexBuf.create();
     initTextures();
-    CreateGeometry();
 }
 
 SpriteRenderer::SpriteRenderer(std::string p,QVector2D coords,float t,QVector3D pos):spritePath(p),timer(),spriteCoords(coords),indexBuf(QOpenGLBuffer::IndexBuffer),time(t),position(pos),texture(0){
@@ -15,7 +14,10 @@ SpriteRenderer::SpriteRenderer(std::string p,QVector2D coords,float t,QVector3D 
     arrayBuf.create();
     indexBuf.create();
     initTextures();
-    CreateGeometry();
+}
+void SpriteRenderer::ReleaseBuffers(){
+    arrayBuf.release();
+    indexBuf.release();
 }
 
 SpriteRenderer::~SpriteRenderer(){

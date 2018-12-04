@@ -163,7 +163,7 @@ std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> dr
     int x = 0;//x in tile-coordinates (used for generation)
     int y = 0;//y in tile-coordinates (used for generation)
     result.push_back({"start.oel",x,y});//stockage initial
-    result.push_back({"start.oel",x,y-25});//A CHANGER TO BOSS.OEL
+    result.push_back({"level2.oel",x,y-15});//A CHANGER TO BOSS.OEL
     int direction = rand()%3 + 1;//start direction
     switch (direction){//compute new coordinates using direction
         case 1:
@@ -171,7 +171,7 @@ std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> dr
             break;
 
         case 2:
-            y+=25;//bottom
+            y+=15;//bottom
             break;
 
         default:
@@ -204,7 +204,7 @@ std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> dr
             int offsety = 0;
             switch (secondarydir){//compute new coordinates using direction
                 case 0:
-                    offsety = -25;
+                    offsety = -15;
                     break;
 
                 case 1:
@@ -212,7 +212,7 @@ std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> dr
                     break;
 
                 case 2:
-                    offsety = 25;
+                    offsety = 15;
                     break;
 
                 default:
@@ -254,7 +254,7 @@ std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> dr
         //update x y coordinates
         switch (direction){//compute new coordinates using direction
             case 0:
-                y-=25;
+                y-=15;
                 break;
 
             case 1:
@@ -262,7 +262,7 @@ std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> dr
                 break;
 
             case 2:
-                y+=25;
+                y+=15;
                 break;
 
             default:
@@ -365,6 +365,8 @@ void MainWidget::initializeGL()
         scene[i]->ReadFile(r,i);
         std::cout << "File : " << i << " traité !" << std::endl;
     }
+    scene[0]->CreateGeometry();
+    scene[1]->CreateGeometry();
     std::cout << "Apres ReadFile" << std::endl;
     /*for (int i = 0;i < scene->GetTiles().size();i++){
         std::cout << "Tile at x :" << scene->GetTiles()[i].GetPosition().x() <<"at y :" << scene->GetTiles()[i].GetPosition().y() << std::endl;
@@ -475,7 +477,8 @@ void MainWidget::paintGL()
 
     // Draw cube geometry
     //geometries->drawMeshGeometry(&program);
-    for (int i = 0;i < scene.size(); i++){
-        scene[i]->Render(&program);//old version of this is drawTerrainGeometry();
-    }
+    //for (int i = 0;i < scene.size(); i++){
+        scene[0]->Render(&program);//old version of this is drawTerrainGeometry();
+        scene[1]->Render(&program);
+    //}
 }

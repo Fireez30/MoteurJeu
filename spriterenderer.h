@@ -36,6 +36,7 @@ public :
     SpriteRenderer(QVector3D pos);
     SpriteRenderer(std::string p,QVector2D coords,float time,QVector3D pos);
     void initTextures();
+    void ReleaseBuffers();
     ~SpriteRenderer();
     std::string GetSpritePath();
     void ChangeSprite();

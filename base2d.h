@@ -8,9 +8,10 @@ class Base2D{
 
 protected:
     QVector3D position;
-    SpriteRenderer renderer;
+
 
 public :
+    SpriteRenderer renderer;
     Base2D();
     Base2D(float x, float y, float z);
     //Base2D(Base2D const &);
