@@ -135,7 +135,7 @@ bool isDirectionNextToBoss(int x,int y, int dir){
     int offsety = 0;
     switch (dir){//compute new coordinates using direction
         case 0:
-            offsety = -25;
+            offsety = 25;
             break;
 
         case 1:
@@ -143,7 +143,7 @@ bool isDirectionNextToBoss(int x,int y, int dir){
             break;
 
         case 2:
-            offsety = 25;
+            offsety = -25;
             break;
 
         default:
@@ -155,15 +155,16 @@ bool isDirectionNextToBoss(int x,int y, int dir){
 }
 std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> droite
     std::vector<Rooms> result = std::vector<Rooms>();
-    QString path = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms";
+    std::cout<<"On génère le terrain !\n";
+    QString path = "D:\\Git\\MoteurJeu\\Rooms";
     QStringList rooms = QDir(path).entryList(QStringList() << "*.oel",QDir::Files);//suppose to give only oel files
-    srand (time(NULL));//init rand
-    int maxdist = 5;
+    srand (42);//init rand
+    int maxdist = 3;
     int dist = 0;
     int x = 0;//x in tile-coordinates (used for generation)
     int y = 0;//y in tile-coordinates (used for generation)
     result.push_back({"start.oel",x,y});//stockage initial
-    result.push_back({"level2.oel",x,y-15});//A CHANGER TO BOSS.OEL
+    result.push_back({"boss.oel",x,y+15});//A CHANGER TO BOSS.OEL
     int direction = rand()%3 + 1;//start direction
     switch (direction){//compute new coordinates using direction
         case 1:
@@ -171,7 +172,7 @@ std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> dr
             break;
 
         case 2:
-            y+=15;//bottom
+            y-=15;//bottom
             break;
 
         default:
@@ -181,7 +182,7 @@ std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> dr
     while (dist < maxdist){
         dist++;
         if (dist == maxdist){//if we reached the end generate key room
-            result.push_back({"start.oel",x,y});// A CHNAGER POUR KEY.OEL
+            result.push_back({"key.oel",x,y});// A CHNAGER POUR KEY.OEL
             break;
         }
         int dir = direction;
@@ -204,7 +205,7 @@ std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> dr
             int offsety = 0;
             switch (secondarydir){//compute new coordinates using direction
                 case 0:
-                    offsety = -15;
+                    offsety = 15;
                     break;
 
                 case 1:
@@ -212,7 +213,7 @@ std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> dr
                     break;
 
                 case 2:
-                    offsety = 15;
+                    offsety = -15;
                     break;
 
                 default:
@@ -227,7 +228,7 @@ std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> dr
                     break;
                 newx+= offsetx;
                 newy+= offsety;
-                int room = rand() % rooms.size();
+                int room = rand() % (rooms.size()-3);
                 bool flag = true;
                 for (int i=0; i < result.size(); i++)//test if room doesnt exist
                 {
@@ -254,7 +255,7 @@ std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> dr
         //update x y coordinates
         switch (direction){//compute new coordinates using direction
             case 0:
-                y-=15;
+                y+=15;
                 break;
 
             case 1:
@@ -262,7 +263,7 @@ std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> dr
                 break;
 
             case 2:
-                y+=15;
+                y-=15;
                 break;
 
             default:
@@ -270,7 +271,7 @@ std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> dr
                 break;
         }
     }
-
+    std::cout<<"Terrain généré ! ^^ \n";
     return result;
 }
 
@@ -354,19 +355,16 @@ void MainWidget::initializeGL()
     // Use QBasicTimer because its faster than QTimer
     std::vector<Rooms> r = generateLevel();
     std::cout << "Before Affichage" << std::endl;
-    for (unsigned i = 0; i < r.size(); i++){
-        std::cout << "Salle " << r[i].path << " at x : " << r[i].x/25 << " and y : " << r[i].y/25 << std::endl;
-    }
     for (int i = 0; i < r.size();i++){
+        std::cout << "Salle " << r[i].path << " at x : " << r[i].x/25 << " and y : " << r[i].y/15 << std::endl;
         scene.push_back(new Room);
         std::cout << "Room : " << i << " crée !" << std::endl;
     }
     for (int i = 0;i < scene.size(); i++){
         scene[i]->ReadFile(r,i);
+        scene[i]->CreateGeometry();
         std::cout << "File : " << i << " traité !" << std::endl;
     }
-    scene[0]->CreateGeometry();
-    scene[1]->CreateGeometry();
     std::cout << "Apres ReadFile" << std::endl;
     /*for (int i = 0;i < scene->GetTiles().size();i++){
         std::cout << "Tile at x :" << scene->GetTiles()[i].GetPosition().x() <<"at y :" << scene->GetTiles()[i].GetPosition().y() << std::endl;
@@ -477,8 +475,7 @@ void MainWidget::paintGL()
 
     // Draw cube geometry
     //geometries->drawMeshGeometry(&program);
-    //for (int i = 0;i < scene.size(); i++){
-        scene[0]->Render(&program);//old version of this is drawTerrainGeometry();
-        scene[1]->Render(&program);
-    //}
+    for (int i = 0;i < scene.size(); i++){
+        scene[i]->Render(&program);//old version of this is drawTerrainGeometry();
+    }
 }
