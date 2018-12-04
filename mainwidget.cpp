@@ -82,6 +82,7 @@ MainWidget::MainWidget(QWidget *parent,int maxfps,int saison) :
     else
         max_fps = maxfps;
     et.start();
+    scene = std::vector<Room*>();
 }
 
 MainWidget::~MainWidget()
@@ -156,29 +157,13 @@ std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> dr
     std::vector<Rooms> result = std::vector<Rooms>();
     QString path = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms";
     QStringList rooms = QDir(path).entryList(QStringList() << "*.oel",QDir::Files);//suppose to give only oel files
-   /* for (int i = 0; i < rooms.size(); i++){
-        string s = rooms[i].toStdString();
-        std::cout << s << endl;
-        if (s.find(".oel") == string::npos || s.find("..") != string::npos){//si c'est pas un fichier niveau ogmo
-            rooms.removeAt(i);//removeit
-        }
-    }*/
-    /*std::cout << "display " << std::endl;
-    for (int i = 0; i < rooms.size(); i++){
-        string s = rooms[i].toStdString();
-        std::cout << s << endl;
-    }*/
-    std::cout << "taille room : " << rooms.size() << std::endl;
-    srand (time(NULL));//init random
-    std::cout << "After  init random" << std::endl;
+    srand (time(NULL));//init rand
     int maxdist = 5;
     int dist = 0;
     int x = 0;//x in tile-coordinates (used for generation)
     int y = 0;//y in tile-coordinates (used for generation)
-    std::cout << "Before start push" << std::endl;
     result.push_back({"start.oel",x,y});//stockage initial
-    std::cout << "Before boss push" << std::endl;
-    result.push_back({"boss.oel",x,y-25});//boss
+    result.push_back({"start.oel",x,y-25});//A CHANGER TO BOSS.OEL
     int direction = rand()%3 + 1;//start direction
     switch (direction){//compute new coordinates using direction
         case 1:
@@ -193,36 +178,28 @@ std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> dr
             x+=25;//left
             break;
     }
-    std::cout << "Before while" << std::endl;
     while (dist < maxdist){
         dist++;
         if (dist == maxdist){//if we reached the end generate key room
-            std::cout << "reached end" << std::endl;
-            result.push_back({"key.oel",x,y});
+            result.push_back({"start.oel",x,y});// A CHNAGER POUR KEY.OEL
             break;
         }
         int dir = direction;
         if (rand()%100 < 25){
-            std::cout << "Si change direction" << std::endl;
             direction = rand()%4;//choose a new direction which is not the same
             while (direction-dir == 2 || direction-dir == -2 || direction==dir || isDirectionNextToBoss(x,y,direction)){//if we face down, dont go down or up, same for left right....
-                std::cout << "PRINCIPAL mauvaise direction tirée " << std::endl;
                 direction = rand()%4;
             }
         }//after decinding of the new direction
         //create new secondary way
-        std::cout << "avant tirage test secondaire " << std::endl;
         if ((rand()%100) < (100*((maxdist-dist)/(float)maxdist)))//cant be 100/0
         {
-            std::cout << "si secondaire" << std::endl;
             int newx = x;//dont use principal coordinates
             int newy = y;//dont use principal coordinates
             int secondarydir = rand()%4;//choose a direction
             while (secondarydir == direction || secondarydir-dir == 2 || secondarydir-dir == -2 || isDirectionNextToBoss(newx,newy,secondarydir)){//if we face down, dont go down or up, same for left right....
                 secondarydir = rand()%4;
-                std::cout << "SECONDAIRE mauvaise direction tirée " << std::endl;
             }
-            std::cout << "SECONDAIRE Enfin trouvé la bonne direction " << std::endl;
             int offsetx = 0;
             int offsety = 0;
             switch (secondarydir){//compute new coordinates using direction
@@ -248,37 +225,31 @@ std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> dr
                 beg++;
                 if (isDirectionNextToBoss(newx,newy,secondarydir))//if were going next to the boss room stop
                     break;
-                std::cout << "generation salle secondaire" << std::endl;
                 newx+= offsetx;
                 newy+= offsety;
                 int room = rand() % rooms.size();
                 bool flag = true;
                 for (int i=0; i < result.size(); i++)//test if room doesnt exist
                 {
-                    std::cout << "secondary room test " << std::endl;
                     if (result[i].x == newx && result[i].y == newy)
                         flag = false;
                 }
 
                 if (flag){
-                    std::cout << "secondary room is ok " << std::endl;
                     result.push_back({rooms[room].toStdString(),newx,newy});
                 }
                 else
                     break;//cancel while
             }//end secondary way generation
         }//end of secondary test
-        std::cout << "secondary generation finie ou inexistante " << std::endl;
         //generate the actual room
         for (int i=0; i < result.size(); i++)//test if room doesnt exist
         {
             if (result[i].x == x && result[i].y == y && result[i].path != "start.oel" && result[i].path != "boss.oel")//if there is a room which is not boss/start
             {result.erase(result.begin()+i);//erase the secondary room
-                std::cout << "necessaire de supprimer une salle " << std::endl;}
+            }
         }
-        std::cout << "apres test existance principal " << std::endl;
         int room = rand() % rooms.size();// bug ici
-        std::cout << "push next principal room " << std::endl;
         result.push_back({rooms[room].toStdString(),x,y});
         //update x y coordinates
         switch (direction){//compute new coordinates using direction
@@ -375,21 +346,25 @@ void MainWidget::initializeGL()
 //!
 //!
     std::cout << "Before Terrain" << std::endl;
-    scene = new Room;
     std::cout << "Before Player" << std::endl;
     //t->Translate(QVector3D(10,0,0));
     //scene->AddChild(new Terrain());
     //scene.CreateGeometry();//start with the basic level of details
     //rotation = QQuaternion::fromAxisAndAngle(1,0,0,-35);
     // Use QBasicTimer because its faster than QTimer
-    std::cout << "Before Generation" << std::endl;
     std::vector<Rooms> r = generateLevel();
-    //std::cout << "Before Affichage" << std::endl;
-    //for (unsigned i = 0; i < r.size(); i++){
-      //  std::cout << "Salle " << r[i].path << " at x : " << r[i].x/25 << " and y : " << r[i].y/25 << std::endl;
-    //}
-    scene->ReadFile(r,0);
-    std::cout << "tiles size : " << scene->GetTiles().size() << std::endl;
+    std::cout << "Before Affichage" << std::endl;
+    for (unsigned i = 0; i < r.size(); i++){
+        std::cout << "Salle " << r[i].path << " at x : " << r[i].x/25 << " and y : " << r[i].y/25 << std::endl;
+    }
+    for (int i = 0; i < r.size();i++){
+        scene.push_back(new Room);
+        std::cout << "Room : " << i << " crée !" << std::endl;
+    }
+    for (int i = 0;i < scene.size(); i++){
+        scene[i]->ReadFile(r,i);
+        std::cout << "File : " << i << " traité !" << std::endl;
+    }
     std::cout << "Apres ReadFile" << std::endl;
     /*for (int i = 0;i < scene->GetTiles().size();i++){
         std::cout << "Tile at x :" << scene->GetTiles()[i].GetPosition().x() <<"at y :" << scene->GetTiles()[i].GetPosition().y() << std::endl;
@@ -470,6 +445,17 @@ void MainWidget::resizeGL(int w, int h)
 void MainWidget::paintGL()
 {
 
+    frame_count++;
+    final_time = time(NULL);
+    if (final_time - initial_time > 0)
+    {
+        //display
+        last_fps = frame_count/ (final_time - initial_time);
+        frame_count = 0;
+        initial_time = final_time;
+        std::cout << "Fps : " << last_fps << std::endl;
+    }
+
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -489,6 +475,7 @@ void MainWidget::paintGL()
 
     // Draw cube geometry
     //geometries->drawMeshGeometry(&program);
-    scene->Render(&program);//old version of this is drawTerrainGeometry();
-    std::cout << "----" << std::endl;
+    for (int i = 0;i < scene.size(); i++){
+        scene[i]->Render(&program);//old version of this is drawTerrainGeometry();
+    }
 }

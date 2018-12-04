@@ -106,7 +106,7 @@ private:
     QOpenGLShaderProgram program;
     //GeometryEngine *geometries;
     QOpenGLTexture *texture;
-    Room *scene;
+    std::vector<Room*> scene;
     QMatrix4x4 projection;
 
 public slots:

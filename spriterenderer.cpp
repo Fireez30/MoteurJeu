@@ -59,7 +59,6 @@ float SpriteRenderer::GetYCoord(){
 }
 
 void SpriteRenderer::CreateGeometry(){
-    qDebug() << "SpriteRender - CreateGeometry";
     //compute a VertexData array
     VertexData v2[4] ={
         {position,spriteCoords},{QVector3D(position.x()+1,position.y(),0),QVector2D(spriteCoords.x()+1.0/16.0,spriteCoords.y())},
