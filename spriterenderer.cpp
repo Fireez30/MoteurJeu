@@ -4,20 +4,15 @@
 
 SpriteRenderer::SpriteRenderer(QVector3D pos):spritePath("sprites.png"),timer(),spriteCoords(9.0/16.0,0),indexBuf(QOpenGLBuffer::IndexBuffer),time(100),texture(0),position(pos){
     initializeOpenGLFunctions();
-    arrayBuf.create();
-    indexBuf.create();
-    initTextures();
 }
 
 SpriteRenderer::SpriteRenderer(std::string p,QVector2D coords,float t,QVector3D pos):spritePath(p),timer(),spriteCoords(coords),indexBuf(QOpenGLBuffer::IndexBuffer),time(t),position(pos),texture(0){
     initializeOpenGLFunctions();
-    arrayBuf.create();
-    indexBuf.create();
-    initTextures();
 }
 void SpriteRenderer::ReleaseBuffers(){
     arrayBuf.release();
     indexBuf.release();
+    delete texture;
 }
 
 SpriteRenderer::~SpriteRenderer(){
@@ -61,6 +56,9 @@ float SpriteRenderer::GetYCoord(){
 }
 
 void SpriteRenderer::CreateGeometry(){
+    initTextures();
+    arrayBuf.create();
+    indexBuf.create();
     //compute a VertexData array
     VertexData v2[4] ={
         {position,spriteCoords},{QVector3D(position.x()+1,position.y(),0),QVector2D(spriteCoords.x()+1.0/16.0,spriteCoords.y())},
