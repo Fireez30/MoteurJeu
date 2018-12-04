@@ -27,7 +27,7 @@ void Room::CreateGeometry(){
 }
 void Room::ReadFile(std::vector<Rooms> r,int index){
         tinyxml2::XMLDocument doc;
-        doc.LoadFile(("C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms\\"+r[index].path).data());
+        doc.LoadFile(("D:\\Git\\MoteurJeu\\Rooms\\"+r[index].path).data());
         tinyxml2::XMLElement* d = doc.RootElement();//<level width height>
         const char* walls = d->FirstChild()->FirstChild()->Value();//wall layer
         int xmlIndex = 0;
@@ -37,13 +37,13 @@ void Room::ReadFile(std::vector<Rooms> r,int index){
         for (int i = 0; i < 15;i++){//y
             for (int j = 0; j < 25;j++){//x
                 if (walls[xmlIndex] == '1'){//sol
-                   tiles.push_back(Tile(QVector2D(j+xRoom,i+yRoom)));//pas un mur
+                   tiles.push_back(Tile(QVector2D(j+xRoom,-i+yRoom)));//pas un mur
                 }
                 else if (walls[xmlIndex] == '2'){//mur
-                   tiles.push_back(Tile(true,QVector2D(j+xRoom,i+yRoom)));//un mur
+                   tiles.push_back(Tile(true,QVector2D(j+xRoom,-i+yRoom)));//un mur
                 }
                 else if (walls[xmlIndex] == '3'){//portes
-                    Door d = Door(QVector2D(j+yRoom,i+xRoom),false);
+                    Door d = Door(QVector2D(j+yRoom,-i+xRoom),false);
                     doors.push_back(d);//default unlocked
                  }
                 xmlIndex++;

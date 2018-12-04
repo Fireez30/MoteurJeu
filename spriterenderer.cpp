@@ -30,9 +30,9 @@ void SpriteRenderer::initTextures()
 {
     // Load cube.png image
     QImage img;
-    std::string s = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\"+spritePath;
+    std::string s = "D:\\Git\\MoteurJeu\\"+spritePath;
     img.load(s.data());
-    texture = new QOpenGLTexture(QImage(img)); //chargement de la sprite sheet ici
+    texture = new QOpenGLTexture(img); //chargement de la sprite sheet ici
 
     // Set nearest filtering mode for texture minification
     texture->setMinificationFilter(QOpenGLTexture::Nearest);
