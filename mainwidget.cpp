@@ -156,7 +156,7 @@ bool isDirectionNextToBoss(int x,int y, int dir){
 std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> droite
     std::vector<Rooms> result = std::vector<Rooms>();
     std::cout<<"On génère le terrain !\n";
-    QString path = "D:\\Git\\MoteurJeu\\Rooms";
+    QString path = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms";
     QStringList rooms = QDir(path).entryList(QStringList() << "*.oel",QDir::Files);//suppose to give only oel files
     srand (42);//init rand
     int maxdist = 3;
