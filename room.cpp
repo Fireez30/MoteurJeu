@@ -29,15 +29,11 @@ void Room::CreateGeometry(){
     for (int i = 0; i < tiles.size(); i++){
         tiles[i].renderer.CreateGeometry();
     }
-     std::cout << "doors create geometry\n";
-    for (int i = 0; i < doors.size(); i++){
+
+    for(int i=0;i<doors.size();i++)
         doors[i].renderer.CreateGeometry();
-    }
-    std::cout << "interacts create geometry\n";
-    for (int i = 0; i < interacts.size(); i++){
-        interacts[i].renderer.CreateGeometry();
-    }
 }
+
 void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path){
        std::cout << "debut readfile\n";
         tinyxml2::XMLDocument doc;
@@ -87,13 +83,13 @@ void Room::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
     for (int i = 0; i < tiles.size(); i++){
         tiles[i].Render(program,text);
     }
-
+    for (int i = 0; i < doors.size(); i++){
+        doors[i].Render(program,text);
+    }
 }
 
 void Room::RenderDoors(QOpenGLShaderProgram *program,QOpenGLTexture *text){
-    for (int i = 0; i < doors.size(); i++){
-        doors[i].Render(program,text);//bind texture de door fait planter le programme
-    }
+
 }
 bool Room::TriggerCheck(Hitbox h){
     for (int i = 0; i < collisions.size();i++){
