@@ -161,127 +161,84 @@ bool isDirectionNextToBoss(int x,int y, int dir){
     return (x+offsetx+25 == 0 && y+offsety == -25) || (x+offsetx-25 == 0 && y+offsety == -25) || (x+offsetx == 0 && y+offsety+25 == -25) || (x+offsetx == 0 && y+offsety-25 == -25);
     //return (x+offsetx == 0 && y+offsety == -25);}
 }
-std::vector<Rooms> generateLevel(){//0 -> haut, 1 -> gauche , 2 -> bas , 3 -> droite
-    std::vector<Rooms> result = std::vector<Rooms>();
-    std::cout<<"On génère le terrain !\n";
-    QString path = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms";
-    QStringList rooms = QDir(path).entryList(QStringList() << "*.oel",QDir::Files);//suppose to give only oel files
-    srand (42);//init rand
-    int maxdist = 3;
-    int dist = 0;
-    int x = 0;//x in tile-coordinates (used for generation)
-    int y = 0;//y in tile-coordinates (used for generation)
-    result.push_back({"start.oel",x,y});//stockage initial
-    result.push_back({"boss.oel",x,y+15});//A CHANGER TO BOSS.OEL
-    int direction = rand()%3 + 1;//start direction
-    switch (direction){//compute new coordinates using direction
-        case 1:
-            x-=25;//right
-            break;
-
-        case 2:
-            y-=15;//bottom
-            break;
-
-        default:
-            x+=25;//left
-            break;
-    }
-    while (dist < maxdist){
-        dist++;
-        if (dist == maxdist){//if we reached the end generate key room
-            result.push_back({"key.oel",x,y});// A CHNAGER POUR KEY.OEL
-            break;
-        }
-        int dir = direction;
-        if (rand()%100 < 25){
-            direction = rand()%4;//choose a new direction which is not the same
-            while (direction-dir == 2 || direction-dir == -2 || direction==dir || isDirectionNextToBoss(x,y,direction)){//if we face down, dont go down or up, same for left right....
-                direction = rand()%4;
-            }
-        }//after decinding of the new direction
-        //create new secondary way
-        if ((rand()%100) < (100*((maxdist-dist)/(float)maxdist)))//cant be 100/0
-        {
-            int newx = x;//dont use principal coordinates
-            int newy = y;//dont use principal coordinates
-            int secondarydir = rand()%4;//choose a direction
-            while (secondarydir == direction || secondarydir-dir == 2 || secondarydir-dir == -2 || isDirectionNextToBoss(newx,newy,secondarydir)){//if we face down, dont go down or up, same for left right....
-                secondarydir = rand()%4;
-            }
-            int offsetx = 0;
-            int offsety = 0;
-            switch (secondarydir){//compute new coordinates using direction
-                case 0:
-                    offsety = 15;
-                    break;
-
-                case 1:
-                    offsetx = -25;
-                    break;
-
-                case 2:
-                    offsety = -15;
-                    break;
-
-                default:
-                    offsetx = 25;
-                    break;
-            }
-            int max = rand()%3 + 1;
-            int beg = 0;
-            while (beg < max){
-                beg++;
-                if (isDirectionNextToBoss(newx,newy,secondarydir))//if were going next to the boss room stop
-                    break;
-                newx+= offsetx;
-                newy+= offsety;
-                int room = rand() % (rooms.size()-3);
-                bool flag = true;
-                for (int i=0; i < result.size(); i++)//test if room doesnt exist
-                {
-                    if (result[i].x == newx && result[i].y == newy)
-                        flag = false;
+void generateLevel(int** minMap, int dist, int maxDist,int distSecondaire, int x, int y, bool principal, std::vector<Rooms>* rooms){
+    bool up=minMap[x][y+1]==0,down=minMap[x][y-1]==0,right=minMap[x+1][y]==0,left=minMap[x-1][y]==0;
+    if(up || down || right || left){
+        int memX = x, memY = y;
+        if(dist < maxDist){
+            minMap[x][y]=1;
+            rooms->push_back({"temp",x,y});
+            if(principal){
+                int xTmp = x, yTmp = y;
+                while(minMap[xTmp][yTmp]!=0){
+                    int dir = rand()%4;
+                    if(up && dir==0)
+                        yTmp++;
+                    else if(down && dir==1)
+                        yTmp--;
+                    else if(right && dir==2)
+                        xTmp++;
+                    else if(left && dir==3)
+                        xTmp--;
                 }
-
-                if (flag){
-                    result.push_back({rooms[room].toStdString(),newx,newy});
-                }
-                else
-                    break;//cancel while
-            }//end secondary way generation
-        }//end of secondary test
-        //generate the actual room
-        for (int i=0; i < result.size(); i++)//test if room doesnt exist
-        {
-            if (result[i].x == x && result[i].y == y && result[i].path != "start.oel" && result[i].path != "boss.oel")//if there is a room which is not boss/start
-            {
-                result.erase(result.begin()+i);//erase the secondary room
+                generateLevel(minMap,dist+1,maxDist,distSecondaire,xTmp,yTmp,true,rooms);
+                up=minMap[memX][memY+1]==0,down=minMap[memX][memY-1]==0,right=minMap[memX+1][memY]==0,left=minMap[memX-1][memY]==0; //Besoin de recalculer à cause de la récursivité
             }
+            int chanceSecondaire = rand()%100;
+            double maxChance = 100 - (double)dist/(double)maxDist*100;
+            if(up && chanceSecondaire < maxChance)
+                generateLevel(minMap,dist+1,distSecondaire,distSecondaire,memX,memY+1,false, rooms);
+            chanceSecondaire = rand()%100;
+            if(down && chanceSecondaire < maxChance)
+                generateLevel(minMap,dist+1,distSecondaire,distSecondaire,memX,memY-1,false, rooms);
+            chanceSecondaire = rand()%100;
+            if(right && chanceSecondaire < maxChance)
+                generateLevel(minMap,dist+1,distSecondaire,distSecondaire,memX+1,memY,false, rooms);
+            chanceSecondaire = rand()%100;
+            if(left && chanceSecondaire < maxChance)
+                generateLevel(minMap,dist+1,distSecondaire,distSecondaire,memX-1,memY,false, rooms);
         }
-        int room = rand() % (rooms.size() -3);// bug ici
-        result.push_back({rooms[room].toStdString(),x,y});
-        //update x y coordinates
-        switch (direction){//compute new coordinates using direction
-            case 0:
-                y+=15;
-                break;
-
-            case 1:
-                x-=25;
-                break;
-
-            case 2:
-                y-=15;
-                break;
-
-            default:
-                x+=25;
-                break;
+        else if(dist == maxDist && principal){
+            minMap[x][y] = 4;
+            if(minMap[x][y-1]==0)
+                minMap[x][y-1]=-1;
+            if(minMap[x][y+1]==0)
+                minMap[x][y+1]=-1;
+            if(minMap[x-1][y]==0)
+                minMap[x-1][y]=-1;
+            if(minMap[x+1][y-1]==0)
+                minMap[x+1][y]=-1;
+            rooms->push_back({"key.oel",x,y});
         }
     }
-    std::cout<<"Terrain généré ! ^^ \n";
-    return result;
+}
+void attributeRoom(int** minMap, std::vector<Rooms>* rooms, std::string path){
+    for(int i=0;i<rooms->size();i++){
+        if(rooms->at(i).path.compare("temp")==0){
+            int x = rooms->at(i).x, y = rooms->at(i).y;
+            std::string tmp = "";
+            if(minMap[x][y+1]>0)
+                tmp+="1";
+            else
+                tmp+="0";
+            if(minMap[x+1][y]>0)
+                tmp+="1";
+            else
+                tmp+="0";
+            if(minMap[x][y-1]>0)
+                tmp+="1";
+            else
+                tmp+="0";
+            if(minMap[x-1][y]>0)
+                tmp+="1";
+            else
+                tmp+="0";
+            std::string dossier = path +"\\"+ tmp;
+            QStringList r = QDir(dossier.c_str()).entryList(QStringList() << "*.oel",QDir::Files);
+            int id = rand()%r.size();
+            rooms->at(i).path = tmp+"\\"+r[id].toStdString();
+        }
+    }
 }
 
 void MainWidget::changeSeason(int a)
@@ -362,25 +319,54 @@ void MainWidget::initializeGL()
     //scene.CreateGeometry();//start with the basic level of details
     //rotation = QQuaternion::fromAxisAndAngle(1,0,0,-35);
     // Use QBasicTimer because its faster than QTimer
-    player = new Player();
-    std::vector<Rooms> r = generateLevel();
+    srand(11);
+    std::vector<Rooms>* rooms = new std::vector<Rooms>();
+    int maxdist = 6,distSecondaire = 4;
+    int x = maxdist;//x in tile-coordinates (used for generation)
+    int y = maxdist;//y in tile-coordinates (used for generation)
+    int** minMap = new int*[maxdist*2];
+    for(int i = 0; i < maxdist*2; ++i){
+        minMap[i] = new int[maxdist*2];
+        for(int i2=0;i2<maxdist*2;i2++)
+            minMap[i][i2]=0;
+    }
+    rooms->push_back({"start.oel",x,y});//stockage initial
+    minMap[x][y] = 2;
+    rooms->push_back({"boss.oel",x,y+1});//A CHANGER TO BOSS.OEL
+    minMap[x][y+1] = 3;
+    minMap[x][y+2] = -1;
+    minMap[x+1][y+1] = -1;
+    minMap[x-1][y+1] = -1;
+
+    int dir = rand()%3;
+    if(dir==0)
+        generateLevel(minMap, 1,maxdist,distSecondaire,x+1,y,true,rooms);
+    else if(dir==1)
+        generateLevel(minMap, 1,maxdist,distSecondaire,x-1,y,true,rooms);
+    else
+        generateLevel(minMap, 1,maxdist,distSecondaire,x,y-1,true,rooms);
+    int chanceSecondaire = rand()%100;
+    double maxChance = 100 - 2/(double)maxdist*100;
+    if(minMap[x-1][y]==0 && chanceSecondaire < maxChance)
+        generateLevel(minMap,1,distSecondaire,distSecondaire,x-1,y,false, rooms);
+    chanceSecondaire = rand()%100;
+    if(minMap[x+1][y]==0 && chanceSecondaire < maxChance)
+        generateLevel(minMap,1,distSecondaire,distSecondaire,x+1,y,false, rooms);
+    chanceSecondaire = rand()%100;
+    if(minMap[x][y-1]==0 && chanceSecondaire < maxChance)
+        generateLevel(minMap,1,distSecondaire,distSecondaire,x,y-1,false, rooms);
+
+    attributeRoom(minMap, rooms,"D:\\Git\\MoteurJeu\\Rooms");
+
     std::cout << "Before Affichage" << std::endl;
-    for (int i = 0; i < r.size();i++){
-        scene.push_back(new Room);
-    }
-    for (int i = 0;i < scene.size(); i++){
-        scene[i]->ReadFile(r,i);
-    }
-    std::cout << "Apres push des salles" << std::endl;
+    for (int i = 0; i < rooms->size();i++){
+        std::cout << "Salle " << rooms->at(i).path << " at x : " << rooms->at(i).x << " and y : " << rooms->at(i).y<< std::endl;
+    player = new Player();
     player->renderer.CreateGeometry();
     std::cout << "Apres creation du joueur" << std::endl;
     for (int i = 0;i < scene.size(); i++){
         scene[i]->CreateGeometry();
     }
-    std::cout << "Apres ReadFile" << std::endl;
-    /*for (int i = 0;i < scene->GetTiles().size();i++){
-        std::cout << "Tile at x :" << scene->GetTiles()[i].GetPosition().x() <<"at y :" << scene->GetTiles()[i].GetPosition().y() << std::endl;
-    }*/
     timer.start(1000/max_fps, this);
 }
 //! [3]
