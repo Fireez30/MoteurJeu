@@ -9,7 +9,7 @@
 #include <QVector3D>
 #include <QTime>
 
-Player::Player():Movable(0,0,1,QVector2D(1,0),QVector2D(0.0,8.0/16.0)){
+Player::Player():Movable(162,83,1,QVector2D(1,0),QVector2D(0.0,8.0/16.0)){
 
 }
 

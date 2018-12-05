@@ -23,8 +23,8 @@ public:
     int m_frameCount;
     int max_fps;
 
-    float x = -13.0;//move this to a camera
-    float y = -8.0;
+    float x = -137;//move this to a camera
+    float y = -82;
     float z = -25.0;
 
     explicit GameManager(QWidget *parent = 0,int maxfps=60);

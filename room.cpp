@@ -25,9 +25,10 @@ void Room::CreateGeometry(){
         tiles[i].renderer.CreateGeometry();
     }
 }
-void Room::ReadFile(std::vector<Rooms>* r,int index){
+void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path){
         tinyxml2::XMLDocument doc;
-        doc.LoadFile("D:\\Git\\MoteurJeu\\Rooms\\0100\\1.oel");
+        std::string s = path+"\\"+r->at(index).path;
+        doc.LoadFile(s.c_str());
         //+r[index].path).data()
         tinyxml2::XMLElement* doc2 = doc.FirstChildElement("level");//<level width height>
         tinyxml2::XMLElement* d = doc2->FirstChildElement("Sol");//<level width height>

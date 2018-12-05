@@ -219,6 +219,7 @@ void attributeRoom(int** minMap, std::vector<Rooms>* rooms, std::string path){
 
 void GameManager::initializeGL()
 {
+    std::string path = "D:\\Git\\MoteurJeu\\Rooms";
     initializeOpenGLFunctions();
 
     glClearColor(0,0,0, 1);
@@ -280,14 +281,15 @@ void GameManager::initializeGL()
        if(minMap[x][y-1]==0 && chanceSecondaire < maxChance)
            generateLevel(minMap,1,distSecondaire,distSecondaire,x,y-1,false, rooms);
 
-       attributeRoom(minMap, rooms,"D:\\Git\\MoteurJeu\\Rooms");
+       attributeRoom(minMap, rooms,path);
 
     std::cout << "Before Affichage" << std::endl;
     for (int i = 0; i < rooms->size();i++){
         scene.push_back(new Room);
+        std::cout << "Salle " << rooms->at(i).path << " at x : " << rooms->at(i).x << " and y : " << rooms->at(i).y<< std::endl;
     }
     for (int i = 0;i < scene.size(); i++){
-        scene[i]->ReadFile(rooms,i);
+        scene[i]->ReadFile(rooms,i, path);
     }
     std::cout << "Apres push des salles" << std::endl;
     player->renderer.CreateGeometry();
