@@ -14,7 +14,7 @@ protected:
     std::vector<Tile> tiles;
     std::vector<Door> doors;
     std::vector<Hitbox> collisions;
-    std::vector<Interactable2D> interacts;
+    std::vector<Interactable2D*> interacts;
 
 public :
     Room();
