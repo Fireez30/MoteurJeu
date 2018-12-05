@@ -1,0 +1,8 @@
+La convention :
+	- 0 = pas de salle adjacente
+	- 1 = il y a une salle adjacente
+Ordre :
+	- Premier caractère = salle du haut
+	- Deuxieme caractère = salle de droite
+	- Troisieme caractère = salle du bas
+	- Quatrieme caractère = salle de gauche
