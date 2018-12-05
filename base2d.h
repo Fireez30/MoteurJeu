@@ -7,10 +7,11 @@
 class Base2D{
 
 protected:
-    QVector3D position;
 
 
 public :
+
+    QVector3D position;
     SpriteRenderer renderer;
     Base2D();
     Base2D(float x, float y, float z,QVector2D text);

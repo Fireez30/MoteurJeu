@@ -1,5 +1,5 @@
 #include "door.h"
-
+#include <iostream>
 Door::Door(QVector2D pos,QVector2D text):Interactable2D(pos,text),locked(false){
 
 }

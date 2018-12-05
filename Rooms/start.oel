@@ -345,10 +345,10 @@
     <tile x="24" y="14" tx="8" ty="0" />
   </Murs>
   <Doors tileset="NewTileset0" exportMode="XMLCoords">
-    <tile x="0" y="7" tx="8" ty="0" />
-    <tile x="12" y="0" tx="8" ty="0" />
-    <tile x="12" y="14" tx="8" ty="0" />
-    <tile x="24" y="7" tx="8" ty="0" />
+    <tile x="0" y="7" tx="4" ty="6" />
+    <tile x="12" y="0" tx="4" ty="6" />
+    <tile x="12" y="14" tx="4" ty="6" />
+    <tile x="24" y="7" tx="4" ty="6" />
   </Doors>
   <Entité exportMode="Bitstring">0000000000000000000000000
 0000000000000000000000000
