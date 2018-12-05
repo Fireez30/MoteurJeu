@@ -23,3 +23,9 @@ void Movable::ChangeSpeed(float s){
 void Movable::ChangeDirection(QVector2D dir){
     direction = dir;
 }
+void Movable::Move(QVector3D dir){
+    position += dir;
+    collider.setPoint(QVector2D(position.x(),position.y()));
+    renderer.SetPosition(position);
+    renderer.CreateGeometry();
+}

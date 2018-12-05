@@ -42,13 +42,13 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path){
         for (tinyxml2::XMLElement* e2 = d2->FirstChildElement("tile"); e2 != nullptr; e2 = e2->NextSiblingElement("tile")){//y
             Tile t= Tile(true,QVector2D((float)e2->IntAttribute("x")+xRoom,(float)(-1*e2->IntAttribute("y"))+yRoom),QVector2D(e2->IntAttribute("tx")/16.0,e2->IntAttribute("ty")/16.0));
             tiles.push_back(t);
+            collisions.push_back(Hitbox(QVector2D(t.GetPosition().x(),t.GetPosition().y()),1,1));
         }//Fin construction Murs !
         tinyxml2::XMLElement* d3 = doc2->FirstChildElement("Doors");
         for (tinyxml2::XMLElement* e3 = d3->FirstChildElement("tile"); e3 != nullptr; e3 = e3->NextSiblingElement("tile")){//y
-            doors.push_back(Door(QVector2D((float)e3->IntAttribute("x")+xRoom,(float)(-1*e3->IntAttribute("y"))+yRoom),QVector2D(e3->IntAttribute("tx")/16.0,e3->IntAttribute("ty")/16.0),false));
+            tiles.push_back(Tile(QVector2D((float)e3->IntAttribute("x")+xRoom,(float)(-1*e3->IntAttribute("y"))+yRoom),QVector2D(e3->IntAttribute("tx")/16.0,e3->IntAttribute("ty")/16.0)));
         }//Fin construction doors !
         doc.Clear();
-
         for (int i = 0; i < doors.size(); i++){
             std::cout << "Doors " << i << " at x : " << doors[i].GetPosition().x() << " and y : " << doors[i].GetPosition().y() << " text coords x :" << doors[i].renderer.GetXCoord() << "and y : " << doors[i].renderer.GetYCoord() << std::endl;
         }
@@ -63,10 +63,15 @@ void Room::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
         tiles[i].Render(program,text);
     }
     for (int i = 0; i < doors.size(); i++){
-        //doors[i].Render(program);//bind texture de door fait planter le programme
+        doors[i].Render(program,text);//bind texture de door fait planter le programme
     }
 }
 
-void Room::ComputeHitboxes(){
-
+bool Room::TriggerCheck(Hitbox h){
+    for (int i = 0; i < collisions.size();i++){
+        if (collisions[i].TestCollision(h)){
+            return true;
+        }
+    }
+    return false;
 }

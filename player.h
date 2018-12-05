@@ -11,7 +11,6 @@ protected:
 public :
     Player();
     Player(float x,float y, float sp,QVector2D dir);
-    void Move() override;
     void Input();
     void OnTriggerEnter(Hitbox e) override;
 };

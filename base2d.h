@@ -17,7 +17,6 @@ public :
     //Base2D(Base2D const &);
     void SetPosition(QVector3D pos);
     QVector3D GetPosition();
-    void Translate(QVector3D dir);
     void Render(QOpenGLShaderProgram *program,QOpenGLTexture *text);
     void DisplayCoords();
 };

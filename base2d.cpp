@@ -15,12 +15,6 @@ QVector3D Base2D::GetPosition(){
     return position;
 }
 
-void Base2D::Translate(QVector3D dir){
-    position += dir;
-    renderer.SetPosition(position);
-    renderer.CreateGeometry();
-}
-
 void Base2D::DisplayCoords(){
     std::cout<< "Base2D at x : " << position.x() << " and y : " << position.y() << std::endl;
 }

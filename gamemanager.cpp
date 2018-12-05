@@ -47,27 +47,38 @@ GameManager::~GameManager()
 
 void GameManager::keyPressEvent (QKeyEvent * event)
 {
+    float transX=0, transY=0;
     if(event->key() == Qt::Key_Q){
-           //x++;
-           player->Translate(QVector3D(-1,0,0));
+           transX--;
     }
 
     if(event->key() == Qt::Key_D)
     {
-           //x--;
-           player->Translate(QVector3D(1,0,0));
+           transX++;
     }
 
 
     if(event->key() == Qt::Key_Z)
     {
-          //y--;
-          player->Translate(QVector3D(0,1,0));
+          transY++;
     }
 
     if(event->key() == Qt::Key_S){
-          //y++;
-          player->Translate(QVector3D(0,-1,0));
+          transY--;
+    }
+    QVector3D vector(transX,transY,0);
+    vector.normalize();
+    vector *= player->GetSpeed();
+    std::cout << vector.x() << " " << vector.y() << " " << vector.z() << std::endl;
+    player->Move(vector);
+
+    int i=0;
+    while(i<scene.size() && !scene[i]->TriggerCheck(player->getCollider()))
+        i++;
+    if(i<scene.size())
+       {
+        std::cout << "reset move\n";
+        player->Move(-vector);
     }
 
     if(event->key() == Qt::Key_W)
@@ -233,55 +244,50 @@ void GameManager::initializeGL()
 
     // Enable back face culling
     glEnable(GL_CULL_FACE);
-
-
-    std::cout << "Before Terrain" << std::endl;
-    std::cout << "Before Player" << std::endl;
-    //t->Translate(QVector3D(10,0,0));
-    //scene->AddChild(new Terrain());
-    //scene.CreateGeometry();//start with the basic level of details
-    //rotation = QQuaternion::fromAxisAndAngle(1,0,0,-35);
     // Use QBasicTimer because its faster than QTimer
     player = new Player();
 
-    srand(11);
-       std::vector<Rooms>* rooms = new std::vector<Rooms>();
-       int maxdist = 6,distSecondaire = 4;
-       int x = maxdist;//x in tile-coordinates (used for generation)
-       int y = maxdist;//y in tile-coordinates (used for generation)
-       int** minMap = new int*[maxdist*2];
-       for(int i = 0; i < maxdist*2; ++i){
-           minMap[i] = new int[maxdist*2];
-           for(int i2=0;i2<maxdist*2;i2++)
-               minMap[i][i2]=0;
-       }
-       rooms->push_back({"start.oel",x,y});//stockage initial
-       minMap[x][y] = 2;
-       rooms->push_back({"boss.oel",x,y+1});//A CHANGER TO BOSS.OEL
-       minMap[x][y+1] = 3;
-       minMap[x][y+2] = -1;
-       minMap[x+1][y+1] = -1;
-       minMap[x-1][y+1] = -1;
+    //srand(13);
+    int seed = 13;
+    srand(seed);
+    std::cout << "Seed : " << seed << "\n";
+    std::vector<Rooms>* rooms = new std::vector<Rooms>();
+    int maxdist = 6,distSecondaire = 4;
+    int x = maxdist;//x in tile-coordinates (used for generation)
+    int y = maxdist;//y in tile-coordinates (used for generation)
+    int** minMap = new int*[maxdist*2];
+    for(int i = 0; i < maxdist*2; ++i){
+       minMap[i] = new int[maxdist*2];
+       for(int i2=0;i2<maxdist*2;i2++)
+           minMap[i][i2]=0;
+    }
+    rooms->push_back({"start.oel",x,y});//stockage initial
+    minMap[x][y] = 2;
+    rooms->push_back({"boss.oel",x,y+1});//A CHANGER TO BOSS.OEL
+    minMap[x][y+1] = 3;
+    minMap[x][y+2] = -1;
+    minMap[x+1][y+1] = -1;
+    minMap[x-1][y+1] = -1;
 
-       int dir = rand()%3;
-       if(dir==0)
-           generateLevel(minMap, 1,maxdist,distSecondaire,x+1,y,true,rooms);
-       else if(dir==1)
-           generateLevel(minMap, 1,maxdist,distSecondaire,x-1,y,true,rooms);
-       else
-           generateLevel(minMap, 1,maxdist,distSecondaire,x,y-1,true,rooms);
-       int chanceSecondaire = rand()%100;
-       double maxChance = 100 - 2/(double)maxdist*100;
-       if(minMap[x-1][y]==0 && chanceSecondaire < maxChance)
-           generateLevel(minMap,1,distSecondaire,distSecondaire,x-1,y,false, rooms);
-       chanceSecondaire = rand()%100;
-       if(minMap[x+1][y]==0 && chanceSecondaire < maxChance)
-           generateLevel(minMap,1,distSecondaire,distSecondaire,x+1,y,false, rooms);
-       chanceSecondaire = rand()%100;
-       if(minMap[x][y-1]==0 && chanceSecondaire < maxChance)
-           generateLevel(minMap,1,distSecondaire,distSecondaire,x,y-1,false, rooms);
+    int dir = rand()%3;
+    if(dir==0)
+       generateLevel(minMap, 1,maxdist,distSecondaire,x+1,y,true,rooms);
+    else if(dir==1)
+       generateLevel(minMap, 1,maxdist,distSecondaire,x-1,y,true,rooms);
+    else
+       generateLevel(minMap, 1,maxdist,distSecondaire,x,y-1,true,rooms);
+    int chanceSecondaire = rand()%100;
+    double maxChance = 100 - 2/(double)maxdist*100;
+    if(minMap[x-1][y]==0 && chanceSecondaire < maxChance)
+       generateLevel(minMap,1,distSecondaire,distSecondaire,x-1,y,false, rooms);
+    chanceSecondaire = rand()%100;
+    if(minMap[x+1][y]==0 && chanceSecondaire < maxChance)
+       generateLevel(minMap,1,distSecondaire,distSecondaire,x+1,y,false, rooms);
+    chanceSecondaire = rand()%100;
+    if(minMap[x][y-1]==0 && chanceSecondaire < maxChance)
+       generateLevel(minMap,1,distSecondaire,distSecondaire,x,y-1,false, rooms);
 
-       attributeRoom(minMap, rooms,path);
+    attributeRoom(minMap, rooms,path);
 
     std::cout << "Before Affichage" << std::endl;
     for (int i = 0; i < rooms->size();i++){

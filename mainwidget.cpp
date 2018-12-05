@@ -359,7 +359,7 @@ void MainWidget::initializeGL()
     attributeRoom(minMap, rooms,"D:\\Git\\MoteurJeu\\Rooms");
 
     std::cout << "Before Affichage" << std::endl;
-    for (int i = 0; i < rooms->size();i++){
+    for (int i = 0; i < rooms->size();i++)
         std::cout << "Salle " << rooms->at(i).path << " at x : " << rooms->at(i).x << " and y : " << rooms->at(i).y<< std::endl;
     player = new Player();
     player->renderer.CreateGeometry();

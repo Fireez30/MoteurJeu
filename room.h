@@ -24,6 +24,7 @@ public :
     void ComputeHitboxes();
     void ReadFile(std::vector<Rooms>* r,int index,std::string path);
     std::vector<Tile> GetTiles();
+    bool TriggerCheck(Hitbox h);
 };
 
 #endif // ROOM_H

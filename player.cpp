@@ -9,7 +9,7 @@
 #include <QVector3D>
 #include <QTime>
 
-Player::Player():Movable(162,83,1,QVector2D(1,0),QVector2D(0.0,8.0/16.0)){
+Player::Player():Movable(1,0,0.5,QVector2D(162,83),QVector2D(0.0,8.0/16.0)){
 
 }
 
@@ -21,10 +21,6 @@ void Player::Input(){
     //change direction using keyboard
 }
 
-void Player::Move(){
- //test hitboxes
-//move in the direction of the player
-}
 void Player::OnTriggerEnter(Hitbox e){
 
 }
