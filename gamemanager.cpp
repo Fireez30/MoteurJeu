@@ -37,6 +37,9 @@ GameManager::~GameManager()
     // and the buffers.
     makeCurrent();
     delete texture;
+    for (int i = 0; i < scene.size(); i++){
+        delete scene[i];
+    }
     delete player;
     doneCurrent();
 }
@@ -414,8 +417,8 @@ void GameManager::paintGL()
     // Draw cube geometry
     //geometries->drawMeshGeometry(&program);
     for (int i = 0;i < scene.size(); i++){
-        scene[i]->Render(&program,texture);//old version of this is drawTerrainGeometry();
         scene[i]->RenderDoors(&program,texture);
+        scene[i]->Render(&program,texture);//old version of this is drawTerrainGeometry();
     }
    // player->DisplayCoords();
 

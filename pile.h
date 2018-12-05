@@ -4,7 +4,7 @@
 #include "interactable2d.h"
 #include "ennemi.h"
 
-class Pile : Interactable2D{
+class Pile : public Interactable2D{
 
 protected:
     float range;

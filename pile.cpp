@@ -1,10 +1,5 @@
 #include "pile.h"
 
-    float range;
-    float coneAngle;
-    float lifespan;
-    int damage;
-
 Pile::Pile(QVector2D pos,QVector2D text):Interactable2D (pos,text),range(1),coneAngle(30),lifespan(60),damage(1){
 
 }
