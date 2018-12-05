@@ -25,14 +25,14 @@ void Room::CreateGeometry(){
         tiles[i].renderer.CreateGeometry();
     }
 }
-void Room::ReadFile(std::vector<Rooms> r,int index){
+void Room::ReadFile(std::vector<Rooms>* r,int index){
         tinyxml2::XMLDocument doc;
-        doc.LoadFile("C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms\\0100\\1.oel");
+        doc.LoadFile("D:\\Git\\MoteurJeu\\Rooms\\0100\\1.oel");
         //+r[index].path).data()
         tinyxml2::XMLElement* doc2 = doc.FirstChildElement("level");//<level width height>
         tinyxml2::XMLElement* d = doc2->FirstChildElement("Sol");//<level width height>
-        int xRoom = r[index].x;
-        int yRoom = r[index].y;
+        int xRoom = r->at(index).x*25;
+        int yRoom = r->at(index).y*15;
          for (tinyxml2::XMLElement* e = d->FirstChildElement("tile"); e != nullptr; e = e->NextSiblingElement("tile")){//y
             Tile t= Tile(QVector2D((float)e->IntAttribute("x")+xRoom,(float)(-1*e->IntAttribute("y"))+yRoom),QVector2D(e->IntAttribute("tx")/16.0,e->IntAttribute("ty")/16.0));
             tiles.push_back(t);

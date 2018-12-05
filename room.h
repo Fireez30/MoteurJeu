@@ -22,7 +22,7 @@ public :
     void CreateGeometry();
     void Render(QOpenGLShaderProgram *program,QOpenGLTexture *text);
     void ComputeHitboxes();
-    void ReadFile(std::vector<Rooms> r,int index);
+    void ReadFile(std::vector<Rooms>* r,int index);
     std::vector<Tile> GetTiles();
 };
 
