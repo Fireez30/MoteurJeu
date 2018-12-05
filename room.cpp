@@ -46,7 +46,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path){
         }//Fin construction Murs !
         tinyxml2::XMLElement* d3 = doc2->FirstChildElement("Doors");
         for (tinyxml2::XMLElement* e3 = d3->FirstChildElement("tile"); e3 != nullptr; e3 = e3->NextSiblingElement("tile")){//y
-            tiles.push_back(Tile(QVector2D((float)e3->IntAttribute("x")+xRoom,(float)(-1*e3->IntAttribute("y"))+yRoom),QVector2D(e3->IntAttribute("tx")/16.0,e3->IntAttribute("ty")/16.0)));
+            doors.push_back(Door(QVector2D((float)e3->IntAttribute("x")+xRoom,(float)(-1*e3->IntAttribute("y"))+yRoom),QVector2D(e3->IntAttribute("tx")/16.0,e3->IntAttribute("ty")/16.0),false));
         }//Fin construction doors !
         doc.Clear();
         for (int i = 0; i < doors.size(); i++){
@@ -62,11 +62,14 @@ void Room::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
     for (int i = 0; i < tiles.size(); i++){
         tiles[i].Render(program,text);
     }
+
+}
+
+void Room::RenderDoors(QOpenGLShaderProgram *program,QOpenGLTexture *text){
     for (int i = 0; i < doors.size(); i++){
         doors[i].Render(program,text);//bind texture de door fait planter le programme
     }
 }
-
 bool Room::TriggerCheck(Hitbox h){
     for (int i = 0; i < collisions.size();i++){
         if (collisions[i].TestCollision(h)){

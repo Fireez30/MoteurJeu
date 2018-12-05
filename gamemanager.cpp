@@ -69,7 +69,6 @@ void GameManager::keyPressEvent (QKeyEvent * event)
     QVector3D vector(transX,transY,0);
     vector.normalize();
     vector *= player->GetSpeed();
-    std::cout << vector.x() << " " << vector.y() << " " << vector.z() << std::endl;
     player->Move(vector);
 
     int i=0;
@@ -77,7 +76,6 @@ void GameManager::keyPressEvent (QKeyEvent * event)
         i++;
     if(i<scene.size())
        {
-        std::cout << "reset move\n";
         player->Move(-vector);
     }
 
@@ -230,7 +228,7 @@ void attributeRoom(int** minMap, std::vector<Rooms>* rooms, std::string path){
 
 void GameManager::initializeGL()
 {
-    std::string path = racine+"Rooms";
+    std::string path = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms";
     initializeOpenGLFunctions();
 
     glClearColor(0,0,0, 1);
@@ -346,7 +344,7 @@ void GameManager::initShaders()
 void GameManager::initTextures()
 {
     QImage img;
-    std::string s = racine+"sprites.png";
+    std::string s = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\sprites.png";
     img.load(s.data());
     texture = new QOpenGLTexture(img); //chargement de la sprite sheet ici
 
@@ -417,6 +415,7 @@ void GameManager::paintGL()
     //geometries->drawMeshGeometry(&program);
     for (int i = 0;i < scene.size(); i++){
         scene[i]->Render(&program,texture);//old version of this is drawTerrainGeometry();
+        scene[i]->RenderDoors(&program,texture);
     }
    // player->DisplayCoords();
 

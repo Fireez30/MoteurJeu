@@ -21,6 +21,7 @@ public :
     ~Room();
     void CreateGeometry();
     void Render(QOpenGLShaderProgram *program,QOpenGLTexture *text);
+    void RenderDoors(QOpenGLShaderProgram *program,QOpenGLTexture *text);
     void ComputeHitboxes();
     void ReadFile(std::vector<Rooms>* r,int index,std::string path);
     std::vector<Tile> GetTiles();

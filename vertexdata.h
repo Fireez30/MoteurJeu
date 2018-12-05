@@ -4,8 +4,6 @@
 #include <QVector2D>
 #include <QVector3D>
 
-std::string racine("C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\");
-
 struct VertexData
 {
     QVector3D position;
