@@ -55,8 +55,7 @@
 #include <QKeyEvent>
 #include <iostream>
 #ifndef QT_NO_OPENGL
-#include "mainwidget.h"
-#include "windowsinput.h"
+#include "gamemanager.h"
 #endif
 
 
@@ -68,15 +67,12 @@ int main(int argc, char *argv[])
     format.setDepthBufferSize(24);
     QSurfaceFormat::setDefaultFormat(format);
 
-    app.setApplicationName("cube");
+    app.setApplicationName("Le plus sombre des donjons");
     app.setApplicationVersion("0.1");
 
 //
 #ifndef QT_NO_OPENGL
-    std::cout << "debut constructeur" << std::endl;
-   // windowsinput wip(0);
-   // wip.showF();
-    MainWidget widget(0,100);
+    GameManager widget(0,100);
     widget.show();
 #else
     QLabel note("OpenGL Support required");

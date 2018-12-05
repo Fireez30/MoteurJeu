@@ -13,8 +13,8 @@ protected:
     int damage;
 
 public :
-    Pile(QVector2D pos);
-    Pile(QVector2D pos,float r, float c, float l, int d);
+    Pile(QVector2D pos,QVector2D text);
+    Pile(QVector2D pos,float r, float c, float l, int d,QVector2D text);
     virtual void Affect() = 0;
     float GetRange();
     float GetConeAngle();

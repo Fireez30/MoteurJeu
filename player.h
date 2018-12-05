@@ -2,15 +2,18 @@
 #define PLAYER_H
 
 #include "baseobject.h"
+#include "movable.h"
 
-class Player : public BaseObject
+class Player : public Movable
 {
+protected:
 
 public :
     Player();
-    void CreateGeometry() override;
-    void Render(QOpenGLShaderProgram *program,QMatrix4x4 projection) override;
-    void CreateCollider() override;
+    Player(float x,float y, float sp,QVector2D dir);
+    void Move() override;
+    void Input();
+    void OnTriggerEnter(Hitbox e) override;
 };
 
 #endif // PLAYER_H

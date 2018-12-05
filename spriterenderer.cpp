@@ -2,25 +2,33 @@
 #include <iostream>
 #include <QDebug>
 
-SpriteRenderer::SpriteRenderer(QVector3D pos):spritePath("sprites.png"),timer(),spriteCoords(9.0/16.0,0),indexBuf(QOpenGLBuffer::IndexBuffer),time(100),texture(0),position(pos){
+SpriteRenderer::SpriteRenderer(QVector3D pos):spritePath("sprites.png"),timer(),spriteCoords(0,0),indexBuf(QOpenGLBuffer::IndexBuffer),time(100),position(pos){
     initializeOpenGLFunctions();
+    arrayBuf.create();
+    indexBuf.create();
 }
 
-SpriteRenderer::SpriteRenderer(std::string p,QVector2D coords,float t,QVector3D pos):spritePath(p),timer(),spriteCoords(coords),indexBuf(QOpenGLBuffer::IndexBuffer),time(t),position(pos),texture(0){
+SpriteRenderer::SpriteRenderer(std::string p,QVector2D coords,float t,QVector3D pos):spritePath(p),timer(),spriteCoords(coords),indexBuf(QOpenGLBuffer::IndexBuffer),time(t),position(pos){
     initializeOpenGLFunctions();
+    arrayBuf.create();
+    indexBuf.create();
 }
 void SpriteRenderer::ReleaseBuffers(){
     arrayBuf.release();
     indexBuf.release();
-    delete texture;
+    //delete texture;
 }
 
 SpriteRenderer::~SpriteRenderer(){
     arrayBuf.destroy();
     indexBuf.destroy();
-    delete texture;
+    //delete texture;
 }
 
+void SpriteRenderer::SetPosition(QVector3D pos){
+    position = pos;
+}
+/*
 void SpriteRenderer::initTextures()
 {
     // Load cube.png image
@@ -39,12 +47,16 @@ void SpriteRenderer::initTextures()
     // f.ex. texture coordinate (1.1, 1.2) is same as (0.1, 0.2)
     texture->setWrapMode(QOpenGLTexture::Repeat);
 }
-
+*/
 std::string SpriteRenderer::GetSpritePath(){
     return spritePath;
 }
 void SpriteRenderer::ChangeSprite(){
 
+}
+
+QVector2D SpriteRenderer::GetTextCoords(){
+    return spriteCoords;
 }
 
 float SpriteRenderer::GetXCoord(){
@@ -55,10 +67,17 @@ float SpriteRenderer::GetYCoord(){
     spriteCoords.y();
 }
 
+void SpriteRenderer::SetXSpriteCoord(float x){
+    spriteCoords.setX(x);
+}
+
+void SpriteRenderer::SetYSpriteCoord(float y){
+    spriteCoords.setY(y);
+}
+
+
 void SpriteRenderer::CreateGeometry(){
-    initTextures();
-    arrayBuf.create();
-    indexBuf.create();
+    //initTextures();
     //compute a VertexData array
     VertexData v2[4] ={
         {position,spriteCoords},{QVector3D(position.x()+1,position.y(),0),QVector2D(spriteCoords.x()+1.0/16.0,spriteCoords.y())},
@@ -79,7 +98,7 @@ void SpriteRenderer::CreateGeometry(){
     indexBuf.allocate(indices, 6 * sizeof(GLushort));
 }
 
-void SpriteRenderer::Render(QOpenGLShaderProgram *program){
+void SpriteRenderer::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
     //qDebug() << "SpriteRender - Render";
     // Tell OpenGL which VBOs to use
     if (arrayBuf.bind() == false){
@@ -95,7 +114,7 @@ void SpriteRenderer::Render(QOpenGLShaderProgram *program){
     // Offset for position
     quintptr offset = 0;
 
-    texture->bind();
+    text->bind();
 
     // Tell OpenGL programmable pipeline how to locate vertex position data
     int vertexLocation = program->attributeLocation("a_position");
@@ -109,7 +128,6 @@ void SpriteRenderer::Render(QOpenGLShaderProgram *program){
     int texcoordLocation = program->attributeLocation("a_texcoord");
     program->enableAttributeArray(texcoordLocation);
     program->setAttributeBuffer(texcoordLocation, GL_FLOAT, offset, 2, sizeof(VertexData));
-
     // Draw cube geometry using indices from VBO 1
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 }

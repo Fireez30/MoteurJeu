@@ -11,7 +11,7 @@ protected :
 
 public :
     Movable();
-    Movable(float x, float y,float sp,QVector2D pos);
+    Movable(float x, float y,float sp,QVector2D pos,QVector2D text);
     QVector2D GetDirection();
     float GetSpeed();
     void ChangeSpeed(float s);

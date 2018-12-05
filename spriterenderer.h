@@ -22,28 +22,32 @@ class SpriteRenderer : protected QOpenGLFunctions{
 
 protected :
     std::string spritePath;
-    QVector2D spriteCoords;
     QVector3D position;
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
-    QOpenGLTexture *texture;
+    //QOpenGLTexture *texture;
     float time;
 
 
 public :
+    QVector2D spriteCoords;
     SpriteRenderer(const SpriteRenderer&) = delete;
     QTimer timer;
     SpriteRenderer(QVector3D pos);
     SpriteRenderer(std::string p,QVector2D coords,float time,QVector3D pos);
-    void initTextures();
+    //void initTextures();
     void ReleaseBuffers();
     ~SpriteRenderer();
+    QVector2D GetTextCoords();
     std::string GetSpritePath();
     void ChangeSprite();
+    void SetPosition(QVector3D pos);
     float GetXCoord();
     float GetYCoord();
+    void SetXSpriteCoord(float x);
+    void SetYSpriteCoord(float y);
     void CreateGeometry();
-    void Render(QOpenGLShaderProgram *program);
+    void Render(QOpenGLShaderProgram *program,QOpenGLTexture *text);
 };
 
 #endif // SPRITERENDERER_H

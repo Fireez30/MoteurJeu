@@ -63,6 +63,7 @@
 #include <QOpenGLTexture>
 #include <QTime>
 #include "room.h"
+#include "player.h"
 
 class GeometryEngine;
 
@@ -76,9 +77,9 @@ public:
     int m_frameCount;
     int max_fps;
 
-    float x = 0.0;
-    float y = 0.0;
-    float z = -45.0;
+    float x = -13.0;
+    float y = -8.0;
+    float z = -25.0;
     int hmapsize = 0;
 
     explicit MainWidget(QWidget *parent = 0,int maxfps=60,int saison=0);
@@ -104,9 +105,9 @@ protected:
 private:
     QBasicTimer timer;
     QOpenGLShaderProgram program;
-    //GeometryEngine *geometries;
     QOpenGLTexture *texture;
     std::vector<Room*> scene;
+    Player *player;
     QMatrix4x4 projection;
 
 public slots:
