@@ -71,6 +71,12 @@ void GameManager::keyPressEvent (QKeyEvent * event)
     if(event->key() == Qt::Key_S){
           transY--;
     }
+
+    if (event->key() == Qt::Key_T){
+        shader++;
+        shader = shader % 2;
+    }
+
     QVector3D vector(transX,transY,0);
     vector.normalize();
     vector *= player->GetSpeed();
@@ -237,7 +243,8 @@ void attributeRoom(int** minMap, std::vector<Rooms>* rooms, std::string path){
 
 void GameManager::initializeGL()
 {
-    std::string path = "D:\\Git\\MoteurJeu\\Rooms";
+    std::string path = "D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\Rooms";
+    //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\Rooms";
     initializeOpenGLFunctions();
 
     glClearColor(0,0,0, 1);
@@ -354,7 +361,8 @@ void GameManager::initShaders()
 void GameManager::initTextures()
 {
     QImage img;
-    std::string s = "D:\\Git\\MoteurJeu\\sprites.png";
+    std::string s = "D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\sprites.png";
+    //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\sprites.png";
     img.load(s.data());
     texture = new QOpenGLTexture(img); //chargement de la sprite sheet ici
 
@@ -419,6 +427,8 @@ void GameManager::paintGL()
     // Set modelview-projection matrix
     program.setUniformValue("mvp_matrix", projection * matrix);
 
+    program.setUniformValue("positionjoueur",player->position);
+    program.setUniformValue("test",shader);
     // Use texture unit 0 which contains sprite sheet
     program.setUniformValue("texture", 0);
     player->Render(&program,texture);

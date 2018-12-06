@@ -23,7 +23,7 @@ public:
     QTime m_time;
     int m_frameCount;
     int max_fps;
-
+    int shader = 0;
     explicit GameManager(QWidget *parent = 0,int maxfps=60);
     ~GameManager() override;
 
