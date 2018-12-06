@@ -12,9 +12,9 @@ Room::Room(){
 Room::~Room(){
     tiles.clear();
     collisions.clear();
-    //for (int i = 0; i < interacts.size();i++){
-    //    delete interacts[i];
-    //}
+    for (int i = 0; i < interacts.size();i++){
+        delete interacts[i];
+    }
     interacts.clear();
 }
 
@@ -23,7 +23,6 @@ std::vector<Tile> Room::GetTiles(){
 }
 
 void Room::CreateGeometry(){
-    std::cout << "tiles create geometry\n";
     for (int i = 0; i < tiles.size(); i++){
         tiles[i].renderer.CreateGeometry();
     }
@@ -68,19 +67,18 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
             d->setCollider(Hitbox(QVector2D(d->position.x(),d->position.y()),1,1));
             interacts.push_back(d);
         }//Fin construction doors !
-        /*
-        std::cout << "fin construction door\n";
+
         tinyxml2::XMLElement* d4 = doc2->FirstChildElement("Entite");
+        if (d4)
         for (tinyxml2::XMLElement* e4 = d4->FirstChildElement("Pile"); e4 != nullptr; e4 = e4->NextSiblingElement("Pile")){//y
                             std::cout << "pile en création\n";
             if (e4->IntAttribute("id") == 0){
-                //interacts.push_back(RangedPile(QVector2D((float)e4->IntAttribute("x")+xRoom,(float)(-1*e4->IntAttribute("y"))+yRoom),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0)));
+                interacts.push_back(new RangedPile(QVector2D((float)e4->IntAttribute("x")+xRoom,(float)(-1*e4->IntAttribute("y"))+yRoom),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0)));
             }
-            std::cout << "Fin construction pile\n";
+            std::cout << "interacts size : " << interacts.size() << std::endl;
         }//Fin construction doors !
-        */
+
         doc.Clear();
-        std::cout << "fin readfiles\n";
 }
 
 void Room::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
