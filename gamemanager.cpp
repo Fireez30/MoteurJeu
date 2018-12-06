@@ -237,7 +237,7 @@ void attributeRoom(int** minMap, std::vector<Rooms>* rooms, std::string path){
 
 void GameManager::initializeGL()
 {
-    std::string path = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms";
+    std::string path = "D:\\Git\\MoteurJeu\\Rooms";
     initializeOpenGLFunctions();
 
     glClearColor(0,0,0, 1);
@@ -354,7 +354,7 @@ void GameManager::initShaders()
 void GameManager::initTextures()
 {
     QImage img;
-    std::string s = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\sprites.png";
+    std::string s = "D:\\Git\\MoteurJeu\\sprites.png";
     img.load(s.data());
     texture = new QOpenGLTexture(img); //chargement de la sprite sheet ici
 

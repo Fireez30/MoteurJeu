@@ -9,7 +9,7 @@ RangedPile::RangedPile(QVector2D pos,float r, float c, float l, int d,QVector2D 
 
 }
 
-void RangedPile::OnTriggerEnter(Hitbox h){
+void RangedPile::OnTriggerEnter(Interactable2D* other){
 
 }
 
