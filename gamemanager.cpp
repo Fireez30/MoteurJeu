@@ -23,17 +23,12 @@ GameManager::GameManager(QWidget *parent,int maxfps) :
     texture(0),
     angularSpeed(0)
 {
-    std::cout << "debut constructeur main widget" << std::endl;
     if (maxfps == 0)
         max_fps = 1;
     else
         max_fps = maxfps;
     et.start();
     scene = std::vector<Room*>();
-    std::cout << "debut stokcage taille ecran" << std::endl;
-    he = this->size().height();
-    wi = this->size().width();
-    std::cout << "fin stokcage taille ecran" << std::endl;
 }
 
 GameManager::~GameManager()
@@ -138,22 +133,6 @@ void GameManager::timerEvent(QTimerEvent *)
     } else {
         // Update rotation
         rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
-
-
-        frame_count++;
-        final_time = time(NULL);
-        if (final_time - initial_time > 0)
-        {
-            //display
-            last_fps = frame_count/ (final_time - initial_time);
-            frame_count = 0;
-            initial_time = final_time;
-            std::cout << "Fps : " << last_fps << std::endl;
-        }
-
-        // Render text
-        //timer.start(1000/max_fps,this);
-        // Request an update
         et.restart();
     }
     QMatrix4x4 matrix;
@@ -253,8 +232,9 @@ void attributeRoom(int** minMap, std::vector<Rooms>* rooms, std::string path){
 
 void GameManager::initializeGL()
 {
-    std::string path = "D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\Rooms";
-    //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\Rooms";
+    std::string path = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms";
+    //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\Rooms"; - Benj portable
+    //"C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms" - Benj fixe
     initializeOpenGLFunctions();
 
     glClearColor(0,0,0, 1);
@@ -314,24 +294,19 @@ void GameManager::initializeGL()
 
     attributeRoom(minMap, rooms,path);
 
-    std::cout << "Before Affichage" << std::endl;
     for (int i = 0; i < rooms->size();i++){
         scene.push_back(new Room);
-        std::cout << "Salle " << rooms->at(i).path << " at x : " << rooms->at(i).x << " and y : " << rooms->at(i).y<< std::endl;
+        //std::cout << "Salle " << rooms->at(i).path << " at x : " << rooms->at(i).x << " and y : " << rooms->at(i).y<< std::endl;
     }
     for (int i = 0;i < scene.size(); i++){
         scene[i]->ReadFile(rooms,i, path, player, camera);
     }
-    std::cout << "Apres push des salles" << std::endl;
+
     player->renderer.CreateGeometry();
-    std::cout << "Apres creation du joueur" << std::endl;
+
     for (int i = 0;i < scene.size(); i++){
         scene[i]->CreateGeometry();
     }
-    std::cout << "Apres ReadFile" << std::endl;
-    /*for (int i = 0;i < scene->GetTiles().size();i++){
-        std::cout << "Tile at x :" << scene->GetTiles()[i].GetPosition().x() <<"at y :" << scene->GetTiles()[i].GetPosition().y() << std::endl;
-    }*/
     timer.start(1000/max_fps, this);
 }
 
@@ -371,8 +346,9 @@ void GameManager::initShaders()
 void GameManager::initTextures()
 {
     QImage img;
-    std::string s = "D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\sprites.png";
-    //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\sprites.png";
+    std::string s = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\sprites.png";
+    //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\sprites.png"; - Benj portable
+    //"C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\sprites.png" - Benj fixe
     img.load(s.data());
     texture = new QOpenGLTexture(img); //chargement de la sprite sheet ici
 
@@ -394,8 +370,6 @@ void GameManager::initTextures()
 
 void GameManager::resizeGL(int w, int h)
 {
-    he = h;
-    wi = w;
     // Calculate aspect ratio
     qreal aspect = qreal(w) / qreal(h ? h : 1);
 
@@ -417,11 +391,10 @@ void GameManager::paintGL()
     final_time = time(NULL);
     if (final_time - initial_time > 0)
     {
-        //display
         last_fps = frame_count/ (final_time - initial_time);
         frame_count = 0;
         initial_time = final_time;
-        //std::cout << "Fps : " << last_fps << std::endl;
+        std::cout << "Fps : " << last_fps << std::endl;
     }
 
     // Clear color and depth buffer
@@ -445,10 +418,9 @@ void GameManager::paintGL()
     program.setUniformValue("texture", 0);
     player->Render(&program,texture);
     // Draw cube geometry
-    //geometries->drawMeshGeometry(&program);
+
     for (int i = 0;i < scene.size(); i++){
-        scene[i]->Render(&program,texture);//old version of this is drawTerrainGeometry();
+        scene[i]->Render(&program,texture);//render different components of the room
     }
-   // player->DisplayCoords();
 
 }

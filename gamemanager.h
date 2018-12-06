@@ -24,7 +24,6 @@ public:
     int m_frameCount;
     int max_fps;
     
-    int he, wi;
     float x = -137;//move this to a camera
     float y = -82;
     float z = -25.0;

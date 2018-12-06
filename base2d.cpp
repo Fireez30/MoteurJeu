@@ -20,6 +20,5 @@ void Base2D::DisplayCoords(){
 }
 
 void Base2D::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
-    //qDebug() << "Base2D - Render x " << position.x() << " y " << position.y();
     renderer.Render(program,text);
 }
