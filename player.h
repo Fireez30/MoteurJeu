@@ -12,7 +12,7 @@ public :
     Player();
     Player(float x,float y, float sp,QVector2D dir);
     void Input();
-    void OnTriggerEnter(Hitbox e) override;
+    void OnTriggerEnter(Interactable2D* other) override;
 };
 
 #endif // PLAYER_H

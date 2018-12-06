@@ -44,6 +44,8 @@ GameManager::~GameManager()
     doneCurrent();
 }
 
+Player* GameManager::getPlayer(){return player;}
+
 //
 // USER INPUTS
 //
@@ -75,18 +77,22 @@ void GameManager::keyPressEvent (QKeyEvent * event)
     player->Move(vector);
 
     int i=0;
-    while(i<scene.size() && !scene[i]->TriggerCheck(player->getCollider()))
+    while(i<scene.size() && !scene[i]->TriggerCheck(player))
         i++;
+    i=0;
+    while(i<scene.size() && !scene[i]->CollisionCheck(player->getCollider()))
+        i++;
+
     if(i<scene.size())
        {
         player->Move(-vector);
     }
 
     if(event->key() == Qt::Key_W)
-          z++;
+          camera->moveCamera(QVector3D(0,0,1));
 
     if(event->key() == Qt::Key_X)
-          z--;
+          camera->moveCamera(QVector3D(0,0,-1));
 
     if(event->key() == Qt::Key_U)
           angularSpeed = 0;
@@ -247,6 +253,7 @@ void GameManager::initializeGL()
     glEnable(GL_CULL_FACE);
     // Use QBasicTimer because its faster than QTimer
     player = new Player();
+    camera = new Camera();
 
     //srand(13);
     int seed = 13;
@@ -296,7 +303,7 @@ void GameManager::initializeGL()
         std::cout << "Salle " << rooms->at(i).path << " at x : " << rooms->at(i).x << " and y : " << rooms->at(i).y<< std::endl;
     }
     for (int i = 0;i < scene.size(); i++){
-        scene[i]->ReadFile(rooms,i, path);
+        scene[i]->ReadFile(rooms,i, path, player, camera);
     }
     std::cout << "Apres push des salles" << std::endl;
     player->renderer.CreateGeometry();
@@ -405,7 +412,8 @@ void GameManager::paintGL()
 
     // Calculate model view transformation
     QMatrix4x4 matrix;
-    matrix.translate(x, y, z);
+    QVector3D pos = camera->getPosition();
+    matrix.translate(pos.x(), pos.y(), pos.z());
     matrix.rotate(rotation);
 
     // Set modelview-projection matrix
@@ -417,7 +425,6 @@ void GameManager::paintGL()
     // Draw cube geometry
     //geometries->drawMeshGeometry(&program);
     for (int i = 0;i < scene.size(); i++){
-        scene[i]->RenderDoors(&program,texture);
         scene[i]->Render(&program,texture);//old version of this is drawTerrainGeometry();
     }
    // player->DisplayCoords();

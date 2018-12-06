@@ -73,6 +73,7 @@ int main(int argc, char *argv[])
 //
 #ifndef QT_NO_OPENGL
     GameManager widget(0,100);
+    widget.setFixedSize(1200,720);
     widget.show();
 #else
     QLabel note("OpenGL Support required");
