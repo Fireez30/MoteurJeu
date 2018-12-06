@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include "tile.h"
 #include "door.h"
+#include "player.h"
+#include "camera.h"
 #include <QOpenGLShaderProgram>
 #include "tinyxml2.h"
 
@@ -12,7 +14,6 @@ class Room {
 
 protected:
     std::vector<Tile> tiles;
-    std::vector<Door> doors;
     std::vector<Hitbox> collisions;
     std::vector<Interactable2D*> interacts;
 
@@ -21,11 +22,11 @@ public :
     ~Room();
     void CreateGeometry();
     void Render(QOpenGLShaderProgram *program,QOpenGLTexture *text);
-    void RenderDoors(QOpenGLShaderProgram *program,QOpenGLTexture *text);
     void ComputeHitboxes();
-    void ReadFile(std::vector<Rooms>* r,int index,std::string path);
+    void ReadFile(std::vector<Rooms>* r,int index,std::string path, Player* p, Camera* c);
     std::vector<Tile> GetTiles();
-    bool TriggerCheck(Hitbox h);
+    bool TriggerCheck(Interactable2D* other);
+    bool CollisionCheck(Hitbox h);
 };
 
 #endif // ROOM_H

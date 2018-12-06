@@ -28,7 +28,7 @@ void Player::Input(){
     //change direction using keyboard
 }
 
-void Player::OnTriggerEnter(Hitbox e){
+void Player::OnTriggerEnter(Interactable2D* other){
 
 }
 

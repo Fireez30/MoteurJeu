@@ -5,14 +5,12 @@
 
 Room::Room(){
     tiles = std::vector<Tile>();
-    doors = std::vector<Door>();
     collisions  = std::vector<Hitbox>();
     interacts = std::vector<Interactable2D*>();
 }
 
 Room::~Room(){
     tiles.clear();
-    doors.clear();
     collisions.clear();
     for (int i = 0; i < interacts.size();i++){
         delete interacts[i];
@@ -28,8 +26,6 @@ void Room::CreateGeometry(){
     for (int i = 0; i < tiles.size(); i++){
         tiles[i].renderer.CreateGeometry();
     }
-    for(int i=0;i<doors.size();i++)
-        doors[i].renderer.CreateGeometry();
 
     for(int i=0;i<interacts.size();i++){
         std::cout << "interacts create geometry" << std::endl;
@@ -37,7 +33,8 @@ void Room::CreateGeometry(){
     }
 }
 
-void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path){
+void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p, Camera* c){
+       std::cout << "debut readfile\n";
         tinyxml2::XMLDocument doc;
         std::string s = path+"\\"+r->at(index).path;
         doc.LoadFile(s.c_str());
@@ -58,7 +55,19 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path){
         }//Fin construction Murs !
         tinyxml2::XMLElement* d3 = doc2->FirstChildElement("Doors");
         for (tinyxml2::XMLElement* e3 = d3->FirstChildElement("tile"); e3 != nullptr; e3 = e3->NextSiblingElement("tile")){//y
-            doors.push_back(Door(QVector2D((float)e3->IntAttribute("x")+xRoom,(float)(-1*e3->IntAttribute("y"))+yRoom),QVector2D(e3->IntAttribute("tx")/16.0,e3->IntAttribute("ty")/16.0),false));
+            float x = (float)e3->IntAttribute("x"), y = (float)(-1*e3->IntAttribute("y"));
+            QVector2D dir;
+            if(x == 0)
+                dir.setX(1);
+            else if(x == 24)
+                dir.setX(-1);
+            else if (y==0)
+                dir.setY(-1);
+            else if (y==-14)
+                dir.setY(1);
+            Door* d = new Door(QVector2D(x+xRoom,y+yRoom),QVector2D(e3->IntAttribute("tx")/16.0,e3->IntAttribute("ty")/16.0),false,dir,p,c);
+            d->setCollider(Hitbox(QVector2D(d->position.x(),d->position.y()),1,1));
+            interacts.push_back(d);
         }//Fin construction doors !
 
         tinyxml2::XMLElement* d4 = doc2->FirstChildElement("Entite");
@@ -84,14 +93,20 @@ void Room::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
     for (int i = 0; i < tiles.size(); i++){
         tiles[i].Render(program,text);
     }
-    for (int i = 0; i < doors.size(); i++){
-        doors[i].Render(program,text);
-    }
 }
 
-bool Room::TriggerCheck(Hitbox h){
+bool Room::CollisionCheck(Hitbox h){
     for (int i = 0; i < collisions.size();i++){
         if (collisions[i].TestCollision(h)){
+            return true;
+        }
+    }
+    return false;
+}
+bool Room::TriggerCheck(Interactable2D* other){
+    for(int i=0;i<interacts.size();i++){
+        if(interacts[i]->getCollider().TestCollision(other->getCollider())){
+            interacts[i]->OnTriggerEnter(other);
             return true;
         }
     }

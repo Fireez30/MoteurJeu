@@ -12,6 +12,7 @@
 #include <QTime>
 #include "room.h"
 #include "player.h"
+#include "camera.h"
 
 class GameManager : public QOpenGLWidget, protected QOpenGLFunctions
 {
@@ -22,11 +23,13 @@ public:
     QTime m_time;
     int m_frameCount;
     int max_fps;
+    
     int he, wi;
     float x = -137;//move this to a camera
     float y = -82;
     float z = -25.0;
 
+    int shader = 0;
     explicit GameManager(QWidget *parent = 0,int maxfps=60);
     ~GameManager() override;
 
@@ -35,6 +38,8 @@ public:
     QVector3D rotationAxis;
     qreal angularSpeed;
     QQuaternion rotation;
+
+    Player* getPlayer();
 
     protected:
     void mousePressEvent(QMouseEvent *e) override;//input manager
@@ -54,6 +59,7 @@ private:
     QOpenGLTexture *texture;
     std::vector<Room*> scene;
     Player *player;
+    Camera* camera;
     QMatrix4x4 projection;
 
 };

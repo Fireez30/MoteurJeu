@@ -14,7 +14,7 @@ public :
     Interactable2D(QVector2D pos,QVector2D text);
     void setCollider(Hitbox h);
     Hitbox getCollider();
-    virtual void OnTriggerEnter(Hitbox other) = 0;//abstract
+    virtual void OnTriggerEnter(Interactable2D* other) = 0;//abstract
 };
 
 #endif // INTERACTABLE2D_H

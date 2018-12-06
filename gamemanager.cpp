@@ -49,6 +49,8 @@ GameManager::~GameManager()
     doneCurrent();
 }
 
+Player* GameManager::getPlayer(){return player;}
+
 //
 // USER INPUTS
 //
@@ -73,24 +75,34 @@ void GameManager::keyPressEvent (QKeyEvent * event){
     if(event->key() == Qt::Key_S){
           transY--;
     }
+
+    if (event->key() == Qt::Key_T){
+        shader++;
+        shader = shader % 2;
+    }
+
     QVector3D vector(transX,transY,0);
     vector.normalize();
     vector *= player->GetSpeed();
     player->Move(vector);
 
     int i=0;
-    while(i<scene.size() && !scene[i]->TriggerCheck(player->getCollider()))
+    while(i<scene.size() && !scene[i]->TriggerCheck(player))
         i++;
+    i=0;
+    while(i<scene.size() && !scene[i]->CollisionCheck(player->getCollider()))
+        i++;
+
     if(i<scene.size())
        {
         player->Move(-vector);
     }
 
     if(event->key() == Qt::Key_W)
-          z++;
+          camera->moveCamera(QVector3D(0,0,1));
 
     if(event->key() == Qt::Key_X)
-          z--;
+          camera->moveCamera(QVector3D(0,0,-1));
 
     if(event->key() == Qt::Key_U)
           angularSpeed = 0;
@@ -241,7 +253,8 @@ void attributeRoom(int** minMap, std::vector<Rooms>* rooms, std::string path){
 
 void GameManager::initializeGL()
 {
-    std::string path = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms";
+    std::string path = "D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\Rooms";
+    //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\Rooms";
     initializeOpenGLFunctions();
 
     glClearColor(0,0,0, 1);
@@ -257,6 +270,7 @@ void GameManager::initializeGL()
     glEnable(GL_CULL_FACE);
     // Use QBasicTimer because its faster than QTimer
     player = new Player();
+    camera = new Camera();
 
     //srand(13);
     int seed = 13;
@@ -306,7 +320,7 @@ void GameManager::initializeGL()
         std::cout << "Salle " << rooms->at(i).path << " at x : " << rooms->at(i).x << " and y : " << rooms->at(i).y<< std::endl;
     }
     for (int i = 0;i < scene.size(); i++){
-        scene[i]->ReadFile(rooms,i, path);
+        scene[i]->ReadFile(rooms,i, path, player, camera);
     }
     std::cout << "Apres push des salles" << std::endl;
     player->renderer.CreateGeometry();
@@ -357,7 +371,8 @@ void GameManager::initShaders()
 void GameManager::initTextures()
 {
     QImage img;
-    std::string s = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\sprites.png";
+    std::string s = "D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\sprites.png";
+    //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\sprites.png";
     img.load(s.data());
     texture = new QOpenGLTexture(img); //chargement de la sprite sheet ici
 
@@ -417,12 +432,15 @@ void GameManager::paintGL()
 
     // Calculate model view transformation
     QMatrix4x4 matrix;
-    matrix.translate(x, y, z);
+    QVector3D pos = camera->getPosition();
+    matrix.translate(pos.x(), pos.y(), pos.z());
     matrix.rotate(rotation);
 
     // Set modelview-projection matrix
     program.setUniformValue("mvp_matrix", projection * matrix);
 
+    program.setUniformValue("positionjoueur",player->position);
+    program.setUniformValue("test",shader);
     // Use texture unit 0 which contains sprite sheet
     program.setUniformValue("texture", 0);
     player->Render(&program,texture);
