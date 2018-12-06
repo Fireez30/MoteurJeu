@@ -10,6 +10,8 @@
 #include <QDir>
 #include <QString>
 #include <time.h>
+#include <QGuiApplication>
+
 
 bool start = true;
 int initial_time = time (NULL);
@@ -28,7 +30,10 @@ GameManager::GameManager(QWidget *parent,int maxfps) :
         max_fps = maxfps;
     et.start();
     scene = std::vector<Room*>();
-
+    std::cout << "debut stokcage taille ecran" << std::endl;
+    he = this->size().height();
+    wi = this->size().width();
+    std::cout << "fin stokcage taille ecran" << std::endl;
 }
 
 GameManager::~GameManager()
@@ -48,8 +53,7 @@ GameManager::~GameManager()
 // USER INPUTS
 //
 
-void GameManager::keyPressEvent (QKeyEvent * event)
-{
+void GameManager::keyPressEvent (QKeyEvent * event){
     float transX=0, transY=0;
     if(event->key() == Qt::Key_Q){
            transX--;
@@ -103,6 +107,10 @@ void GameManager::mouseReleaseEvent(QMouseEvent *e)
 
 }
 
+void GameManager::mouseMoveEvent(QMouseEvent *e){
+
+}
+
 //
 // TICKRATE WITH TIMERS
 //
@@ -135,10 +143,12 @@ void GameManager::timerEvent(QTimerEvent *)
         //timer.start(1000/max_fps,this);
         // Request an update
         et.restart();
-
-
     }
-            update();
+    QMatrix4x4 matrix;
+    matrix.translate(x, y, z);
+    matrix.rotate(rotation);
+    player->ChangeOrientation(QCursor::pos().x(),QCursor::pos().y(),matrix);
+    update();
 }
 
 //
@@ -369,6 +379,8 @@ void GameManager::initTextures()
 
 void GameManager::resizeGL(int w, int h)
 {
+    he = h;
+    wi = w;
     // Calculate aspect ratio
     qreal aspect = qreal(w) / qreal(h ? h : 1);
 
@@ -394,7 +406,7 @@ void GameManager::paintGL()
         last_fps = frame_count/ (final_time - initial_time);
         frame_count = 0;
         initial_time = final_time;
-        std::cout << "Fps : " << last_fps << std::endl;
+        //std::cout << "Fps : " << last_fps << std::endl;
     }
 
     // Clear color and depth buffer

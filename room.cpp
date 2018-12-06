@@ -31,8 +31,10 @@ void Room::CreateGeometry(){
     for(int i=0;i<doors.size();i++)
         doors[i].renderer.CreateGeometry();
 
-    for(int i=0;i<interacts.size();i++)
+    for(int i=0;i<interacts.size();i++){
+        std::cout << "interacts create geometry" << std::endl;
         interacts[i]->renderer.CreateGeometry();
+    }
 }
 
 void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path){
@@ -62,11 +64,14 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path){
         tinyxml2::XMLElement* d4 = doc2->FirstChildElement("Entite");
         if (d4)
         for (tinyxml2::XMLElement* e4 = d4->FirstChildElement("Pile"); e4 != nullptr; e4 = e4->NextSiblingElement("Pile")){//y
-                            std::cout << "pile en création\n";
-            if (e4->IntAttribute("id") == 0){
-                interacts.push_back(new RangedPile(QVector2D((float)e4->IntAttribute("x")+xRoom,(float)(-1*e4->IntAttribute("y"))+yRoom),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0)));
+            std::cout << "pile en création\n";
+            std::cout << " salle : " << path+"\\"+r->at(index).path << std::endl;
+            if (e4->IntAttribute("type") == 0){
+                interacts.push_back(new RangedPile(QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0)));
             }
-            std::cout << "interacts size : " << interacts.size() << std::endl;
+            for (int i = 0; i < interacts.size(); i++){
+                std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
+            }
         }//Fin construction doors !
 
         doc.Clear();
