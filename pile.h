@@ -2,7 +2,6 @@
 #define PILE_H
 
 #include "interactable2d.h"
-#include "ennemi.h"
 
 class Pile : public Interactable2D{
 

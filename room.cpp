@@ -2,6 +2,7 @@
 #include "door.h"
 #include <iostream>
 #include "rangedpile.h"
+#include "ennemi.h"
 
 Room::Room(){
     tiles = std::vector<Tile>();
@@ -78,6 +79,15 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
                 if (e4->IntAttribute("type") == 0){//type 0 = pile a portée améliorée
                     interacts.push_back(new RangedPile(QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0)));
                 }
+                //for (int i = 0; i < interacts.size(); i++){
+                //    std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
+                //}
+            }//fin for piles, rajouter des fors pour les autres entités
+
+            for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Ghost"); e5 != nullptr; e5 = e5->NextSiblingElement("Ghost")){//Liste des Ghosts
+                Ennemi* e =new Ennemi(0,0,0.8,QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0));
+                e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
+                interacts.push_back(e);
                 //for (int i = 0; i < interacts.size(); i++){
                 //    std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
                 //}
