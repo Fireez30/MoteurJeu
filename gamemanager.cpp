@@ -230,10 +230,11 @@ void attributeRoom(int** minMap, std::vector<Rooms>* rooms, std::string path){
 
 void GameManager::initializeGL()
 {
-    std::string path = "D:\\Git\\MoteurJeu\\Rooms";
+    std::string path = "C:\\Users\\bornt\\Documents\\GitHub\\MoteurJeu\\Rooms";
     //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\Rooms"; - Benj portable
     //"C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms" - Benj fixe
     //"D:\\Git\\MoteurJeu\\Rooms" - Romain portable
+    //"C:\\Users\\bornt\\Documents\\GitHub\\MoteurJeu\\Rooms" - Benoit portable
     initializeOpenGLFunctions();
 
     glClearColor(0,0,0, 1);
@@ -344,10 +345,11 @@ void GameManager::initShaders()
 void GameManager::initTextures()
 {
     QImage img;
-    std::string s = "D:\\Git\\MoteurJeu\\sprites.png";
+    std::string s = "C:\\Users\\bornt\\Documents\\GitHub\\MoteurJeu\\sprites.png";
     //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\sprites.png"; - Benj portable
     //"C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\sprites.png" - Benj fixe
     //"D:\\Git\\MoteurJeu\\sprites.png" - Romain portable
+    //"C:\\Users\\bornt\\Documents\\GitHub\\MoteurJeu\\sprites.png" - Benoit portable
 
     img.load(s.data());
     texture = new QOpenGLTexture(img); //chargement de la sprite sheet ici
