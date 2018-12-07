@@ -136,9 +136,11 @@ void GameManager::timerEvent(QTimerEvent *)
         et.restart();
     }
     QMatrix4x4 matrix;
-    matrix.translate(x, y, z);
+    QVector3D pos = camera->getPosition();
+    matrix.translate(pos.x(), pos.y(), pos.z());
     matrix.rotate(rotation);
-    player->ChangeOrientation(QCursor::pos().x(),QCursor::pos().y(),matrix);
+    QPoint p = this->mapFromGlobal(QCursor::pos());
+    player->ChangeOrientation(QCursor::pos(),matrix,projection);
     update();
 }
 
@@ -232,7 +234,7 @@ void attributeRoom(int** minMap, std::vector<Rooms>* rooms, std::string path){
 
 void GameManager::initializeGL()
 {
-    std::string path = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms";
+    std::string path = "D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\Rooms";
     //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\Rooms"; - Benj portable
     //"C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms" - Benj fixe
     initializeOpenGLFunctions();
@@ -346,7 +348,7 @@ void GameManager::initShaders()
 void GameManager::initTextures()
 {
     QImage img;
-    std::string s = "C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\sprites.png";
+    std::string s = "D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\sprites.png";
     //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\sprites.png"; - Benj portable
     //"C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\sprites.png" - Benj fixe
     img.load(s.data());
@@ -411,11 +413,8 @@ void GameManager::paintGL()
     // Set modelview-projection matrix
     program.setUniformValue("mvp_matrix", projection * matrix);
 
-    program.setUniformValue("lightpos",QVector2D(player->position.x(),player->position.y()));
-    program.setUniformValue("lightColor",QVector3D(255.0,0.0,0.0));
-    program.setUniformValue("screenHeight",this->width());
-    program.setUniformValue("lightAttenuation",QVector3D(0.1,0.1,0));
-    program.setUniformValue("aradius",2);
+    program.setUniformValue("playerpos",QVector3D(player->position.x(),player->position.y(),0));
+    program.setUniformValue("radius",2);
     program.setUniformValue("test",shader);
     // Use texture unit 0 which contains sprite sheet
     program.setUniformValue("texture", 0);

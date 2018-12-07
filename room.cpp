@@ -76,7 +76,11 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
         if (d4){//si la salle que l'on lit contient une entité
             for (tinyxml2::XMLElement* e4 = d4->FirstChildElement("Pile"); e4 != nullptr; e4 = e4->NextSiblingElement("Pile")){//Liste des piles
                 if (e4->IntAttribute("type") == 0){//type 0 = pile a portée améliorée
-                    interacts.push_back(new RangedPile(QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0)));
+                    {
+                        RangedPile *r = new RangedPile(QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0));
+                        r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
+                        interacts.push_back(r);
+                    }
                 }
                 //for (int i = 0; i < interacts.size(); i++){
                 //    std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
@@ -106,7 +110,11 @@ bool Room::CollisionCheck(Hitbox h){//collisions des murs unqiuements
 bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
     for(int i=0;i<interacts.size();i++){
         if(interacts[i]->getCollider().TestCollision(other->getCollider())){
-            interacts[i]->OnTriggerEnter(other);
+            int res = interacts[i]->OnTriggerEnter(other);
+            if (res == -1){
+                std::cout << "-1" << std::endl;
+                interacts.erase(interacts.begin()+i);
+            }
             return true;
         }
     }

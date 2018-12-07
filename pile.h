@@ -17,6 +17,7 @@ public :
     Pile(QVector2D pos,float r, float c, float l, int d,QVector2D text);
     virtual void Affect() = 0;
     float GetRange();
+    int OnTriggerEnter(Interactable2D* other) override;
     float GetConeAngle();
     float GetLifepan();
     int GetDamage();

@@ -1,17 +1,15 @@
 #ifdef GL_ES
 // Set default precision to medium
 precision mediump int;
-precision mediump float;
 #endif
+precision mediump float;
 
 uniform sampler2D texture;
 
-uniform vec2 lightpos;
-uniform vec3 lightColor;
-uniform float screenHeight;
-uniform vec3 lightAttenuation;
-uniform float aradius;
+uniform vec3 playerpos;
+uniform float radius;
 
+//attribute vec4 a_position;
 varying vec2 v_texcoord;
 uniform int test;
 //! [0]
@@ -22,12 +20,16 @@ void main()
     if (test == 0)
     {
     //vec3 play = mvp_matrix * positionjoueur;
-    //vec2 result = gl_Position.xy - play.xy;
+    //vec2 result = playerpos.xy - gl_FragCoord.xy;
+    //base.x = gl_FragCoord.x;
+    //base.y = gl_FragCoord.y;
     //float result2 = dot(result, result);
     //float dis = inversesqrt(result2);
     //float dis = 0.15;
-    //if (dis == 0)
-     //   dis = 0.1;
+    //if (dis < 0.000001){dis = 0.1;}
+    // base.x *= dis;
+     //base.y *= dis;
+     //base.z *= dis;
      base.x *= 0.15;
      base.y *= 0.15;
      base.z *= 0.15;

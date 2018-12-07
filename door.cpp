@@ -15,7 +15,7 @@ void Door::Unlock(){
     locked = true;
 }
 
-void Door::OnTriggerEnter(Interactable2D* other){
+int Door::OnTriggerEnter(Interactable2D* other){
 	//Si memory leak, regarder ici
     if(dynamic_cast<Player*> (other)!=NULL){
         camera->moveCamera(QVector3D(dir.x()*25,dir.y()*15,0));
