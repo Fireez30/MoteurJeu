@@ -1,3 +1,4 @@
+
 #include "gamemanager.h"
 #include <QMouseEvent>
 #include <GL/gl.h>
@@ -82,13 +83,10 @@ void GameManager::keyPressEvent (QKeyEvent * event){
     player->Move(vector);
 
     int i=0;
-    while(i<scene.size() && !scene[i]->TriggerCheck(player))
-        i++;
+    scene[camera->getCurrentRoom()]->TriggerCheck(player);
     i=0;
-    while(i<scene.size() && !scene[i]->CollisionCheck(player->getCollider()))
-        i++;
 
-    if(i<scene.size())
+    if(scene[camera->getCurrentRoom()]->CollisionCheck(player->getCollider()))
        {
         player->Move(-vector);
     }
@@ -237,6 +235,8 @@ void GameManager::initializeGL()
     std::string path = "D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\Rooms";
     //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\Rooms"; - Benj portable
     //"C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms" - Benj fixe
+    //"D:\\Git\\MoteurJeu\\Rooms" - Romain portable
+    //"C:\\Users\\bornt\\Documents\\GitHub\\MoteurJeu\\Rooms" - Benoit portable
     initializeOpenGLFunctions();
 
     glClearColor(0,0,0, 1);
@@ -297,18 +297,17 @@ void GameManager::initializeGL()
     attributeRoom(minMap, rooms,path);
 
     for (int i = 0; i < rooms->size();i++){
-        scene.push_back(new Room);
+        Room* r = new Room;
+        r->setPosition(rooms->at(i).x,rooms->at(i).y);
+        r->ReadFile(rooms,i, path, player, camera);
+        r->CreateGeometry();
+        scene.push_back(r);
         //std::cout << "Salle " << rooms->at(i).path << " at x : " << rooms->at(i).x << " and y : " << rooms->at(i).y<< std::endl;
-    }
-    for (int i = 0;i < scene.size(); i++){
-        scene[i]->ReadFile(rooms,i, path, player, camera);
     }
 
     player->renderer.CreateGeometry();
-
-    for (int i = 0;i < scene.size(); i++){
-        scene[i]->CreateGeometry();
-    }
+    camera->setRooms(scene);
+    camera->setCurrentRoom(x,y);
     timer.start(1000/max_fps, this);
 }
 
@@ -351,6 +350,9 @@ void GameManager::initTextures()
     std::string s = "D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\sprites.png";
     //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\sprites.png"; - Benj portable
     //"C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\sprites.png" - Benj fixe
+    //"D:\\Git\\MoteurJeu\\sprites.png" - Romain portable
+    //"C:\\Users\\bornt\\Documents\\GitHub\\MoteurJeu\\sprites.png" - Benoit portable
+
     img.load(s.data());
     texture = new QOpenGLTexture(img); //chargement de la sprite sheet ici
     // Set nearest filtering mode for texture minification
@@ -421,8 +423,6 @@ void GameManager::paintGL()
     player->Render(&program,texture);
     // Draw cube geometry
 
-    for (int i = 0;i < scene.size(); i++){
-        scene[i]->Render(&program,texture);//render different components of the room
-    }
+    scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
 
 }

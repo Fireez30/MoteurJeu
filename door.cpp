@@ -19,6 +19,7 @@ int Door::OnTriggerEnter(Interactable2D* other){
 	//Si memory leak, regarder ici
     if(dynamic_cast<Player*> (other)!=NULL){
         camera->moveCamera(QVector3D(dir.x()*25,dir.y()*15,0));
+        camera->setCurrentRoom(dir);
         QVector3D dirJoueur = QVector3D(dir.x()*-3,dir.y()*-3,0);
         player->Move(dirJoueur);
     }

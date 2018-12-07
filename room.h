@@ -1,6 +1,8 @@
 #ifndef ROOM_H
 #define ROOM_H
 
+class Room;
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "tile.h"
@@ -27,6 +29,12 @@ public :
     std::vector<Tile> GetTiles();
     bool TriggerCheck(Interactable2D* other);
     bool CollisionCheck(Hitbox h);
+    bool isThisRoom(int _x, int _y);
+    void setPosition(int _x, int _y);
+    QVector2D getPos();
+
+private:
+    int x, y;
 };
 
 #endif // ROOM_H

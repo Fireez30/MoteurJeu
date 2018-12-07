@@ -21,7 +21,6 @@ public :
     void setRoomLink(int i);
 
 private :
-    int roomAct, roomLink;
     Player* player;
     Camera* camera;
     QVector2D dir;
