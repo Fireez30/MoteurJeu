@@ -365,7 +365,6 @@ void GameManager::initTextures()
     //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\sprites.png";
     img.load(s.data());
     texture = new QOpenGLTexture(img); //chargement de la sprite sheet ici
-
     // Set nearest filtering mode for texture minification
     texture->setMinificationFilter(QOpenGLTexture::Nearest);
 
@@ -427,7 +426,11 @@ void GameManager::paintGL()
     // Set modelview-projection matrix
     program.setUniformValue("mvp_matrix", projection * matrix);
 
-    program.setUniformValue("positionjoueur",player->position);
+    program.setUniformValue("lightpos",QVector2D(player->position.x(),player->position.y()));
+    program.setUniformValue("lightColor",QVector3D(255.0,0.0,0.0));
+    program.setUniformValue("screenHeight",this->width());
+    program.setUniformValue("lightAttenuation",QVector3D(0.1,0.1,0));
+    program.setUniformValue("aradius",2);
     program.setUniformValue("test",shader);
     // Use texture unit 0 which contains sprite sheet
     program.setUniformValue("texture", 0);
