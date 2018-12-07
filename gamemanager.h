@@ -24,6 +24,10 @@ public:
     int m_frameCount;
     int max_fps;
     int shader = 1;
+
+    float x = -137;//move this to a camera
+    float y = -82;
+    float z = -25.0;
     explicit GameManager(QWidget *parent = 0,int maxfps=60);
     ~GameManager() override;
 
@@ -38,6 +42,7 @@ public:
     protected:
     void mousePressEvent(QMouseEvent *e) override;//input manager
     void mouseReleaseEvent(QMouseEvent *e) override;
+    void mouseMoveEvent(QMouseEvent *e) override;
     void timerEvent(QTimerEvent *e) override;
     void keyPressEvent ( QKeyEvent * event ) override;
     void initializeGL() override;

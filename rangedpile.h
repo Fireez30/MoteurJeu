@@ -2,7 +2,7 @@
 #define RANGEDPILE_H
 
 #include "pile.h"
-
+#include "gamemanager.h"
 class RangedPile :public Pile{
 
 public :

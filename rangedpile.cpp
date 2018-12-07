@@ -1,6 +1,5 @@
 #include "rangedpile.h"
 
-
 RangedPile::RangedPile(QVector2D pos,QVector2D text):Pile(pos,1.5,30,60,1,text){
 
 }
