@@ -18,6 +18,17 @@ Room::~Room(){
     interacts.clear();
 }
 
+bool Room::isThisRoom(int _x, int _y){
+    return x == _x && y == _y;
+}
+
+QVector2D Room::getPos(){
+    return QVector2D(x,y);
+}
+void Room::setPosition(int _x, int _y){
+    x=_x;
+    y=_y;
+}
 std::vector<Tile> Room::GetTiles(){
     return tiles;
 }

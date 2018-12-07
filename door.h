@@ -17,11 +17,8 @@ public :
     bool IsLocked();
     void Unlock();
     void OnTriggerEnter(Interactable2D* other) override;
-    void setRoomAct(int i);
-    void setRoomLink(int i);
 
 private :
-    int roomAct, roomLink;
     Player* player;
     Camera* camera;
     QVector2D dir;
