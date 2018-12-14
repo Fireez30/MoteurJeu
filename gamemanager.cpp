@@ -253,7 +253,7 @@ void attributeRoom(int** minMap, std::vector<Rooms>* rooms, std::string path){
 
 void GameManager::initializeGL()
 {
-    std::string path = "D:\\Git\\MoteurJeu\\Rooms";
+    std::string path = "D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\Rooms";
     //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\Rooms"; - Benj portable
     //"C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms" - Benj fixe
     //"D:\\Git\\MoteurJeu\\Rooms" - Romain portable
@@ -368,7 +368,7 @@ void GameManager::initShaders()
 void GameManager::initTextures()
 {
     QImage img;
-    std::string s = "D:\\Git\\MoteurJeu\\sprites.png";
+    std::string s = "D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\sprites.png";
     //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\sprites.png"; - Benj portable
     //"C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\sprites.png" - Benj fixe
     //"D:\\Git\\MoteurJeu\\sprites.png" - Romain portable
@@ -418,7 +418,7 @@ void GameManager::paintGL()
         last_fps = frame_count/ (final_time - initial_time);
         frame_count = 0;
         initial_time = final_time;
-        std::cout << "Fps : " << last_fps << std::endl;
+//        std::cout << "Fps : " << last_fps << std::endl;
     }
 
     // Clear color and depth buffer
@@ -436,16 +436,17 @@ void GameManager::paintGL()
     // Set modelview-projection matrix
     program.setUniformValue("mvp_matrix", projection * matrix);
 
-    program.setUniformValue("playerpos",QVector3D(player->position.x(),player->position.y(),0));
-    program.setUniformValue("radius",2);
+    program.setUniformValue("playerpos",QVector4D(player->position.x(),player->position.y(),0,0));
+    program.setUniformValue("radius",2000);
     program.setUniformValue("test",shader);
     // Use texture unit 0 which contains sprite sheet
     program.setUniformValue("texture", 0);
     player->Render(&program,texture);
     // Draw cube geometry
-
-    //scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
-    for(int i=0;i<scene.size();i++){
+    for (size_t i = 0; i < scene.size(); i++){
         scene[i]->Render(&program,texture);
+    }
+   // scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
+
 }
 }

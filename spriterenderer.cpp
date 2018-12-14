@@ -123,7 +123,7 @@ void SpriteRenderer::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
 
     // Offset for texture coordinate
     offset += sizeof(QVector3D);
-
+    program->setUniformValue("objectwcoord",QVector4D(position.x(),position.y(),0,0));
     // Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
     int texcoordLocation = program->attributeLocation("a_texcoord");
     program->enableAttributeArray(texcoordLocation);
