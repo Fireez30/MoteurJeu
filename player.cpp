@@ -74,3 +74,85 @@ void Player::SetPileSecondaire(Pile *s){
 Pile* Player::getPileSecondaire(){
     return secondaire;
 }
+
+
+float Player::CalcTriArea(QVector3D *v1, QVector3D *v2, QVector3D *v3)
+{
+  float det = 0.0f;
+  det = ((v1->x() - v3->x()) * (v2->y() - v3->y())) - ((v2->x() - v3->x()) * (v1->y() - v3->y()));
+  return (det / 2.0f);
+}
+
+
+bool Player::IsPointInTri(QVector3D *pt, QVector3D *v1, QVector3D *v2, QVector3D *v3)
+{
+  float TotalArea = CalcTriArea(v1, v2, v3);
+  float Area1 = CalcTriArea(pt, v2, v3);
+  float Area2 = CalcTriArea(pt, v1, v3);
+  float Area3 = CalcTriArea(pt, v1, v2);
+
+  if((Area1 + Area2 + Area3) > TotalArea)
+    return false;
+  else
+    return true;
+}
+
+bool Player::CheckColl(float rayon, float angle, QVector3D point)
+{
+    QVector3D origin = this->GetPosition();
+    QVector3D A;
+    QVector3D B;
+    QVector3D centre;
+    float oppose = rayon + tanf(angle/2);
+
+    if( origin.x() == 1 && origin.y() == 0)
+    {
+        centre.setX( origin.x() + rayon);
+        centre.setY( origin.y() );
+
+        A.setX( centre.x() );
+        A.setY( centre.y() + oppose );
+
+        B.setX( centre.x() );
+        B.setX( centre.x() - oppose );
+    }
+    else if( origin.x() == -1 && origin.y() == 0)
+    {
+        centre.setX( origin.x() - rayon);
+        centre.setY( origin.y() );
+
+        A.setX( centre.x() );
+        A.setY( centre.y() + oppose );
+
+        B.setX( centre.x() );
+        B.setX( centre.x() - oppose );
+    }
+    else if( origin.x() == 0 && origin.y() == 1)
+    {
+        centre.setX( origin.x());
+        centre.setY( origin.y() + rayon);
+
+        A.setX( centre.x() - oppose);
+        A.setY( centre.y() );
+
+        B.setX( centre.x() + oppose);
+        B.setX( centre.x() );
+    }
+    else if( origin.x() == 0 && origin.y() == -1)
+    {
+        centre.setX( origin.x());
+        centre.setY( origin.y() - rayon);
+
+        A.setX( centre.x() - oppose);
+        A.setY( centre.y() );
+
+        B.setX( centre.x() + oppose);
+        B.setX( centre.x() );
+    }
+
+    // on a donc A, B et origin qui font un triangle
+
+    if( IsPointInTri(&point, &A, &B, &origin) == true ) return true;
+    else return false;
+}
+

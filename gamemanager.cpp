@@ -397,7 +397,7 @@ void GameManager::paintGL()
         last_fps = frame_count/ (final_time - initial_time);
         frame_count = 0;
         initial_time = final_time;
-        std::cout << "Fps : " << last_fps << std::endl;
+//        std::cout << "Fps : " << last_fps << std::endl;
     }
 
     // Clear color and depth buffer
