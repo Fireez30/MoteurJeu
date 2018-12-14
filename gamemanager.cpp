@@ -415,14 +415,16 @@ void GameManager::paintGL()
     // Set modelview-projection matrix
     program.setUniformValue("mvp_matrix", projection * matrix);
 
-    program.setUniformValue("playerpos",QVector3D(player->position.x(),player->position.y(),0));
-    program.setUniformValue("radius",2);
+    program.setUniformValue("playerpos",QVector4D(player->position.x(),player->position.y(),0,0));
+    program.setUniformValue("radius",2000);
     program.setUniformValue("test",shader);
     // Use texture unit 0 which contains sprite sheet
     program.setUniformValue("texture", 0);
     player->Render(&program,texture);
     // Draw cube geometry
-
-    scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
+    for (size_t i = 0; i < scene.size(); i++){
+        scene[i]->Render(&program,texture);
+    }
+   // scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
 
 }

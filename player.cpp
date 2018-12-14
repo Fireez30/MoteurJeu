@@ -53,6 +53,8 @@ void Player::ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj){
          //std::cout << "sprite tourné vers le hait \n";
         renderer.spriteCoords = sprites[0];
     }
+
+    renderer.CreateGeometry();
 }
 
 void Player::SetPilePrincipale(Pile *p){
