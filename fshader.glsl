@@ -18,7 +18,7 @@ void main()
 {
     vec4 base = texture2D(texture, v_texcoord);
     if(base.a < 0.5){ discard;}
-    if (test == 0)
+    if (test < 1)
     {
     //vec4 res = gl_PointCoord;
     float vectdiff = length(objectwcoord-playerpos);

@@ -10,7 +10,7 @@ protected:
     std::vector<QVector2D> sprites;
     int h, w;
     Pile *principale;
-    Pile *secondaire;
+    Pile *secondaire = nullptr;
 
 public :
     Player();
@@ -21,6 +21,7 @@ public :
     void ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj);
     void SetPilePrincipale(Pile *p);
     void SetPileSecondaire(Pile *s);
+    Pile* getPileSecondaire();
 };
 
 #endif // PLAYER_H

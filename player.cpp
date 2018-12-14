@@ -36,7 +36,7 @@ void Player::ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj){
     QVector3D pos = QVector3D(s.x(),s.y(),0);
     QVector3D f = (m.inverted()*pos)*proj.inverted();//mouse world pos
     //std::cout << "Player position : " << position.x() << " " << position.y() << std::endl;
-    //std::cout << "Mouse position : " << -f.x() << " " << -f.y() << std::endl;
+    //std::cout << "Mouse position : " << f.x() << " " << f.y() << std::endl;
     if (-f.x() > position.x()){
         //std::cout << "sprite tourné vers la droite \n";
         renderer.spriteCoords = sprites[1];
@@ -45,7 +45,7 @@ void Player::ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj){
          //std::cout << "sprite tourné vers la gauche \n";
         renderer.spriteCoords = sprites[3];
     }
-    if (-f.y() > position.y()){
+    else if (-f.y() > position.y()){
          //std::cout << "sprite tourné vers le bas \n";
         renderer.spriteCoords = sprites[2];
     }
@@ -63,9 +63,10 @@ void Player::SetPilePrincipale(Pile *p){
 }
 
 void Player::SetPileSecondaire(Pile *s){
-    if (secondaire == nullptr){
-        secondaire = s;
-        secondaire->getCollider().~Hitbox();
-    }
-    std::cout << "j'ai une pile secondaire mdr" << std::endl;
+    secondaire = s;
+    secondaire->getCollider().~Hitbox();
+}
+
+Pile* Player::getPileSecondaire(){
+    return secondaire;
 }

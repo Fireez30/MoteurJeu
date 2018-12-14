@@ -13,7 +13,7 @@ void Ennemi::IA(){
 
 }
 
-void Ennemi::OnTriggerEnter(Interactable2D* other){
+int Ennemi::OnTriggerEnter(Interactable2D* other){
     if(dynamic_cast<Player*> (other)!=NULL){
         //player->TakeDamage();
             printf("coucou");
