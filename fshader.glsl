@@ -1,8 +1,8 @@
 #ifdef GL_ES
 // Set default precision to medium
 precision mediump int;
-#endif
 precision mediump float;
+#endif
 
 uniform sampler2D texture;
 

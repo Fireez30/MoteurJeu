@@ -1,4 +1,5 @@
 #include "ennemi.h"
+#include <iostream>
 
 Ennemi::Ennemi(float x, float y, float s,QVector2D pos,QVector2D text): Movable(x,y,s,pos,text){
 
@@ -13,16 +14,17 @@ void Ennemi::IA(){
 
 }
 
-void Ennemi::OnTriggerEnter(Interactable2D* other){
-    if(dynamic_cast<Player*> (other)!=NULL){
+int Ennemi::OnTriggerEnter(Interactable2D* other){
+    Player* player = dynamic_cast<Player*> (other);
+    if(player != nullptr){
         //player->TakeDamage();
-            printf("coucou");
         QVector3D pos_ennemi = this->position;
         QVector3D pos_player = other->position;
         QVector3D ennemi_to_player = QVector3D(pos_player.x() - pos_ennemi.x(), pos_player.y() - pos_ennemi.y(), 0);
         ennemi_to_player.normalize();
-        QVector3D dirJoueur = QVector3D(ennemi_to_player.x()*3,ennemi_to_player.y()*3,0);
+        QVector3D dirJoueur = QVector3D(ennemi_to_player.x()*0.8, ennemi_to_player.y()*0.8 ,0);
         player->Move(dirJoueur);
-
+        return 0;
     }
+    else return 1;
 }
