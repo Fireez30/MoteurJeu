@@ -94,6 +94,13 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
                         interacts.push_back(r);
                     }
                 }
+                if (e4->IntAttribute("type") == 1){//type 1 = Pile à déterminer
+                    {
+                        RangedPile *r = new RangedPile(QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0));
+                        r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
+                        interacts.push_back(r);
+                    }
+                }
                 //for (int i = 0; i < interacts.size(); i++){
                 //    std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
                 //}
@@ -130,11 +137,30 @@ bool Room::CollisionCheck(Hitbox h){//collisions des murs unqiuements
 }
 bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
     for(int i=0;i<interacts.size();i++){
-        if(interacts[i]->getCollider().TestCollision(other->getCollider())){
-            int res = interacts[i]->OnTriggerEnter(other);
-            if (res == -1){
+        if(interacts[i]->canCollide && interacts[i]->getCollider().TestCollision(other->getCollider())){
+            Pile* pile = dynamic_cast<Pile*> (interacts[i]);
+            Player* p= dynamic_cast<Player*> (other);
+            if(pile != nullptr && p != nullptr){
+                int idPile = -1;
+                Pile * pileJoueur = p->getPileSecondaire() ;
+                if(pileJoueur!= nullptr)
+                    idPile = pileJoueur->getID();
+                if(idPile==0){
+
+                    RangedPile *r = new RangedPile(QVector2D(pile->position.x(),pile->position.y()),pileJoueur->renderer.GetTextCoords());
+                    r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
+                    r->renderer.CreateGeometry();
+                    r->canCollide = false;
+                    r->startTimer();
+                    r->setLifespan(pileJoueur->getLifespan());
+                    interacts.push_back(r);
+                }
+            }
+            if (interacts[i]->OnTriggerEnter(other) == -1){
                 std::cout << "-1" << std::endl;
+                Interactable2D* truc = interacts[i];
                 interacts.erase(interacts.begin()+i);
+                delete truc;
             }
             return true;
         }

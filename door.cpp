@@ -1,9 +1,9 @@
 #include "door.h"
 #include <iostream>
-Door::Door(QVector2D pos,QVector2D text):Interactable2D(pos,text),locked(false){
+Door::Door(QVector2D pos,QVector2D text):Interactable2D(pos,text,0),locked(false){
 
 }
-Door::Door(QVector2D pos,QVector2D text, bool state, QVector2D d, Player*p, Camera* c):Interactable2D(pos,text),locked(state), dir(d),player(p),camera(c){
+Door::Door(QVector2D pos,QVector2D text, bool state, QVector2D d, Player*p, Camera* c):Interactable2D(pos,text,0),locked(state), dir(d),player(p),camera(c){
 
 }
 
@@ -25,6 +25,6 @@ int Door::OnTriggerEnter(Interactable2D* other){
     }
 }
 
-Door::Door(const Door& d):Interactable2D(QVector2D(d.position.x(),d.position.y()),d.renderer.spriteCoords),locked(d.locked){
+Door::Door(const Door& d):Interactable2D(QVector2D(d.position.x(),d.position.y()),d.renderer.spriteCoords,0),locked(d.locked){
 
 }

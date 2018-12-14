@@ -11,7 +11,7 @@ protected:
     std::vector<QVector2D> sprites;
     int h, w;
     Pile *principale;
-    Pile *secondaire;
+    Pile *secondaire = nullptr;
 
 public :
     Player();
@@ -26,6 +26,9 @@ public :
     float CalcTriArea(QVector3D *v1, QVector3D *v2, QVector3D *v3);
     bool IsPointInTri(QVector3D *pt, QVector3D *v1, QVector3D *v2, QVector3D *v3);
     bool CheckColl(float rayon, float angle, QVector3D point);
+
+    Pile* getPileSecondaire();
+
 };
 
 #endif // PLAYER_H
