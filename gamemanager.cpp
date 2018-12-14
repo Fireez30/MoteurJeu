@@ -193,7 +193,7 @@ void generateLevel(int** minMap, int dist, int maxDist,int distSecondaire, int x
                 minMap[x-1][y]=-1;
             if(minMap[x+1][y-1]==0)
                 minMap[x+1][y]=-1;
-            rooms->push_back({"key.oel",x,y});
+            rooms->push_back({"key",x,y});
         }
     }
 }
@@ -222,6 +222,27 @@ void attributeRoom(int** minMap, std::vector<Rooms>* rooms, std::string path){
             QStringList r = QDir(dossier.c_str()).entryList(QStringList() << "*.oel",QDir::Files);
             int id = rand()%r.size();
             rooms->at(i).path = tmp+"\\"+r[id].toStdString();
+        }
+        else if(rooms->at(i).path.compare("start")==0 || rooms->at(i).path.compare("key")==0){
+            int x = rooms->at(i).x, y = rooms->at(i).y;
+            std::string tmp = "";
+            if(minMap[x][y+1]>0)
+                tmp+="1";
+            else
+                tmp+="0";
+            if(minMap[x+1][y]>0)
+                tmp+="1";
+            else
+                tmp+="0";
+            if(minMap[x][y-1]>0)
+                tmp+="1";
+            else
+                tmp+="0";
+            if(minMap[x-1][y]>0)
+                tmp+="1";
+            else
+                tmp+="0";
+            rooms->at(i).path =rooms->at(i).path+"\\"+tmp+".oel";
         }
     }
 }
@@ -256,7 +277,7 @@ void GameManager::initializeGL()
 
     //srand(13);
     int seed = 13;
-    srand(seed);
+    srand(time(NULL));
     std::cout << "Seed : " << seed << "\n";
     std::vector<Rooms>* rooms = new std::vector<Rooms>();
     int maxdist = 6,distSecondaire = 4;
@@ -268,7 +289,7 @@ void GameManager::initializeGL()
        for(int i2=0;i2<maxdist*2;i2++)
            minMap[i][i2]=0;
     }
-    rooms->push_back({"start.oel",x,y});//stockage initial
+    rooms->push_back({"start",x,y});//stockage initial
     minMap[x][y] = 2;
     rooms->push_back({"boss.oel",x,y+1});//A CHANGER TO BOSS.OEL
     minMap[x][y+1] = 3;
@@ -423,6 +444,8 @@ void GameManager::paintGL()
     player->Render(&program,texture);
     // Draw cube geometry
 
-    scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
-
+    //scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
+    for(int i=0;i<scene.size();i++){
+        scene[i]->Render(&program,texture);
+}
 }
