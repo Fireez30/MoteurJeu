@@ -138,7 +138,7 @@ void GameManager::timerEvent(QTimerEvent *)
     matrix.translate(pos.x(), pos.y(), pos.z());
     matrix.rotate(rotation);
     QPoint p = this->mapFromGlobal(QCursor::pos());
-    player->ChangeOrientation(QCursor::pos(),matrix,projection);
+    player->ChangeOrientation(p,matrix,projection);
     update();
 }
 

@@ -33,26 +33,26 @@ int Player::OnTriggerEnter(Interactable2D* other){
 }
 
 void Player::ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj){
-    QVector3D pos = QVector3D(s.x(),s.y(),0);
-    QVector3D f = (m.inverted()*pos)*proj.inverted();//mouse world pos
+    QVector3D pos = QVector3D(s.x(),s.y(),0);//pos souris
+    QVector3D screenplayer = (m*proj)*position;//mouse world pos
     //std::cout << "Player position : " << position.x() << " " << position.y() << std::endl;
     //std::cout << "Mouse position : " << f.x() << " " << f.y() << std::endl;
-    if (-f.x() > position.x()){
+    if (pos.x() > screenplayer.x()){
         //std::cout << "sprite tourné vers la droite \n";
         renderer.spriteCoords = sprites[1];
         direction = QVector2D(1,0);
     }
-    else  if (-f.x() < position.x()){
+    else  if (pos.x() < screenplayer.x()){
          //std::cout << "sprite tourné vers la gauche \n";
         renderer.spriteCoords = sprites[3];
         direction = QVector2D(-1,0);
     }
-    else if (-f.y() > position.y()){
+    else if (pos.y() > screenplayer.y()){
          //std::cout << "sprite tourné vers le bas \n";
         renderer.spriteCoords = sprites[2];
         direction = QVector2D(0,1);
     }
-    else  if (-f.y() < position.y()){
+    else  if (pos.y() < screenplayer.y()){
          //std::cout << "sprite tourné vers le hait \n";
         renderer.spriteCoords = sprites[0];
         direction = QVector2D(0,-1);

@@ -22,7 +22,7 @@ void main()
     {
     //vec4 res = gl_PointCoord;
     float vectdiff = length(objectwcoord-playerpos);
-    if (vectdiff > 2f){
+    if (vectdiff >= 2f){
                 base.x *= 0.15;
                 base.y *= 0.15;
                 base.z *= 0.15;
