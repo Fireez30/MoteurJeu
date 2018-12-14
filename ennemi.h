@@ -10,7 +10,7 @@ public :
     Ennemi(float x, float y, float s,QVector2D pos,QVector2D text);
     Ennemi(Player* p, float x, float y, float s,QVector2D pos,QVector2D text);
     void IA();
-    void OnTriggerEnter(Interactable2D* other) override;
+    int OnTriggerEnter(Interactable2D* other) override;
 
 
 private :

@@ -1,8 +1,9 @@
 #ifdef GL_ES
 // Set default precision to medium
 precision mediump int;
-#endif
 precision mediump float;
+#endif
+
 
 uniform sampler2D texture;
 
@@ -17,7 +18,7 @@ void main()
 {
     vec4 base = texture2D(texture, v_texcoord);
     if(base.a < 0.5){ discard;}
-    if (test == 0)
+    if (test < 1)
     {
     //vec3 play = mvp_matrix * positionjoueur;
     //vec2 result = playerpos.xy - gl_FragCoord.xy;
