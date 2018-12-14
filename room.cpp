@@ -142,14 +142,17 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
             Player* p= dynamic_cast<Player*> (other);
             if(pile != nullptr && p != nullptr){
                 int idPile = -1;
-                if(p->getPileSecondaire() != nullptr)
-                    idPile = p->getPileSecondaire()->getID();
+                Pile * pileJoueur = p->getPileSecondaire() ;
+                if(pileJoueur!= nullptr)
+                    idPile = pileJoueur->getID();
                 if(idPile==0){
-                    RangedPile *r = new RangedPile(QVector2D(pile->position.x(),pile->position.y()),p->getPileSecondaire()->renderer.GetTextCoords());
+
+                    RangedPile *r = new RangedPile(QVector2D(pile->position.x(),pile->position.y()),pileJoueur->renderer.GetTextCoords());
                     r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
                     r->renderer.CreateGeometry();
                     r->canCollide = false;
                     r->startTimer();
+                    r->setLifespan(pileJoueur->getLifespan());
                     interacts.push_back(r);
                 }
             }

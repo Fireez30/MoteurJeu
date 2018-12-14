@@ -43,3 +43,9 @@ int Pile::GetDamage(){
 int Pile::getID(){
     return idPile;
 }
+void Pile::setLifespan(float life){
+    lifespan  = life;
+}
+float Pile::getLifespan(){
+    return lifespan;
+}

@@ -61,8 +61,8 @@ void Player::SetPilePrincipale(Pile *p){
 }
 
 void Player::SetPileSecondaire(Pile *s){
-        secondaire = s;
-        secondaire->getCollider().~Hitbox();
+    secondaire = s;
+    secondaire->getCollider().~Hitbox();
 }
 
 Pile* Player::getPileSecondaire(){

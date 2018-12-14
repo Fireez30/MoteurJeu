@@ -22,6 +22,8 @@ public :
     float GetLifepan();
     int GetDamage();
     int getID();
+    void setLifespan(float life);
+    float getLifespan();
 };
 
 #endif // PILE_H
