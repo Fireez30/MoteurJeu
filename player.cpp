@@ -40,18 +40,22 @@ void Player::ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj){
     if (-f.x() > position.x()){
         //std::cout << "sprite tourné vers la droite \n";
         renderer.spriteCoords = sprites[1];
+        direction = QVector2D(1,0);
     }
     else  if (-f.x() < position.x()){
          //std::cout << "sprite tourné vers la gauche \n";
         renderer.spriteCoords = sprites[3];
+        direction = QVector2D(-1,0);
     }
     else if (-f.y() > position.y()){
          //std::cout << "sprite tourné vers le bas \n";
         renderer.spriteCoords = sprites[2];
+        direction = QVector2D(0,1);
     }
     else  if (-f.y() < position.y()){
          //std::cout << "sprite tourné vers le hait \n";
         renderer.spriteCoords = sprites[0];
+        direction = QVector2D(0,-1);
     }
 
     renderer.CreateGeometry();
