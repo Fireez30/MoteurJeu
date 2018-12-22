@@ -7,20 +7,32 @@
 Room::Room(){
     tiles = std::vector<Tile>();
     collisions  = std::vector<Hitbox>();
-    interacts = std::vector<Interactable2D*>();
+    pickups = std::vector<Interactable2D*>();
+    entities = std::vector<Movable*>();
 }
 
 Room::~Room(){
     tiles.clear();
     collisions.clear();
-    for (int i = 0; i < interacts.size();i++){
-        delete interacts[i];
+    for (int i = 0; i < pickups.size();i++){
+        delete pickups[i];
     }
-    interacts.clear();
+    pickups.clear();
+
+    for (int i = 0; i < entities.size(); i++){
+        delete entities[i];
+    }
+    entities.clear();
 }
 
 bool Room::isThisRoom(int _x, int _y){
     return x == _x && y == _y;
+}
+
+void Room::UpdateEntities(){
+    for (int i = 0; i < entities.size(); i++){
+        entities[i]->Update();
+    }
 }
 
 QVector2D Room::getPos(){
@@ -39,9 +51,12 @@ void Room::CreateGeometry(){
         tiles[i].renderer.CreateGeometry();
     }
 
-    for(int i=0;i<interacts.size();i++){
-        std::cout << "interacts create geometry" << std::endl;
-        interacts[i]->renderer.CreateGeometry();
+    for(int i=0;i<pickups.size();i++){
+        pickups[i]->renderer.CreateGeometry();
+    }
+
+    for (int i = 0 ; i < entities.size(); i++){
+        entities[i]->renderer.CreateGeometry();
     }
 }
 
@@ -81,7 +96,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
                 dir.setY(1);
             Door* d = new Door(QVector2D(x+xRoom,y+yRoom),QVector2D(e3->IntAttribute("tx")/16.0,e3->IntAttribute("ty")/16.0),false,dir,p,c);
             d->setCollider(Hitbox(QVector2D(d->position.x(),d->position.y()),1,1));//porte ont un collider spécial
-            interacts.push_back(d);
+            pickups.push_back(d);
         }//Fin construction doors !
 
         tinyxml2::XMLElement* d4 = doc2->FirstChildElement("Entite");
@@ -91,14 +106,14 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
                     {
                         RangedPile *r = new RangedPile(QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0));
                         r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
-                        interacts.push_back(r);
+                        pickups.push_back(r);
                     }
                 }
                 if (e4->IntAttribute("type") == 1){//type 1 = Pile à déterminer
                     {
                         RangedPile *r = new RangedPile(QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0));
                         r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
-                        interacts.push_back(r);
+                        pickups.push_back(r);
                     }
                 }
                 //for (int i = 0; i < interacts.size(); i++){
@@ -109,7 +124,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
             for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Ghost"); e5 != nullptr; e5 = e5->NextSiblingElement("Ghost")){//Liste des Ghosts
                 Ennemi* e =new Ennemi(0,0,0.8,QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0));
                 e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
-                interacts.push_back(e);
+                entities.push_back(e);
                 //for (int i = 0; i < interacts.size(); i++){
                 //    std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
                 //}
@@ -119,8 +134,11 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
 }
 
 void Room::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
-    for (int i = 0; i < interacts.size(); i++){
-        interacts[i]->Render(program,text);//contient entités + portes
+    for (int i = 0; i < pickups.size(); i++){
+        pickups[i]->Render(program,text);//contient piles + portes
+    }
+    for (int i = 0; i < entities.size(); i++){
+        entities[i]->Render(program,text);//contient entités
     }
     for (int i = 0; i < tiles.size(); i++){
         tiles[i].Render(program,text);//contient sol + murs
@@ -136,9 +154,9 @@ bool Room::CollisionCheck(Hitbox h){//collisions des murs unqiuements
     return false;
 }
 bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
-    for(int i=0;i<interacts.size();i++){
-        if(interacts[i]->canCollide && interacts[i]->getCollider().TestCollision(other->getCollider())){
-            Pile* pile = dynamic_cast<Pile*> (interacts[i]);
+    for(int i=0;i<pickups.size();i++){
+        if(pickups[i]->canCollide && pickups[i]->getCollider().TestCollision(other->getCollider())){
+            Pile* pile = dynamic_cast<Pile*> (pickups[i]);
             Player* p= dynamic_cast<Player*> (other);
             if(pile != nullptr && p != nullptr){
                 int idPile = -1;
@@ -146,20 +164,29 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
                 if(pileJoueur!= nullptr)
                     idPile = pileJoueur->getID();
                 if(idPile==0){
-
                     RangedPile *r = new RangedPile(QVector2D(pile->position.x(),pile->position.y()),pileJoueur->renderer.GetTextCoords());
                     r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
                     r->renderer.CreateGeometry();
                     r->canCollide = false;
                     r->startTimer();
                     r->setLifespan(pileJoueur->getLifespan());
-                    interacts.push_back(r);
+                    pickups.push_back(r);
                 }
-            }
-            if (interacts[i]->OnTriggerEnter(other) == -1){
-                std::cout << "-1" << std::endl;
-                Interactable2D* truc = interacts[i];
-                interacts.erase(interacts.begin()+i);
+            }//fin traitement des piles
+            if (pickups[i]->OnTriggerEnter(other) == -1){
+                Interactable2D* truc = pickups[i];
+                pickups.erase(pickups.begin()+i);
+                delete truc;
+            }//par défaut (si -1 alors supprimer)
+            return true;
+        }
+    }
+
+    for (int i = 0; i <  entities.size(); i++){
+        if(entities[i]->canCollide && entities[i]->getCollider().TestCollision(other->getCollider())){
+            if (entities[i]->OnTriggerEnter(other) == -1){
+                Movable* truc = entities[i];
+                entities.erase(entities.begin()+i);
                 delete truc;
             }
             return true;

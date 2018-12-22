@@ -22,7 +22,7 @@ public :
     void ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj);
     void SetPilePrincipale(Pile *p);
     void SetPileSecondaire(Pile *s);
-
+    void Update() override;
     float CalcTriArea(QVector3D *v1, QVector3D *v2, QVector3D *v3);
     bool IsPointInTri(QVector3D *pt, QVector3D *v1, QVector3D *v2, QVector3D *v3);
     bool CheckColl(float rayon, float angle, QVector3D point);

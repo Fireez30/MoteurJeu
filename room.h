@@ -11,13 +11,15 @@ class Room;
 #include "camera.h"
 #include <QOpenGLShaderProgram>
 #include "tinyxml2.h"
+#include "movable.h"
 
 class Room {
 
 protected:
     std::vector<Tile> tiles;
     std::vector<Hitbox> collisions;
-    std::vector<Interactable2D*> interacts;
+    std::vector<Interactable2D*> pickups;
+    std::vector<Movable*> entities;
 
 public :
     Room();
@@ -31,6 +33,7 @@ public :
     bool CollisionCheck(Hitbox h);
     bool isThisRoom(int _x, int _y);
     void setPosition(int _x, int _y);
+    void UpdateEntities();
     QVector2D getPos();
 
 private:

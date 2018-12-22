@@ -1,4 +1,3 @@
-
 #include "gamemanager.h"
 #include <QMouseEvent>
 #include <GL/gl.h>
@@ -139,6 +138,8 @@ void GameManager::timerEvent(QTimerEvent *)
     matrix.rotate(rotation);
     QPoint p = this->mapFromGlobal(QCursor::pos());
     player->ChangeOrientation(p,matrix,projection);
+
+//    scene[camera->getCurrentRoom()]->UpdateEntities();
     update();
 }
 
@@ -276,8 +277,8 @@ void GameManager::initializeGL()
     camera = new Camera();
 
     //srand(13);
-    int seed = 13;
-    srand(time(NULL));
+    int seed = 14562;
+    srand(seed);
     std::cout << "Seed : " << seed << "\n";
     std::vector<Rooms>* rooms = new std::vector<Rooms>();
     int maxdist = 6,distSecondaire = 4;
@@ -448,5 +449,4 @@ void GameManager::paintGL()
     }
    // scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
 
-}
 }

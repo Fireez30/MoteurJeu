@@ -17,6 +17,7 @@ public :
     void ChangeSpeed(float s);
     void ChangeDirection(QVector2D dir);
     void Move(QVector3D dir);
+    virtual void Update() = 0;
 };
 
 #endif // MOVABLE_H
