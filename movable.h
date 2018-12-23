@@ -8,6 +8,7 @@ class Movable: public Interactable2D
 protected :
     float speed;
     QVector2D direction;
+    QVector2D initPos;
 
 public :
     Movable();
@@ -17,6 +18,7 @@ public :
     void ChangeSpeed(float s);
     void ChangeDirection(QVector2D dir);
     void Move(QVector3D dir);
+    void ResetPos();
     virtual void Update() = 0;
 };
 

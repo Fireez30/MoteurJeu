@@ -11,12 +11,15 @@ public :
     Ennemi(Player* p, float x, float y, float s,QVector2D pos,QVector2D text);
     void IA();
     int OnTriggerEnter(Interactable2D* other) override;
+    void timerEvent(QTimerEvent *e) override;
     void Update() override;
 
 private :
     Player* player;
     QVector2D dir;
-
+    void startTimer();
+    QBasicTimer timer;
+    QVector3D ennemitoplayer;
 };
 
 

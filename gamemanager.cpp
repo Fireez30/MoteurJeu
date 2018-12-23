@@ -139,7 +139,7 @@ void GameManager::timerEvent(QTimerEvent *)
     QPoint p = this->mapFromGlobal(QCursor::pos());
     player->ChangeOrientation(p,matrix,projection);
 
-//    scene[camera->getCurrentRoom()]->UpdateEntities();
+    scene[camera->getCurrentRoom()]->UpdateEntities();
     update();
 }
 
@@ -322,11 +322,9 @@ void GameManager::initializeGL()
         Room* r = new Room;
         r->setPosition(rooms->at(i).x,rooms->at(i).y);
         r->ReadFile(rooms,i, path, player, camera);
-        r->CreateGeometry();
         scene.push_back(r);
         //std::cout << "Salle " << rooms->at(i).path << " at x : " << rooms->at(i).x << " and y : " << rooms->at(i).y<< std::endl;
     }
-
     player->renderer.CreateGeometry();
     camera->setRooms(scene);
     camera->setCurrentRoom(x,y);
@@ -444,9 +442,9 @@ void GameManager::paintGL()
     program.setUniformValue("texture", 0);
     player->Render(&program,texture);
     // Draw cube geometry
-    for (size_t i = 0; i < scene.size(); i++){
-        scene[i]->Render(&program,texture);
-    }
-   // scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
+    //for (size_t i = 0; i < scene.size(); i++){
+    //    scene[i]->Render(&program,texture);
+    //}
+    scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
 
 }
