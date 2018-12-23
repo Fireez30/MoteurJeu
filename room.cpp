@@ -125,7 +125,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
             }//fin for piles, rajouter des fors pour les autres entités
 
             for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Ghost"); e5 != nullptr; e5 = e5->NextSiblingElement("Ghost")){//Liste des Ghosts
-                Ennemi* e =new Ennemi(p,0,0,0.8,QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0));
+                Ennemi* e =new Ennemi(this,p,0,0,0.8,QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0));
                 e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
                 entities.push_back(e);
                 //for (int i = 0; i < interacts.size(); i++){

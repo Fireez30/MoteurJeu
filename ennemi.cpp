@@ -4,8 +4,9 @@
 Ennemi::Ennemi(float x, float y, float s,QVector2D pos,QVector2D text): Movable(x,y,s,pos,text),ennemitoplayer(0,0,0){
 }
 
-Ennemi::Ennemi(Player* p, float x, float y, float s,QVector2D pos,QVector2D text): Movable(x,y,s,pos,text),ennemitoplayer(0,0,0){
+Ennemi::Ennemi(Room* r,Player* p, float x, float y, float s,QVector2D pos,QVector2D text): Movable(x,y,s,pos,text),ennemitoplayer(0,0,0){
     this->player = p;
+    this->room = r;
     //startTimer();
 }
 
@@ -48,6 +49,10 @@ int Ennemi::OnTriggerEnter(Interactable2D* other){
         ennemi_to_player.normalize();
         QVector3D dirJoueur = QVector3D(ennemi_to_player.x()*0.8, ennemi_to_player.y()*0.8 ,0);
         player->Move(dirJoueur);//collision checvk a faire
+        player->SetLastMove(dirJoueur);
+        if (room->CollisionCheck(player->getCollider())){//si la collision amene le joueur dans le mur, la reset
+            player->Move(-dirJoueur);
+        }
         return 0;
     }
     else return 1;
