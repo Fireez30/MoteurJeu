@@ -12,6 +12,7 @@ protected:
     int h, w;
     Pile *principale;
     Pile *secondaire = nullptr;
+    QVector3D lastMove;
 
 public :
     Player();
@@ -26,7 +27,8 @@ public :
     float CalcTriArea(QVector3D *v1, QVector3D *v2, QVector3D *v3);
     bool IsPointInTri(QVector3D *pt, QVector3D *v1, QVector3D *v2, QVector3D *v3);
     bool CheckColl(float rayon, float angle, QVector3D point);
-
+    QVector3D GetLastMove() override;
+    void SetLastMove(QVector3D p);
     Pile* getPileSecondaire();
 
 };

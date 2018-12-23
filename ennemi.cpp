@@ -26,7 +26,11 @@ void Ennemi::IA(){
      ennemitoplayer = QVector3D(player->position.x() - position.x(), player->position.y() - position.y(), 0);
      ennemitoplayer.normalize();
      ennemitoplayer *= speed;
-     this->Move(ennemitoplayer * 0.1);//collision checvk a faire
+     this->Move(ennemitoplayer * 0.0166);//collision checvk a faire
+}
+
+QVector3D Ennemi::GetLastMove(){
+    return ennemitoplayer;
 }
 
 void Ennemi::Update(){

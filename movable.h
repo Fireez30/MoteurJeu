@@ -20,6 +20,7 @@ public :
     void Move(QVector3D dir);
     void ResetPos();
     virtual void Update() = 0;
+    virtual QVector3D GetLastMove() = 0;
 };
 
 #endif // MOVABLE_H

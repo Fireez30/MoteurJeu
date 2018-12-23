@@ -13,6 +13,7 @@ public :
     int OnTriggerEnter(Interactable2D* other) override;
     void timerEvent(QTimerEvent *e) override;
     void Update() override;
+    QVector3D GetLastMove() override;
 
 private :
     Player* player;

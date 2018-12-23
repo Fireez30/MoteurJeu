@@ -32,6 +32,14 @@ int Player::OnTriggerEnter(Interactable2D* other){
 
 }
 
+void Player::SetLastMove(QVector3D p){
+    lastMove = p;
+}
+
+QVector3D Player::GetLastMove(){
+    return lastMove;
+}
+
 void Player::Update(){
 
 }
