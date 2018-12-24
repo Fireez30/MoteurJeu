@@ -4,6 +4,7 @@
 #include "rangedpile.h"
 #include "ennemi.h"
 #include <math.h>
+#include "largerpile.h"
 
 Room::Room(){
     tiles = std::vector<Tile>();
@@ -114,9 +115,9 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
                         pickups.push_back(r);
                     }
                 }
-                if (e4->IntAttribute("type") == 1){//type 1 = Pile à déterminer
+                if (e4->IntAttribute("type") == 1){//type 1 = Pile à cone plus grand
                     {
-                        RangedPile *r = new RangedPile(QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0));
+                        LargerPile *r = new LargerPile(QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0));
                         r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
                         pickups.push_back(r);
                     }
