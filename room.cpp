@@ -205,35 +205,38 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
     return false;
 }
 
-float Room::CalcTriArea(QVector3D *v1, QVector3D *v2, QVector3D *v3)
+float Room::CalcTriArea(QVector2D *v1, QVector2D *v2, QVector2D *v3)
 {
-  float det = 0.0f;
-  det = ((v1->x() - v3->x()) * (v2->y() - v3->y())) - ((v2->x() - v3->x()) * (v1->y() - v3->y()));
-  return (det / 2.0f);
+    float det = 0.0f;
+    det = ((v1->x() - v3->x()) * (v2->y() - v3->y())) - ((v2->x() - v3->x()) * (v1->y() - v3->y()));
+    return (det / 2.0f);
 }
 
 
-bool Room::IsPointInTri(QVector3D *pt, QVector3D *v1, QVector3D *v2, QVector3D *v3)
+bool Room::IsPointInTri(QVector2D *pt, QVector2D *v1, QVector2D *v2, QVector2D *v3)
 {
-  float TotalArea = CalcTriArea(v1, v2, v3);
-  float Area1 = CalcTriArea(pt, v2, v3);
-  float Area2 = CalcTriArea(pt, v1, v3);
-  float Area3 = CalcTriArea(pt, v1, v2);
+    float TotalArea = CalcTriArea(v1, v2, v3);
+    float Area1 = CalcTriArea(pt, v2, v3);
+    float Area2 = CalcTriArea(pt, v1, v3);
+    float Area3 = CalcTriArea(pt, v1, v2);
 
-  if((Area1 + Area2 + Area3) > TotalArea)
-    return false;
-  else
-    return true;
+    if((Area1 + Area2 + Area3) > TotalArea)
+        return false;
+    else
+        return true;
 }
 
-bool Room::CheckColl(float rayon, float angle, QVector3D point)
+bool Room::CheckColl(float rayon, float angle, QVector2D point)
 {
-    QVector3D origin = player->GetPosition();
-    QVector3D A;
-    QVector3D B;
-    QVector3D centre;
+    QVector2D origin = player->GetDirection();
+
+
+    QVector2D A;
+    QVector2D B;
+    QVector2D centre;
     float oppose = rayon + tanf(angle/2);
 
+    // vers la droite
     if( origin.x() == 1 && origin.y() == 0)
     {
         centre.setX( origin.x() + rayon);
@@ -245,6 +248,7 @@ bool Room::CheckColl(float rayon, float angle, QVector3D point)
         B.setX( centre.x() );
         B.setX( centre.x() - oppose );
     }
+    // vers la gauche
     else if( origin.x() == -1 && origin.y() == 0)
     {
         centre.setX( origin.x() - rayon);
@@ -256,6 +260,7 @@ bool Room::CheckColl(float rayon, float angle, QVector3D point)
         B.setX( centre.x() );
         B.setX( centre.x() - oppose );
     }
+    // vers le haut
     else if( origin.x() == 0 && origin.y() == 1)
     {
         centre.setX( origin.x());
@@ -267,6 +272,7 @@ bool Room::CheckColl(float rayon, float angle, QVector3D point)
         B.setX( centre.x() + oppose);
         B.setX( centre.x() );
     }
+    // vers le bas
     else if( origin.x() == 0 && origin.y() == -1)
     {
         centre.setX( origin.x());

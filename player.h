@@ -15,6 +15,8 @@ protected:
     Pile *secondaire = nullptr;
     QVector3D lastMove;
 
+    QVector2D direction;
+
 public :
     Player();
     Player(float x,float y, float sp,QVector2D dir);
@@ -25,9 +27,7 @@ public :
     void SetPilePrincipale(Pile *p);
     void SetPileSecondaire(Pile *s);
     void Update() override;
-    float CalcTriArea(QVector3D *v1, QVector3D *v2, QVector3D *v3);
-    bool IsPointInTri(QVector3D *pt, QVector3D *v1, QVector3D *v2, QVector3D *v3);
-    bool CheckColl(float rayon, float angle, QVector3D point);
+    QVector2D GetDirection();
     QVector3D GetLastMove() override;
     void SetLastMove(QVector3D p);
     Pile* getPileSecondaire();
