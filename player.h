@@ -21,7 +21,7 @@ public :
     void Input();
     int OnTriggerEnter(Interactable2D* other) override;
     void ChangePile(Pile *p);
-    void ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj);
+    void ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj,QVector2D size);
     void SetPilePrincipale(Pile *p);
     void SetPileSecondaire(Pile *s);
     void Update() override;

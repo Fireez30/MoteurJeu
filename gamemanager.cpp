@@ -426,9 +426,8 @@ void GameManager::paintGL()
     matrix.translate(pos.x(), pos.y(), pos.z());
     matrix.rotate(rotation);
 
-    QPoint p = this->mapFromGlobal(QCursor::pos());
-    std::cout <<" p : "<< p.x() << " " << p.y() << std::endl;
-    player->ChangeOrientation(p,matrix,projection);
+    QVector2D size = QVector2D(this->width(),this->height());
+    player->ChangeOrientation(this->mapFromGlobal(QCursor::pos()),matrix,projection,size);
 
     scene[camera->getCurrentRoom()]->UpdateEntities();
     // Set modelview-projection matrix

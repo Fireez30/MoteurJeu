@@ -44,29 +44,33 @@ void Player::Update(){
 
 }
 
-void Player::ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj){
-    QVector3D pos = QVector3D(s.x(),s.y(),0);//pos souris
-    QVector3D screenplayer = (m*proj)*position;//mouse world pos
-    std::cout << "Player position : " << screenplayer.x() << " " << screenplayer.y() << std::endl;
-    if (pos.x() > screenplayer.x()){
+
+void Player::ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj,QVector2D size){
+    QVector3D mousePos = QVector3D(s.x(),s.y(),0);//pos souris
+    QRect vp = QRect(0,0,size.x(),size.y());
+    QVector3D worldpos = position.project(m,proj,vp);
+
+    //std::cout << "player position " << worldpos.x() << " " << worldpos.y() << " " << worldpos.z() << std::endl;
+    //USELESSstd::cout << "mouse position " << vIn.x() << " " << vIn.y() << " " << vIn.z() << std::endl;
+    //std::cout << "mouse position " << mousePos.x() << " " << mousePos.y() << " " << mousePos.z() << std::endl;
+
+    direction = QVector2D(worldpos - mousePos).normalized();
+    std::cout << "direction = " << direction.x() << " " << direction.y() << std::endl;
+    if (mousePos.x() > worldpos.x()){
         //std::cout << "sprite tourné vers la droite \n";
         renderer.spriteCoords = sprites[1];
-        direction = QVector2D(1,0);
     }
-    else  if (pos.x() < screenplayer.x()){
-         //std::cout << "sprite tourné vers la gauche \n";
+    else  if (mousePos.x() < worldpos.x()){
+        //std::cout << "sprite tourné vers la gauche \n";
         renderer.spriteCoords = sprites[3];
-        direction = QVector2D(-1,0);
     }
-    else if (pos.y() > screenplayer.y()){
-         //std::cout << "sprite tourné vers le bas \n";
+    else if (mousePos.y() > worldpos.y()){
+        //std::cout << "sprite tourné vers le bas \n";
         renderer.spriteCoords = sprites[2];
-        direction = QVector2D(0,1);
     }
-    else  if (pos.y() < screenplayer.y()){
-         //std::cout << "sprite tourné vers le hait \n";
+    else  if (mousePos.y() < worldpos.y()){
+        //std::cout << "sprite tourné vers le hait \n";
         renderer.spriteCoords = sprites[0];
-        direction = QVector2D(0,-1);
     }
 
     renderer.CreateGeometry();
@@ -93,23 +97,23 @@ Pile* Player::getPileSecondaire(){
 
 float Player::CalcTriArea(QVector3D *v1, QVector3D *v2, QVector3D *v3)
 {
-  float det = 0.0f;
-  det = ((v1->x() - v3->x()) * (v2->y() - v3->y())) - ((v2->x() - v3->x()) * (v1->y() - v3->y()));
-  return (det / 2.0f);
+    float det = 0.0f;
+    det = ((v1->x() - v3->x()) * (v2->y() - v3->y())) - ((v2->x() - v3->x()) * (v1->y() - v3->y()));
+    return (det / 2.0f);
 }
 
 
 bool Player::IsPointInTri(QVector3D *pt, QVector3D *v1, QVector3D *v2, QVector3D *v3)
 {
-  float TotalArea = CalcTriArea(v1, v2, v3);
-  float Area1 = CalcTriArea(pt, v2, v3);
-  float Area2 = CalcTriArea(pt, v1, v3);
-  float Area3 = CalcTriArea(pt, v1, v2);
+    float TotalArea = CalcTriArea(v1, v2, v3);
+    float Area1 = CalcTriArea(pt, v2, v3);
+    float Area2 = CalcTriArea(pt, v1, v3);
+    float Area3 = CalcTriArea(pt, v1, v2);
 
-  if((Area1 + Area2 + Area3) > TotalArea)
-    return false;
-  else
-    return true;
+    if((Area1 + Area2 + Area3) > TotalArea)
+        return false;
+    else
+        return true;
 }
 
 bool Player::utilisePilePrincipale(){
