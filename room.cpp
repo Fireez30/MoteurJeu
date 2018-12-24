@@ -52,6 +52,10 @@ std::vector<Tile> Room::GetTiles(){
     return tiles;
 }
 
+void Room::setPlayer(Player* _p){
+    player = _p;
+}
+
 void Room::CreateGeometry(){
     for (int i = 0; i < tiles.size(); i++){
         tiles[i].renderer.CreateGeometry();

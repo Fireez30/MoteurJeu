@@ -12,6 +12,7 @@
 #include <QTime>
 #include "room.h"
 #include "player.h"
+#include <QtUiTools/QUiLoader>
 #include "camera.h"
 
 class GameManager : public QOpenGLWidget, protected QOpenGLFunctions
@@ -24,7 +25,6 @@ public:
     int m_frameCount;
     int max_fps;
     int shader = 1;
-
     float x = -137;//move this to a camera
     float y = -82;
     float z = -25.0;

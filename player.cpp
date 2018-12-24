@@ -47,8 +47,7 @@ void Player::Update(){
 void Player::ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj){
     QVector3D pos = QVector3D(s.x(),s.y(),0);//pos souris
     QVector3D screenplayer = (m*proj)*position;//mouse world pos
-    //std::cout << "Player position : " << position.x() << " " << position.y() << std::endl;
-    //std::cout << "Mouse position : " << f.x() << " " << f.y() << std::endl;
+    std::cout << "Player position : " << screenplayer.x() << " " << screenplayer.y() << std::endl;
     if (pos.x() > screenplayer.x()){
         //std::cout << "sprite tourné vers la droite \n";
         renderer.spriteCoords = sprites[1];

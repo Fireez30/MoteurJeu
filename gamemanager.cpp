@@ -132,14 +132,7 @@ void GameManager::timerEvent(QTimerEvent *)
         rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
         et.restart();
     }
-    QMatrix4x4 matrix;
-    QVector3D pos = camera->getPosition();
-    matrix.translate(pos.x(), pos.y(), pos.z());
-    matrix.rotate(rotation);
-    QPoint p = this->mapFromGlobal(QCursor::pos());
-    player->ChangeOrientation(p,matrix,projection);
 
-    scene[camera->getCurrentRoom()]->UpdateEntities();
     update();
 }
 
@@ -433,6 +426,11 @@ void GameManager::paintGL()
     matrix.translate(pos.x(), pos.y(), pos.z());
     matrix.rotate(rotation);
 
+    QPoint p = this->mapFromGlobal(QCursor::pos());
+    std::cout <<" p : "<< p.x() << " " << p.y() << std::endl;
+    player->ChangeOrientation(p,matrix,projection);
+
+    scene[camera->getCurrentRoom()]->UpdateEntities();
     // Set modelview-projection matrix
     program.setUniformValue("mvp_matrix", projection * matrix);
 
