@@ -10,6 +10,7 @@ class Player : public Movable
 protected:
     std::vector<QVector2D> sprites;
     int h, w;
+    bool quellePile;
     Pile *principale;
     Pile *secondaire = nullptr;
     QVector3D lastMove;
@@ -30,7 +31,9 @@ public :
     QVector3D GetLastMove() override;
     void SetLastMove(QVector3D p);
     Pile* getPileSecondaire();
-
+    bool utilisePilePrincipale();
+    void setUtilisation(bool b);
+    Pile* GetPilePrincipale();
 };
 
 #endif // PLAYER_H

@@ -20,6 +20,7 @@ protected:
     std::vector<Hitbox> collisions;
     std::vector<Interactable2D*> pickups;
     std::vector<Movable*> entities;
+    Player* player;
 
 public :
     Room();
@@ -35,6 +36,11 @@ public :
     void setPosition(int _x, int _y);
     void UpdateEntities();
     QVector2D getPos();
+    bool IsPointInTri(QVector3D *pt, QVector3D *v1, QVector3D *v2, QVector3D *v3);
+    float CalcTriArea(QVector3D *v1, QVector3D *v2, QVector3D *v3);
+    bool CheckColl(float rayon, float angle, QVector3D point);
+    void setPlayer(Player* _p);
+    void affectEnemiesInRange();
 
 private:
     int x, y;

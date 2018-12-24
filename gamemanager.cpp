@@ -321,6 +321,7 @@ void GameManager::initializeGL()
     for (int i = 0; i < rooms->size();i++){
         Room* r = new Room;
         r->setPosition(rooms->at(i).x,rooms->at(i).y);
+        r->setPlayer(player);
         r->ReadFile(rooms,i, path, player, camera);
         scene.push_back(r);
         //std::cout << "Salle " << rooms->at(i).path << " at x : " << rooms->at(i).x << " and y : " << rooms->at(i).y<< std::endl;

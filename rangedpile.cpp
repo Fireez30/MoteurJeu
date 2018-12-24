@@ -9,6 +9,6 @@ RangedPile::RangedPile(QVector2D pos,float r, float c, float l, int d,QVector2D 
 
 }
 
-void RangedPile::Affect(){
-
+void RangedPile::Affect(Movable* m){
+    m->ChangeSpeed(m->GetSpeed()*0.5);
 }

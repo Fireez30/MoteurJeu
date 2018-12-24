@@ -10,14 +10,14 @@
 #include <QTime>
 #include "rangedpile.h"
 
-Player::Player():Movable(1,0,0.2,QVector2D(162,83),QVector2D(0.0,8.0/16.0)){
+Player::Player():Movable(1,0,0.2,QVector2D(162,83),QVector2D(0.0,8.0/16.0)),quellePile(true){
     sprites.push_back(QVector2D(0.0,11.0/16.0));//facing up
     sprites.push_back(QVector2D(0.0,10.0/16.0));//facing right
     sprites.push_back(QVector2D(0.0,8.0/16.0));//basic sprite orientation (facing down)
     sprites.push_back(QVector2D(0.0,9.0/16.0));//facing left
 }
 
-Player::Player(float x,float y, float sp,QVector2D dir):Movable(x,y,sp,dir,QVector2D(0.0,8.0/16.0)){
+Player::Player(float x,float y, float sp,QVector2D dir):Movable(x,y,sp,dir,QVector2D(0.0,8.0/16.0)),quellePile(true){
     sprites.push_back(QVector2D(0.0,8.0/16.0));//basic sprite orientation (facing down)
     sprites.push_back(QVector2D(0.0,9.0/16.0));//facing left
     sprites.push_back(QVector2D(0.0,10.0/16.0));//facing right
@@ -78,6 +78,10 @@ void Player::SetPilePrincipale(Pile *p){
     principale->getCollider().~Hitbox();
 }
 
+Pile* Player::GetPilePrincipale(){
+    return principale;
+}
+
 void Player::SetPileSecondaire(Pile *s){
     secondaire = s;
     secondaire->getCollider().~Hitbox();
@@ -107,6 +111,14 @@ bool Player::IsPointInTri(QVector3D *pt, QVector3D *v1, QVector3D *v2, QVector3D
     return false;
   else
     return true;
+}
+
+bool Player::utilisePilePrincipale(){
+    return quellePile;
+}
+
+void Player::setUtilisation(bool b){
+    quellePile = b;
 }
 
 bool Player::CheckColl(float rayon, float angle, QVector3D point)
