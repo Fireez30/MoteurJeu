@@ -329,8 +329,6 @@ void GameManager::initializeGL()
 
 void GameManager::initShaders()
 {
-
-
     // Compile vertex shader
     if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vshader.glsl"))
     {
@@ -433,7 +431,6 @@ void GameManager::paintGL()
     QVector2D size = QVector2D(this->width(),this->height());
     player->ChangeOrientation(this->mapFromGlobal(QCursor::pos()),matrix,projection,size);
     //std::cout << "Player life : " << player->getHealth() << std::endl;
-    std::cout << glGetString(GL_VERSION) << std::endl;
     scene[camera->getCurrentRoom()]->UpdateEntities();
     scene[camera->getCurrentRoom()]->TriggerCheck(player);
     if (player->isDead()){
