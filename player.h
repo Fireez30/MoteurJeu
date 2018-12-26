@@ -14,12 +14,12 @@ protected:
     Pile *principale;
     Pile *secondaire = nullptr;
     QVector3D lastMove;
-
+    float orientationRatio;
     QVector2D direction;
 
 public :
     Player();
-    Player(float x,float y, float sp,QVector2D dir);
+    Player(int h,float x,float y, float sp,QVector2D dir);
     void Input();
     int OnTriggerEnter(Interactable2D* other) override;
     void ChangePile(Pile *p);

@@ -1,10 +1,10 @@
 #include "ennemi.h"
 #include <iostream>
 
-Ennemi::Ennemi(float x, float y, float s,QVector2D pos,QVector2D text): Movable(x,y,s,pos,text),ennemitoplayer(0,0,0),initSpeed(s){
+Ennemi::Ennemi(int h,float x, float y, float s,QVector2D pos,QVector2D text): Movable(h,x,y,s,pos,text),ennemitoplayer(0,0,0),initSpeed(s){
 }
 
-Ennemi::Ennemi(Room* r,Player* p, float x, float y, float s,QVector2D pos,QVector2D text): Movable(x,y,s,pos,text),ennemitoplayer(0,0,0),initSpeed(s){
+Ennemi::Ennemi(Room* r,Player* p,int h, float x, float y, float s,QVector2D pos,QVector2D text): Movable(h,x,y,s,pos,text),ennemitoplayer(0,0,0),initSpeed(s){
     this->player = p;
     this->room = r;
     //startTimer();
@@ -48,7 +48,7 @@ void Ennemi::Update(){
 int Ennemi::OnTriggerEnter(Interactable2D* other){
     Player* player = dynamic_cast<Player*> (other);
     if(player != nullptr){
-        //player->TakeDamage();
+        player->Damage(1);
         QVector3D pos_ennemi = this->position;
         QVector3D pos_player = other->position;
         QVector3D ennemi_to_player = QVector3D(pos_player.x() - pos_ennemi.x(), pos_player.y() - pos_ennemi.y(), 0);

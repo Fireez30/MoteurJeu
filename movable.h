@@ -9,10 +9,12 @@ protected :
     float speed;
     QVector2D direction;
     QVector2D initPos;
+    int health;
+    bool dead;
 
 public :
     Movable();
-    Movable(float x, float y,float sp,QVector2D pos,QVector2D text);
+    Movable(int health,float x, float y,float sp,QVector2D pos,QVector2D text);
     QVector2D GetDirection();
     float GetSpeed();
     void ChangeSpeed(float s);
@@ -21,6 +23,10 @@ public :
     void ResetPos();
     virtual void Update() = 0;
     virtual QVector3D GetLastMove() = 0;
+    int getHealth();
+    void setHealth(int h);
+    void Damage(int d);
+    bool isDead();
 };
 
 #endif // MOVABLE_H
