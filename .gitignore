@@ -1,6 +1,8 @@
 
 *.pro
 *.user
+moteur.exe
+Jeu/moteur.exe
 moteur.pro
 moteur.pro.user
 moteur.pro.user.20
