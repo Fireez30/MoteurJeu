@@ -245,6 +245,7 @@ void Room::affectEnemiesInRange(){
         rayon = player->GetPilePrincipale()->GetRange();
         angle = player->GetPilePrincipale()->GetConeAngle();
         isUsingMainLamp = true;
+        std::cout << "utilise pile principale " << std::endl;
     }
     else if (player->utilisePileSecondaire()){
         rayon = player->getPileSecondaire()->GetRange();

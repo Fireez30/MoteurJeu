@@ -444,7 +444,7 @@ void GameManager::paintGL()
     //std::cout << "Player life : " << player->getHealth() << std::endl;
     scene[camera->getCurrentRoom()]->UpdateEntities();
     scene[camera->getCurrentRoom()]->TriggerCheck(player);
-
+    scene[camera->getCurrentRoom()]->affectEnemiesInRange();
     // !! if player HP is 1 , change shaders to color the scren in red ?
     if (player->isDead()){
         this->close();
