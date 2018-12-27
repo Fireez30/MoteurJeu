@@ -205,90 +205,34 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
     return false;
 }
 
-float Room::CalcTriArea(QVector2D *v1, QVector2D *v2, QVector2D *v3)
+
+bool Room::IsPointInCircle(QVector2D *pt, QVector2D *center, float rayon)
 {
-    float det = 0.0f;
-    det = ((v1->x() - v3->x()) * (v2->y() - v3->y())) - ((v2->x() - v3->x()) * (v1->y() - v3->y()));
-    return (det / 2.0f);
-}
-
-
-bool Room::IsPointInTri(QVector2D *pt, QVector2D *v1, QVector2D *v2, QVector2D *v3)
-{
-    float TotalArea = CalcTriArea(v1, v2, v3);
-    float Area1 = CalcTriArea(pt, v2, v3);
-    float Area2 = CalcTriArea(pt, v1, v3);
-    float Area3 = CalcTriArea(pt, v1, v2);
-
-    if((Area1 + Area2 + Area3) > TotalArea)
-        return false;
-    else
+    if( sqrt( pow(pt->x() - center->x(),2) + pow(pt->y() - center->y(),2) ) < rayon )
         return true;
+    else
+        return false;
 }
 
 bool Room::CheckColl(float rayon, float angle, QVector2D point)
 {
-    QVector2D origin = player->GetDirection();
-
-
-    QVector2D A;
-    QVector2D B;
-    QVector2D centre;
-    float oppose = rayon + tanf(angle/2);
-
-    // vers la droite
-    if( origin.x() == 1 && origin.y() == 0)
+    QVector2D center = QVector2D(player->x(),player->y());
+    if( !IsPointInCircle(&point, &center, rayon) )
+        return false;
+    else
     {
-        centre.setX( origin.x() + rayon);
-        centre.setY( origin.y() );
+        QVector2D vectDirect = player->GetVectDirect();
+        QVector2D center_ennemi = QVector2D(point.x() - center.x() , point.y() - center.y());
 
-        A.setX( centre.x() );
-        A.setY( centre.y() + oppose );
-
-        B.setX( centre.x() );
-        B.setX( centre.x() - oppose );
+        float produitScalaire = vectDirect.x() * center_ennemi.x() + vectDirect.y() * center_ennemi.y();
+        float produitNorme = vectDirect.length() * center_ennemi.length();
+        float cosTeta = produitScalaire / produitNorme;
+        float angle = acos(cosTeta);
+        float angleDegree = angle*(180/3.14159265358979323846); // radian to degree
+        std::cout<<"degree = "<<angleDegree<<std::endl;
+        if ( std::abs(angleDegree) < angle/2 ) return true;
+        else return true;
     }
-    // vers la gauche
-    else if( origin.x() == -1 && origin.y() == 0)
-    {
-        centre.setX( origin.x() - rayon);
-        centre.setY( origin.y() );
-
-        A.setX( centre.x() );
-        A.setY( centre.y() + oppose );
-
-        B.setX( centre.x() );
-        B.setX( centre.x() - oppose );
-    }
-    // vers le haut
-    else if( origin.x() == 0 && origin.y() == 1)
-    {
-        centre.setX( origin.x());
-        centre.setY( origin.y() + rayon);
-
-        A.setX( centre.x() - oppose);
-        A.setY( centre.y() );
-
-        B.setX( centre.x() + oppose);
-        B.setX( centre.x() );
-    }
-    // vers le bas
-    else if( origin.x() == 0 && origin.y() == -1)
-    {
-        centre.setX( origin.x());
-        centre.setY( origin.y() - rayon);
-
-        A.setX( centre.x() - oppose);
-        A.setY( centre.y() );
-
-        B.setX( centre.x() + oppose);
-        B.setX( centre.x() );
-    }
-
-    // on a donc A, B et origin qui font un triangle
-
-    if( IsPointInTri(&point, &A, &B, &origin) == true ) return true;
-    else return false;
 }
 
 void Room::affectEnemiesInRange(){

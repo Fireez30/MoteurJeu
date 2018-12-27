@@ -116,7 +116,7 @@ void Player::setUtilisationSecondaire(bool b){
 }
 
 
-QVector2D Player::GetDirection(){
-    return this->direction;
+QVector2D Player::GetVectDirect(){
+    return this->vectDirect;
 }
 

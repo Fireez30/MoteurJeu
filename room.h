@@ -36,8 +36,7 @@ public :
     void setPosition(int _x, int _y);
     void UpdateEntities();
     QVector2D getPos();
-    float CalcTriArea(QVector2D *v1, QVector2D *v2, QVector2D *v3);
-    bool IsPointInTri(QVector2D *pt, QVector2D *v1, QVector2D *v2, QVector2D *v3);
+    bool IsPointInCircle(QVector2D *pt, QVector2D *center, float rayon);
     bool CheckColl(float rayon, float angle, QVector2D point);
     void setPlayer(Player* _p);
     void affectEnemiesInRange();
