@@ -11,7 +11,7 @@
 #include "rangedpile.h"
 #include "mainpile.h"
 
-Player::Player():Movable(3,1,0,0.2,QVector2D(162,83),QVector2D(0.0,8.0/16.0)),quellePile(true){
+Player::Player():Movable(3,1,0,0.2,QVector2D(162,83),QVector2D(0.0,8.0/16.0)),usePilePrincipale(false),usePileSecondaire(false){
     sprites.push_back(QVector2D(0.0,11.0/16.0));//facing up
     sprites.push_back(QVector2D(0.0,10.0/16.0));//facing right
     sprites.push_back(QVector2D(0.0,8.0/16.0));//basic sprite orientation (facing down)
@@ -20,7 +20,7 @@ Player::Player():Movable(3,1,0,0.2,QVector2D(162,83),QVector2D(0.0,8.0/16.0)),qu
     principale = new MainPile(QVector2D(0,0),QVector2D(0,0));
 }
 
-Player::Player(int h,float x,float y, float sp,QVector2D dir):Movable(h,x,y,sp,dir,QVector2D(0.0,8.0/16.0)),quellePile(true){
+Player::Player(int h,float x,float y, float sp,QVector2D dir):Movable(h,x,y,sp,dir,QVector2D(0.0,8.0/16.0)),usePilePrincipale(false),usePileSecondaire(false){
     sprites.push_back(QVector2D(0.0,8.0/16.0));//basic sprite orientation (facing down)
     sprites.push_back(QVector2D(0.0,9.0/16.0));//facing left
     sprites.push_back(QVector2D(0.0,10.0/16.0));//facing right
@@ -100,12 +100,21 @@ Pile* Player::getPileSecondaire(){
 }
 
 bool Player::utilisePilePrincipale(){
-    return quellePile;
+    return usePilePrincipale;
 }
 
-void Player::setUtilisation(bool b){
-    quellePile = b;
+bool Player::utilisePileSecondaire(){
+    return usePileSecondaire;
 }
+
+void Player::setUtilisationPrincipale(bool b){
+    usePilePrincipale = b;
+}
+
+void Player::setUtilisationSecondaire(bool b){
+    usePileSecondaire = b;
+}
+
 
 QVector2D Player::GetDirection(){
     return this->direction;

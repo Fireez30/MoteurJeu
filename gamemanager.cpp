@@ -103,12 +103,22 @@ void GameManager::keyPressEvent (QKeyEvent * event){
 
 void GameManager::mousePressEvent(QMouseEvent *e)
 {
-
+    if (e->button() == Qt::LeftButton){
+        player->setUtilisationPrincipale(true);
+    }
+    else if (e->button() == Qt::RightButton){
+        player->setUtilisationSecondaire(true);
+    }
 }
 
 void GameManager::mouseReleaseEvent(QMouseEvent *e)
 {
-
+    if (e->button() == Qt::LeftButton){
+        player->setUtilisationPrincipale(false);
+    }
+    else if (e->button() == Qt::RightButton){
+        player->setUtilisationSecondaire(false);
+    }
 }
 
 void GameManager::mouseMoveEvent(QMouseEvent *e){
@@ -434,8 +444,11 @@ void GameManager::paintGL()
     //std::cout << "Player life : " << player->getHealth() << std::endl;
     scene[camera->getCurrentRoom()]->UpdateEntities();
     scene[camera->getCurrentRoom()]->TriggerCheck(player);
+
+    // !! if player HP is 1 , change shaders to color the scren in red ?
     if (player->isDead()){
         this->close();
+        //
     }
     // Set modelview-projection matrix
     program.setUniformValue("mvp_matrix", projection * matrix);

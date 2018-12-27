@@ -294,25 +294,30 @@ bool Room::CheckColl(float rayon, float angle, QVector2D point)
 void Room::affectEnemiesInRange(){
     float rayon;
     float angle;
-    bool isUsingMainLamp;
+    bool isUsingMainLamp = false;
+    bool isUsingSecondLamp = false;
 
     if (player->utilisePilePrincipale()){
         rayon = player->GetPilePrincipale()->GetRange();
         angle = player->GetPilePrincipale()->GetConeAngle();
         isUsingMainLamp = true;
     }
-    else{
+    else if (player->utilisePileSecondaire()){
         rayon = player->getPileSecondaire()->GetRange();
         angle = player->getPileSecondaire()->GetConeAngle();
-        isUsingMainLamp = false;
+        isUsingSecondLamp = true;
     }
 
-    for (int i = 0; i < entities.size(); i++){
-        if (CheckColl(rayon,angle,QVector2D(entities[i]->GetPosition().x(),entities[i]->GetPosition().y())))
-        {
-            if (isUsingMainLamp){
-                player->GetPilePrincipale()->Affect(entities[i]);
+    if (isUsingSecondLamp || isUsingMainLamp)
+        for (int i = 0; i < entities.size(); i++){
+            if (CheckColl(rayon,angle,QVector2D(entities[i]->GetPosition().x(),entities[i]->GetPosition().y())))
+            {
+                if (isUsingMainLamp){
+                 player->GetPilePrincipale()->Affect(entities[i]);
+                }
+                else {
+                   player->getPileSecondaire()->Affect(entities[i]);
+                }
             }
         }
-    }
 }
