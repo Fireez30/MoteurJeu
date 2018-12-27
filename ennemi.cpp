@@ -1,10 +1,10 @@
 #include "ennemi.h"
 #include <iostream>
 
-Ennemi::Ennemi(int h,float x, float y, float s,QVector2D pos,QVector2D text): Movable(h,x,y,s,pos,text),ennemitoplayer(0,0,0),initSpeed(s){
+Ennemi::Ennemi(int h,float x, float y, float s,QVector2D pos,QVector2D text): Movable(h,x,y,s,pos,text),ennemitoplayer(0,0,0){
 }
 
-Ennemi::Ennemi(Room* r,Player* p,int h, float x, float y, float s,QVector2D pos,QVector2D text): Movable(h,x,y,s,pos,text),ennemitoplayer(0,0,0),initSpeed(s){
+Ennemi::Ennemi(Room* r,Player* p,int h, float x, float y, float s,QVector2D pos,QVector2D text): Movable(h,x,y,s,pos,text),ennemitoplayer(0,0,0){
     this->player = p;
     this->room = r;
     //startTimer();

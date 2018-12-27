@@ -9,6 +9,7 @@
 #include <QVector3D>
 #include <QTime>
 #include "rangedpile.h"
+#include "mainpile.h"
 
 Player::Player():Movable(3,1,0,0.2,QVector2D(162,83),QVector2D(0.0,8.0/16.0)),quellePile(true){
     sprites.push_back(QVector2D(0.0,11.0/16.0));//facing up
@@ -16,6 +17,7 @@ Player::Player():Movable(3,1,0,0.2,QVector2D(162,83),QVector2D(0.0,8.0/16.0)),qu
     sprites.push_back(QVector2D(0.0,8.0/16.0));//basic sprite orientation (facing down)
     sprites.push_back(QVector2D(0.0,9.0/16.0));//facing left
     orientationRatio = 0.7;
+    principale = new MainPile(QVector2D(0,0),QVector2D(0,0));
 }
 
 Player::Player(int h,float x,float y, float sp,QVector2D dir):Movable(h,x,y,sp,dir,QVector2D(0.0,8.0/16.0)),quellePile(true){
@@ -23,6 +25,8 @@ Player::Player(int h,float x,float y, float sp,QVector2D dir):Movable(h,x,y,sp,d
     sprites.push_back(QVector2D(0.0,9.0/16.0));//facing left
     sprites.push_back(QVector2D(0.0,10.0/16.0));//facing right
     sprites.push_back(QVector2D(0.0,11.0/16.0));//facing up
+    orientationRatio = 0.7;
+    principale = new MainPile(QVector2D(0,0),QVector2D(0,0));
 }
 
 void Player::Input(){

@@ -1,11 +1,11 @@
 #include "movable.h"
 
 Movable::Movable():Interactable2D(QVector2D(0,0),QVector2D(0,0),1000),speed(1),direction(0,0),initPos(0,0),health(3),dead(false){
-
+    initSpeed = speed;
 }
 
 Movable::Movable(int h,float x, float y,float sp,QVector2D pos,QVector2D text):Interactable2D(pos,text,1000),speed(sp),direction(x,y),initPos(pos),health(h),dead(false){
-
+    initSpeed = speed;
 }
 
 QVector2D Movable::GetDirection(){

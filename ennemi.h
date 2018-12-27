@@ -18,7 +18,6 @@ public :
 
 private :
     Player* player;
-    float initSpeed;
     Room* room;
     QVector2D dir;
     void startTimer();

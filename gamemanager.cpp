@@ -364,6 +364,7 @@ void GameManager::initTextures()
     //std::string s = "D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\sprites.png";
     std::string s = qApp->applicationDirPath().toUtf8().constData();
     s += "/sprites.png";
+    std::cout << s << std::endl;
     //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\sprites.png"; - Benj portable
     //"C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\sprites.png" - Benj fixe
     //"D:\\Git\\MoteurJeu\\sprites.png" - Romain portable

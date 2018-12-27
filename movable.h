@@ -7,6 +7,7 @@ class Movable: public Interactable2D
 {
 protected :
     float speed;
+    float initSpeed;
     QVector2D direction;
     QVector2D initPos;
     int health;
