@@ -114,9 +114,3 @@ void Player::setUtilisationPrincipale(bool b){
 void Player::setUtilisationSecondaire(bool b){
     usePileSecondaire = b;
 }
-
-
-QVector2D Player::GetVectDirect(){
-    return this->vectDirect;
-}
-

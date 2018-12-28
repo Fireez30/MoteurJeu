@@ -207,8 +207,8 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
 
 
 bool Room::IsPointInCircle(QVector2D *pt, QVector2D *center, float rayon)
-{
-    if( sqrt( pow(pt->x() - center->x(),2) + pow(pt->y() - center->y(),2) ) < rayon )
+{   float distPlayerToEnnemi = sqrt( pow(pt->x() - center->x(),2) + pow(pt->y() - center->y(),2) );
+    if( distPlayerToEnnemi < rayon )
         return true;
     else
         return false;
@@ -216,22 +216,31 @@ bool Room::IsPointInCircle(QVector2D *pt, QVector2D *center, float rayon)
 
 bool Room::CheckColl(float rayon, float angle, QVector2D point)
 {
-    QVector2D center = QVector2D(player->x(),player->y());
+    // Position du joueur in screen
+    QVector2D center = QVector2D(player->GetPosition().x(),player->GetPosition().y());
     if( !IsPointInCircle(&point, &center, rayon) )
         return false;
     else
     {
-        QVector2D vectDirect = player->GetVectDirect();
+        // vectDirecteur de la lampe
+        QVector2D vectDirect = player->GetDirection();
+        vectDirect.normalize();
+        vectDirect.setX( -vectDirect.x()*3 );
+        vectDirect.setY( vectDirect.y()*3 );
+        std::cout<<"vectDirect = "<<vectDirect.x()<<" "<<vectDirect.y()<<std::endl;
+        // Vecteur qui va du joueur -> ennemi
         QVector2D center_ennemi = QVector2D(point.x() - center.x() , point.y() - center.y());
+        std::cout<<"center_ennemi = "<<center_ennemi.x()<<" "<<center_ennemi.y()<<std::endl;
 
-        float produitScalaire = vectDirect.x() * center_ennemi.x() + vectDirect.y() * center_ennemi.y();
+        float produitScalaire = (vectDirect.x() * center_ennemi.x()) + (vectDirect.y() * center_ennemi.y());
         float produitNorme = vectDirect.length() * center_ennemi.length();
         float cosTeta = produitScalaire / produitNorme;
-        float angle = acos(cosTeta);
-        float angleDegree = angle*(180/3.14159265358979323846); // radian to degree
-        std::cout<<"degree = "<<angleDegree<<std::endl;
-        if ( std::abs(angleDegree) < angle/2 ) return true;
-        else return true;
+        float angleRadian = acos(cosTeta);
+        float angleDegree = angleRadian*(180/3.14159265358979323846); // radian to degree
+        std::cout<<"Radian = "<<angleRadian<<std::endl;
+        std::cout<<"Degree = "<<angleDegree<<std::endl;
+        if ( angleDegree < angle/2 ) return true;
+        else return false;
     }
 }
 
