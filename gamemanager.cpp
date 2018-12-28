@@ -80,7 +80,7 @@ void GameManager::keyPressEvent (QKeyEvent * event){
     vector.normalize();
     vector *= player->GetSpeed();
     player->Move(vector);
-
+    player->SetLastMove(vector);
     int i=0;
     scene[camera->getCurrentRoom()]->TriggerCheck(player);
     i=0;
