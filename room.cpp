@@ -5,6 +5,7 @@
 #include "ennemi.h"
 #include <math.h>
 #include "largerpile.h"
+#include "key.h"
 
 Room::Room(){
     tiles = std::vector<Tile>();
@@ -140,11 +141,30 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
                 //}
             }//fin for piles, rajouter des fors pour les autres entités
 
+            for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Key"); e5 != nullptr; e5 = e5->NextSiblingElement("Key")){//Liste des Ghosts
+                bool hkey = player->getHoldKey();
+                QVector2D realText;
+                if (hkey){
+                    realText = QVector2D(e5->IntAttribute("xatltext"),e5->IntAttribute("yalttext"));
+                }
+                else {
+                    realText = QVector2D(e5->IntAttribute("xtextcoord"),e5->IntAttribute("ytextcoord"));
+                }
+                float x = (float)e5->IntAttribute("x"), y = (float)(-1*e5->IntAttribute("y"));
+                Key* e =new Key(p,QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),realText,hkey, QVector2D(e5->IntAttribute("xatltext"),e5->IntAttribute("yalttext")));
+                e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
+                pickups.push_back(e);
+                std::cout << "clé cree lol " << std::endl;
+                //for (int i = 0; i < interacts.size(); i++){
+                //    std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
+                //}
+            }//si clé lol
+
             for (tinyxml2::XMLElement* e3 = d4->FirstChildElement("BossDoor"); e3 != nullptr; e3 = e3->NextSiblingElement("BossDoor")){//y
                 float x = (float)e3->IntAttribute("x"), y = (float)(-1*e3->IntAttribute("y"));
                 QVector2D dir;
                 dir.setY(-1);
-                Door* d = new Door(QVector2D(x/16.0+xRoom,y/16.0+yRoom),QVector2D(e3->IntAttribute("xtextcoord")/16.0,e3->IntAttribute("ytextcoord")/16.0),true,dir,p,c);
+                Door* d = new Door(QVector2D(x/16.0+xRoom,y/16.0+yRoom),QVector2D(e3->IntAttribute("xtextcoord")/16.0,e3->IntAttribute("ytextcoord")/16.0),!player->getHoldKey(),dir,p,c);
                 d->setCollider(Hitbox(QVector2D(d->position.x(),d->position.y()),1,1));//porte ont un collider spécial
                 pickups.push_back(d);
                 std::cout << "boss door lol" <<  std::endl;

@@ -16,6 +16,7 @@ protected:
     Pile *secondaire = nullptr;
     QVector3D lastMove;
     float orientationRatio;
+    bool holdKey;
 
 public :
     Player();
@@ -34,6 +35,8 @@ public :
     bool utilisePileSecondaire();
     void setUtilisationPrincipale(bool b);
     void setUtilisationSecondaire(bool b);
+    void PickKey();
+    bool getHoldKey();
     Pile* GetPilePrincipale();
 };
 
