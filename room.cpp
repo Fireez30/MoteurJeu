@@ -69,6 +69,10 @@ void Room::CreateGeometry(){
     for (int i = 0 ; i < entities.size(); i++){
         entities[i]->ResetPos();
     }
+
+    if (boss != nullptr && player->getHoldKey()){
+        boss->Unlock();
+    }
 }
 
 void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p, Camera* c){
@@ -167,7 +171,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
                 Door* d = new Door(QVector2D(x/16.0+xRoom,y/16.0+yRoom),QVector2D(e3->IntAttribute("xtextcoord")/16.0,e3->IntAttribute("ytextcoord")/16.0),!player->getHoldKey(),dir,p,c);
                 d->setCollider(Hitbox(QVector2D(d->position.x(),d->position.y()),1,1));//porte ont un collider spécial
                 pickups.push_back(d);
-                std::cout << "boss door lol" <<  std::endl;
+                boss = d;
             }
         }
         doc.Clear();//vider le doc

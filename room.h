@@ -21,6 +21,7 @@ protected:
     std::vector<Interactable2D*> pickups;
     std::vector<Movable*> entities;
     Player* player;
+    Door* boss;
 
 public :
     Room();

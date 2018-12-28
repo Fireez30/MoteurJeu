@@ -10,6 +10,11 @@ class Door : public Interactable2D{
 protected:
     bool locked;
 
+private :
+    Player* player;
+    Camera* camera;
+    QVector2D dir;
+
 public :
     Door(const Door&d);
     Door(QVector2D pos,QVector2D text);
@@ -19,11 +24,6 @@ public :
     int OnTriggerEnter(Interactable2D* other) override;
     void setRoomAct(int i);
     void setRoomLink(int i);
-
-private :
-    Player* player;
-    Camera* camera;
-    QVector2D dir;
 };
 
 #endif // DOOR_H
