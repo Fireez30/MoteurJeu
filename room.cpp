@@ -227,18 +227,18 @@ bool Room::CheckColl(float rayon, float angle, QVector2D point)
         vectDirect.normalize();
         vectDirect.setX( -vectDirect.x()*3 );
         vectDirect.setY( vectDirect.y()*3 );
-        std::cout<<"vectDirect = "<<vectDirect.x()<<" "<<vectDirect.y()<<std::endl;
+        //std::cout<<"vectDirect = "<<vectDirect.x()<<" "<<vectDirect.y()<<std::endl;
         // Vecteur qui va du joueur -> ennemi
         QVector2D center_ennemi = QVector2D(point.x() - center.x() , point.y() - center.y());
-        std::cout<<"center_ennemi = "<<center_ennemi.x()<<" "<<center_ennemi.y()<<std::endl;
+        //std::cout<<"center_ennemi = "<<center_ennemi.x()<<" "<<center_ennemi.y()<<std::endl;
 
         float produitScalaire = (vectDirect.x() * center_ennemi.x()) + (vectDirect.y() * center_ennemi.y());
         float produitNorme = vectDirect.length() * center_ennemi.length();
         float cosTeta = produitScalaire / produitNorme;
         float angleRadian = acos(cosTeta);
         float angleDegree = angleRadian*(180/3.14159265358979323846); // radian to degree
-        std::cout<<"Radian = "<<angleRadian<<std::endl;
-        std::cout<<"Degree = "<<angleDegree<<std::endl;
+        //std::cout<<"Radian = "<<angleRadian<<std::endl;
+        //std::cout<<"Degree = "<<angleDegree<<std::endl;
         if ( angleDegree < angle/2 ) return true;
         else return false;
     }
@@ -254,7 +254,7 @@ void Room::affectEnemiesInRange(){
         rayon = player->GetPilePrincipale()->GetRange();
         angle = player->GetPilePrincipale()->GetConeAngle();
         isUsingMainLamp = true;
-        std::cout << "utilise pile principale " << std::endl;
+        //std::cout << "utilise pile principale " << std::endl;
     }
     else if (player->utilisePileSecondaire()){
         rayon = player->getPileSecondaire()->GetRange();

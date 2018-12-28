@@ -106,7 +106,7 @@ void GameManager::mousePressEvent(QMouseEvent *e)
     if (e->button() == Qt::LeftButton){
         player->setUtilisationPrincipale(true);
     }
-    else if (e->button() == Qt::RightButton){
+    else if (e->button() == Qt::RightButton && player->getPileSecondaire() != nullptr){
         player->setUtilisationSecondaire(true);
     }
 }
@@ -464,5 +464,4 @@ void GameManager::paintGL()
     //    scene[i]->Render(&program,texture);
     //}
     scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
-
 }
