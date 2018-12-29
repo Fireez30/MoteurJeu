@@ -294,6 +294,7 @@ void GameManager::initializeGL()
     glEnable(GL_CULL_FACE);
     // Use QBasicTimer because its faster than QTimer
     player = new Player();
+    std::cout << "PLayer créé" << std::endl;
     camera = new Camera();
 
     //srand(13);
@@ -489,7 +490,7 @@ void GameManager::paintGL()
     program.setUniformValue("allLights[1].ambientCoefficient",0.5f);
     program.setUniformValue("allLights[1].coneAngle",20.0f);
     program.setUniformValue("allLights[1].maxAngle",25.0f);
-    program.setUniformValue("allLights[1].coneDirection",QVector3D(0,1,0));
+    program.setUniformValue("allLights[1].coneDirection",player->GetDirection());
     program.setUniformValue("allLights[1].dist",250.0f);
     program.setUniformValue("allLights[1].maxDist",300.0f);
 
