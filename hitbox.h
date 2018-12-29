@@ -14,6 +14,7 @@ public :
     Hitbox(QVector2D p,int w,int h);
     bool TestCollision(Hitbox other);
     float getXMax();
+    QVector2D getCorner();
     float getXMin();
     float getYMax();
     float getYMin();

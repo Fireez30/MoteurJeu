@@ -14,10 +14,11 @@ int Key::OnTriggerEnter(Interactable2D* other){
     if (!picked){
         if(dynamic_cast<Player*> (other)!=NULL){
             picked = true;
-            this->renderer.SetXSpriteCoord(altText.x());
-            this->renderer.SetYSpriteCoord(altText.y());
+            std::cout << "init text = " << this->renderer.spriteCoords.x() << " " << this->renderer.spriteCoords.y() << std::endl;
+            this->renderer.spriteCoords = altText;
+            this->renderer.CreateGeometry();
+            std::cout << "final text = " << this->renderer.spriteCoords.x() << " " << this->renderer.spriteCoords.y() << std::endl;
             player->PickKey();
-            //std::cout << "Joueur entre en collision" << std::endl;
         }
     }
 }

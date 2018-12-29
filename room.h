@@ -42,6 +42,7 @@ public :
     bool CheckColl(float rayon, float angle, QVector2D point);
     void setPlayer(Player* _p);
     void affectEnemiesInRange();
+    bool wallOnTheVector(QVector2D vect);
 
 private:
     int x, y;

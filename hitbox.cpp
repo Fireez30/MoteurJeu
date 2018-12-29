@@ -31,3 +31,7 @@ float Hitbox::getYMin(){
 void Hitbox::setPoint(QVector2D p){
     leftCorner = p;
 }
+
+QVector2D Hitbox::getCorner(){
+    return leftCorner;
+}

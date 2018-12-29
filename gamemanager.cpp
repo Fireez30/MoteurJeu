@@ -463,6 +463,7 @@ void GameManager::paintGL()
     //for (size_t i = 0; i < scene.size(); i++){
     //    scene[i]->Render(&program,texture);
     //}
+    //std::cout << "AH" << std::endl;
     //std::cout << "Player tient la clé ? " << player->getHoldKey() << std::endl;
     scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
 }

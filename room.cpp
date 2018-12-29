@@ -146,17 +146,9 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
                 //}
             }//fin for piles, rajouter des fors pour les autres entités
 
-            for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Key"); e5 != nullptr; e5 = e5->NextSiblingElement("Key")){//Liste des Ghosts
-                bool hkey = player->getHoldKey();
-                QVector2D realText;
-                if (hkey){
-                    realText = QVector2D(e5->IntAttribute("xatltext"),e5->IntAttribute("yalttext"));
-                }
-                else {
-                    realText = QVector2D(e5->IntAttribute("xtextcoord"),e5->IntAttribute("ytextcoord"));
-                }
-                float x = (float)e5->IntAttribute("x"), y = (float)(-1*e5->IntAttribute("y"));
-                Key* e =new Key(p,QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),realText,hkey, QVector2D(e5->IntAttribute("xatltext"),e5->IntAttribute("yalttext")));
+            for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Key"); e5 != nullptr; e5 = e5->NextSiblingElement("Key")){//Liste des Key
+                //float x = (float)e5->IntAttribute("x"), y = (float)(-1*e5->IntAttribute("y"));
+                Key* e =new Key(p,QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord"),e5->IntAttribute("ytextcoord")),false, QVector2D(e5->IntAttribute("xatltext"),e5->IntAttribute("yalttext")));
                 e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
                 pickups.push_back(e);
                 //std::cout << "clé cree lol " << std::endl;
@@ -249,9 +241,26 @@ bool Room::IsPointInCircle(QVector2D *pt, QVector2D *center, float rayon)
         return false;
 }
 
+bool Room::wallOnTheVector(QVector2D vect){
+    for (unsigned i = 0; i < collisions.size(); i++){
+        QVector3D vec1 = QVector3D(collisions[i].getCorner().x() - player->GetPosition().x(),collisions[i].getCorner().y() - player->GetPosition().y(),0);//joueur -> mur
+        //std::cout << "Joueur vers mur : " << vec1.x() << " " << vec1.y() << std::endl;
+        QVector3D vec2 = QVector3D((player->GetPosition() + vect).x() - player->GetPosition().x(),(player->GetPosition() + vect).y() - player->GetPosition().y(),0);//joueur -> ennemi
+        //std::cout << "Joueur vers ennemi : " << vec2.x() << " " << vec2.y() << std::endl;
+        QVector3D cp = QVector3D::crossProduct(vec1,vec2);
+        //std::cout << "CP = " << cp.x() << " " << cp.y() << " " << std::endl;
+        if (cp.x() == 0 && cp.y() == 0 && vec1.length() < vec2.length()){ //si ils sont colinéaires,conflit
+            //std::cout<< "Collision lampe mur" << std::endl;
+            return true;
+        }
+    }
+    //std::cout<< "pas Collision lampe mur" << std::endl;
+    return false;
+}
+
 bool Room::CheckColl(float rayon, float angle, QVector2D point)
 {
-    // Position du joueur in screen
+    // Position du joueur in world
     QVector2D center = QVector2D(player->GetPosition().x(),player->GetPosition().y());
     if( !IsPointInCircle(&point, &center, rayon) )
         return false;
@@ -266,7 +275,6 @@ bool Room::CheckColl(float rayon, float angle, QVector2D point)
         // Vecteur qui va du joueur -> ennemi
         QVector2D center_ennemi = QVector2D(point.x() - center.x() , point.y() - center.y());
         //std::cout<<"center_ennemi = "<<center_ennemi.x()<<" "<<center_ennemi.y()<<std::endl;
-
         float produitScalaire = (vectDirect.x() * center_ennemi.x()) + (vectDirect.y() * center_ennemi.y());
         float produitNorme = vectDirect.length() * center_ennemi.length();
         float cosTeta = produitScalaire / produitNorme;
@@ -274,7 +282,10 @@ bool Room::CheckColl(float rayon, float angle, QVector2D point)
         float angleDegree = angleRadian*(180/3.14159265358979323846); // radian to degree
         //std::cout<<"Radian = "<<angleRadian<<std::endl;
         //std::cout<<"Degree = "<<angleDegree<<std::endl;
-        if ( angleDegree < angle/2 ) return true;
+        if ( angleDegree < angle/2 ) {
+            //std::cout << "collision ennemi possible " << std::endl;
+            return !wallOnTheVector(center_ennemi);                                 //vérifier ca que si l'ennemi est dans le cone (economie de temps)
+        }
         else return false;
     }
 }
