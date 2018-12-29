@@ -1,5 +1,4 @@
 #include "room.h"
-#include "door.h"
 #include <iostream>
 #include "rangedpile.h"
 #include "ennemi.h"
@@ -13,6 +12,7 @@ Room::Room(){
     pickups = std::vector<Interactable2D*>();
     entities = std::vector<Movable*>();
     player = nullptr;
+    boss = nullptr;
 }
 
 Room::~Room(){
@@ -72,6 +72,7 @@ void Room::CreateGeometry(){
 
     if (boss != nullptr && player->getHoldKey()){
         boss->Unlock();
+        //std::cout << "unlocked " << std::endl;
     }
 }
 
@@ -158,7 +159,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
                 Key* e =new Key(p,QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),realText,hkey, QVector2D(e5->IntAttribute("xatltext"),e5->IntAttribute("yalttext")));
                 e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
                 pickups.push_back(e);
-                std::cout << "clé cree lol " << std::endl;
+                //std::cout << "clé cree lol " << std::endl;
                 //for (int i = 0; i < interacts.size(); i++){
                 //    std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
                 //}

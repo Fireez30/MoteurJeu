@@ -1,17 +1,18 @@
 #ifndef ROOM_H
 #define ROOM_H
 
+class Door;
 class Room;
 
 #include <stdlib.h>
 #include <stdio.h>
 #include "tile.h"
-#include "door.h"
 #include "player.h"
 #include "camera.h"
 #include <QOpenGLShaderProgram>
 #include "tinyxml2.h"
 #include "movable.h"
+#include "door.h"
 
 class Room {
 

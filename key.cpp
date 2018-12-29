@@ -17,7 +17,7 @@ int Key::OnTriggerEnter(Interactable2D* other){
             this->renderer.SetXSpriteCoord(altText.x());
             this->renderer.SetYSpriteCoord(altText.y());
             player->PickKey();
-            std::cout << "Joueur entre en collision" << std::endl;
+            //std::cout << "Joueur entre en collision" << std::endl;
         }
     }
 }

@@ -14,7 +14,7 @@ bool Door::IsLocked(){
 }
 
 void Door::Unlock(){
-    locked = true;
+    locked = false;
 }
 
 int Door::OnTriggerEnter(Interactable2D* other){
