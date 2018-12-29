@@ -50,25 +50,36 @@ Player* GameManager::getPlayer(){return player;}
 // USER INPUTS
 //
 
+void GameManager::keyReleaseEvent (QKeyEvent * event){
+    if(event->key() == Qt::Key_Q || event->key() == Qt::Key_D || event->key() == Qt::Key_S || event->key() == Qt::Key_T){
+        player->StopWalk();
+    }
+}
+
 void GameManager::keyPressEvent (QKeyEvent * event){
     float transX=0, transY=0;
+    player->StopWalk();
     if(event->key() == Qt::Key_Q){
            transX--;
+           player->Walk();
     }
 
     if(event->key() == Qt::Key_D)
     {
            transX++;
+           player->Walk();
     }
 
 
     if(event->key() == Qt::Key_Z)
     {
           transY++;
+          player->Walk();
     }
 
     if(event->key() == Qt::Key_S){
           transY--;
+          player->Walk();
     }
 
     if (event->key() == Qt::Key_T){
@@ -87,6 +98,7 @@ void GameManager::keyPressEvent (QKeyEvent * event){
 
     if(scene[camera->getCurrentRoom()]->CollisionCheck(player->getCollider()))
        {
+        player->StopWalk();
         player->Move(-vector);
     }
 
@@ -466,4 +478,5 @@ void GameManager::paintGL()
     //std::cout << "AH" << std::endl;
     //std::cout << "Player tient la clé ? " << player->getHoldKey() << std::endl;
     scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
+    //std::cout << player->renderer.spriteCoords.x() << " " << player->renderer.spriteCoords.y() << std::endl;
 }

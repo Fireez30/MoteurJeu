@@ -381,7 +381,7 @@
     <tile x="24" y="7" tx="4" ty="6" />
   </Doors>
   <Entite>
-    <Key id="0" x="192" y="112" xtextcoord="1" ytextcoord="0" xatltext="1" yalttext="2" />
+    <Key id="0" x="192" y="112" xtextcoord="0" ytextcoord="1" xatltext="2" yalttext="1" />
   </Entite>
   <Décors exportMode="Bitstring">0000000000000000000000000
 0000000000000000000000000

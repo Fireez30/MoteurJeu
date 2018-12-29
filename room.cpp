@@ -148,7 +148,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
 
             for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Key"); e5 != nullptr; e5 = e5->NextSiblingElement("Key")){//Liste des Key
                 //float x = (float)e5->IntAttribute("x"), y = (float)(-1*e5->IntAttribute("y"));
-                Key* e =new Key(p,QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord"),e5->IntAttribute("ytextcoord")),false, QVector2D(e5->IntAttribute("xatltext"),e5->IntAttribute("yalttext")));
+                Key* e =new Key(p,QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),false, QVector2D(e5->IntAttribute("xatltext")/16.0,e5->IntAttribute("yalttext")/16.0));
                 e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
                 pickups.push_back(e);
                 //std::cout << "clé cree lol " << std::endl;

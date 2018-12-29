@@ -6,12 +6,16 @@ SpriteRenderer::SpriteRenderer(QVector3D pos):spritePath("sprites.png"),timer(),
     initializeOpenGLFunctions();
     arrayBuf.create();
     indexBuf.create();
+    addXCoord = 0;
+    initText=spriteCoords;
 }
 
 SpriteRenderer::SpriteRenderer(std::string p,QVector2D coords,float t,QVector3D pos):spritePath(p),timer(),spriteCoords(coords),indexBuf(QOpenGLBuffer::IndexBuffer),time(t),position(pos){
     initializeOpenGLFunctions();
     arrayBuf.create();
     indexBuf.create();
+    addXCoord = 0;
+    initText=spriteCoords;
 }
 void SpriteRenderer::ReleaseBuffers(){
     arrayBuf.release();

@@ -68,21 +68,21 @@ void Player::ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj,QVector2D s
 
     this->direction = QVector2D(worldpos - mousePos).normalized();
     //std::cout << "direction = " << direction.x() << " " << direction.y() << std::endl;
-    if (direction.x() > orientationRatio){
+    if (direction.x() > orientationRatio && renderer.spriteCoords != sprites[3]){
         //std::cout << "sprite tourné vers la droite \n";
-        renderer.spriteCoords = sprites[3];
+        renderer.spriteCoords.setY(sprites[3].y());
     }
-    else  if (direction.x() < -orientationRatio){
+    else  if (direction.x() < -orientationRatio && renderer.spriteCoords != sprites[1]){
         //std::cout << "sprite tourné vers la gauche \n";
-        renderer.spriteCoords = sprites[1];
+        renderer.spriteCoords.setY(sprites[1].y());
     }
-    else if (direction.y() > orientationRatio){
+    else if (direction.y() > orientationRatio && renderer.spriteCoords != sprites[0]){
         //std::cout << "sprite tourné vers le bas \n";
-        renderer.spriteCoords = sprites[0];
+        renderer.spriteCoords.setY(sprites[0].y());
     }
-    else  if (direction.y() < -orientationRatio){
+    else  if (direction.y() < -orientationRatio && renderer.spriteCoords != sprites[2] ){
         //std::cout << "sprite tourné vers le hait \n";
-        renderer.spriteCoords = sprites[2];
+        renderer.spriteCoords.setY(sprites[2].y());
     }
 
     renderer.CreateGeometry();
