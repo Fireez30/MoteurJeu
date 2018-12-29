@@ -34,6 +34,8 @@ public :
     bool utilisePilePrincipale();
     bool utilisePileSecondaire();
     void setUtilisationPrincipale(bool b);
+    float getRange();
+    float getAngle();
     void setUtilisationSecondaire(bool b);
     void PickKey();
     bool getHoldKey();

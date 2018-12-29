@@ -2,10 +2,10 @@
 
 #include <iostream>
 
-Door::Door(QVector2D pos,QVector2D text):Interactable2D(pos,text,0),locked(false){
+Door::Door(QVector2D pos,QVector2D text,QVector2D Alt):Interactable2D(pos,text,0),locked(false),altText(Alt){
 
 }
-Door::Door(QVector2D pos,QVector2D text, bool state, QVector2D d, Player*p, Camera* c):Interactable2D(pos,text,0),locked(state), dir(d),player(p),camera(c){
+Door::Door(QVector2D pos,QVector2D text,QVector2D Alt, bool state, QVector2D d, Player*p, Camera* c):Interactable2D(pos,text,0),locked(state), dir(d),player(p),camera(c),altText(Alt){
 
 }
 
@@ -15,6 +15,7 @@ bool Door::IsLocked(){
 
 void Door::Unlock(){
     locked = false;
+    this->renderer.spriteCoords = altText;
 }
 
 int Door::OnTriggerEnter(Interactable2D* other){

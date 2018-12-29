@@ -11,5 +11,5 @@ MainPile::MainPile(QVector2D pos,float r, float c, float l, int d,QVector2D text
 
 void MainPile::Affect(Movable* m){
     m->ChangeSpeed(m->GetSpeed()*0.01);
-    std::cout << "Pile principale affect " << std::endl;
+    //std::cout << "Pile principale affect " << std::endl;
 }

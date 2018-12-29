@@ -97,6 +97,28 @@ Pile* Player::GetPilePrincipale(){
     return principale;
 }
 
+float Player::getRange(){
+    if (usePilePrincipale){
+        return principale->GetRange();
+    }
+    else if (usePileSecondaire) {
+        return secondaire->GetRange();
+    }
+
+    return 0;
+}
+
+float Player::getAngle(){
+    if (usePilePrincipale){
+        return principale->GetConeAngle();
+    }
+    else if (usePileSecondaire) {
+        return secondaire->GetConeAngle();
+    }
+
+    return 0;
+}
+
 void Player::SetPileSecondaire(Pile *s){
     secondaire = s;
     secondaire->getCollider().~Hitbox();

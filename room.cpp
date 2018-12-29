@@ -58,6 +58,11 @@ void Room::setPlayer(Player* _p){
 }
 
 void Room::CreateGeometry(){
+    if (boss != nullptr && player->getHoldKey()){
+        boss->Unlock();
+        //std::cout << "unlocked " << std::endl;
+    }
+
     for (int i = 0; i < tiles.size(); i++){
         tiles[i].renderer.CreateGeometry();
     }
@@ -68,11 +73,6 @@ void Room::CreateGeometry(){
 
     for (int i = 0 ; i < entities.size(); i++){
         entities[i]->ResetPos();
-    }
-
-    if (boss != nullptr && player->getHoldKey()){
-        boss->Unlock();
-        //std::cout << "unlocked " << std::endl;
     }
 }
 
@@ -110,7 +110,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
                 dir.setY(-1);
             else if (y==-14)
                 dir.setY(1);
-            Door* d = new Door(QVector2D(x+xRoom,y+yRoom),QVector2D(e3->IntAttribute("tx")/16.0,e3->IntAttribute("ty")/16.0),false,dir,p,c);
+            Door* d = new Door(QVector2D(x+xRoom,y+yRoom),QVector2D(e3->IntAttribute("tx")/16.0,e3->IntAttribute("ty")/16.0),QVector2D(e3->IntAttribute("tx")/16.0,e3->IntAttribute("ty")/16.0),false,dir,p,c);
             d->setCollider(Hitbox(QVector2D(d->position.x(),d->position.y()),1,1));//porte ont un collider spécial
             pickups.push_back(d);
         }//Fin construction doors !
@@ -169,7 +169,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
                 float x = (float)e3->IntAttribute("x"), y = (float)(-1*e3->IntAttribute("y"));
                 QVector2D dir;
                 dir.setY(-1);
-                Door* d = new Door(QVector2D(x/16.0+xRoom,y/16.0+yRoom),QVector2D(e3->IntAttribute("xtextcoord")/16.0,e3->IntAttribute("ytextcoord")/16.0),!player->getHoldKey(),dir,p,c);
+                Door* d = new Door(QVector2D(x/16.0+xRoom,y/16.0+yRoom),QVector2D(e3->IntAttribute("xtextcoord")/16.0,e3->IntAttribute("ytextcoord")/16.0),QVector2D(e3->IntAttribute("xalttext")/16.0,e3->IntAttribute("yalttext")/16.0),!player->getHoldKey(),dir,p,c);
                 d->setCollider(Hitbox(QVector2D(d->position.x(),d->position.y()),1,1));//porte ont un collider spécial
                 pickups.push_back(d);
                 boss = d;
@@ -280,20 +280,15 @@ bool Room::CheckColl(float rayon, float angle, QVector2D point)
 }
 
 void Room::affectEnemiesInRange(){
-    float rayon;
-    float angle;
+    float rayon = player->getRange();
+    float angle = player->getAngle();
     bool isUsingMainLamp = false;
     bool isUsingSecondLamp = false;
 
     if (player->utilisePilePrincipale()){
-        rayon = player->GetPilePrincipale()->GetRange();
-        angle = player->GetPilePrincipale()->GetConeAngle();
         isUsingMainLamp = true;
-        //std::cout << "utilise pile principale " << std::endl;
     }
     else if (player->utilisePileSecondaire()){
-        rayon = player->getPileSecondaire()->GetRange();
-        angle = player->getPileSecondaire()->GetConeAngle();
         isUsingSecondLamp = true;
     }
 

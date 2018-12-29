@@ -128,6 +128,7 @@ void SpriteRenderer::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
     int texcoordLocation = program->attributeLocation("a_texcoord");
     program->enableAttributeArray(texcoordLocation);
     program->setAttributeBuffer(texcoordLocation, GL_FLOAT, offset, 2, sizeof(VertexData));
+
     // Draw cube geometry using indices from VBO 1
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 }
