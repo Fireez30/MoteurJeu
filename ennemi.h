@@ -9,7 +9,7 @@ class Ennemi : public Movable{
 
 public :
     Ennemi(int h,float x, float y, float s,QVector2D pos,QVector2D text);
-    Ennemi(Room* r,Player* p,int h, float x, float y, float s,QVector2D pos,QVector2D text);
+    Ennemi(Room* r,Player* p,int h, float x, float y, float s,QVector2D pos,QVector2D text,int animtime,int nbframes,bool animstatus);
     void IA();
     int OnTriggerEnter(Interactable2D* other) override;
     void timerEvent(QTimerEvent *e) override;

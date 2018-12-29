@@ -52,34 +52,37 @@ Player* GameManager::getPlayer(){return player;}
 
 void GameManager::keyReleaseEvent (QKeyEvent * event){
     if(event->key() == Qt::Key_Q || event->key() == Qt::Key_D || event->key() == Qt::Key_S || event->key() == Qt::Key_T){
-        player->StopWalk();
+        player->movAnim->StopWalk();
     }
 }
 
 void GameManager::keyPressEvent (QKeyEvent * event){
     float transX=0, transY=0;
-    player->StopWalk();
+    if (!player->movAnim->isStarted()){
+        player->movAnim->StartAnimator();
+    }
+    player->movAnim->StopWalk();
     if(event->key() == Qt::Key_Q){
            transX--;
-           player->Walk();
+           player->movAnim->Walk();
     }
 
     if(event->key() == Qt::Key_D)
     {
            transX++;
-           player->Walk();
+           player->movAnim->Walk();
     }
 
 
     if(event->key() == Qt::Key_Z)
     {
           transY++;
-          player->Walk();
+          player->movAnim->Walk();
     }
 
     if(event->key() == Qt::Key_S){
           transY--;
-          player->Walk();
+          player->movAnim->Walk();
     }
 
     if (event->key() == Qt::Key_T){
@@ -98,7 +101,7 @@ void GameManager::keyPressEvent (QKeyEvent * event){
 
     if(scene[camera->getCurrentRoom()]->CollisionCheck(player->getCollider()))
        {
-        player->StopWalk();
+        player->movAnim->StopWalk();
         player->Move(-vector);
     }
 

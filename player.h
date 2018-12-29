@@ -3,7 +3,7 @@
 
 #include "movable.h"
 #include "pile.h"
-
+#include "spritemodifier.h"
 
 class Player : public Movable
 {
@@ -17,10 +17,11 @@ protected:
     QVector3D lastMove;
     float orientationRatio;
     bool holdKey;
+    SpriteModifier spriteModif;
 
 public :
     Player();
-    Player(int h,float x,float y, float sp,QVector2D dir);
+    Player(int h,float x,float y, float sp,QVector2D dir,int animtime,int nbframes,bool animstatus);
     void Input();
     int OnTriggerEnter(Interactable2D* other) override;
     void ChangePile(Pile *p);
