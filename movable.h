@@ -12,8 +12,13 @@ protected :
     QVector2D initPos;
     int health;
     bool dead;
+    int animTime;
+    int nbFrames;
+    bool walking;
+    void timerEvent(QTimerEvent *e) override;
 
 public :
+    QBasicTimer animTimer;
     Movable();
     Movable(int health,float x, float y,float sp,QVector2D pos,QVector2D text);
     QVector2D GetDirection();
@@ -28,6 +33,9 @@ public :
     void setHealth(int h);
     void Damage(int d);
     bool isDead();
+    void Walk();
+    void StopWalk();
+    bool isWalking();
 };
 
 #endif // MOVABLE_H

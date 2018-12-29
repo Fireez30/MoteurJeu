@@ -377,10 +377,11 @@
   </Murs>
   <Doors tileset="NewTileset0" exportMode="XMLCoords">
     <tile x="0" y="7" tx="4" ty="6" />
-    <tile x="12" y="0" tx="4" ty="6" />
     <tile x="12" y="14" tx="4" ty="6" />
   </Doors>
-  <Entite />
+  <Entite>
+    <BossDoor id="0" x="192" y="0" xtextcoord="10" ytextcoord="5" index="0" xalttext="4" yalttext="6" />
+  </Entite>
   <Décors exportMode="Bitstring">0000000000000000000000000
 0000000000000000000000000
 0000000000000000000000000

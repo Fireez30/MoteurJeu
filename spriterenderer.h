@@ -26,11 +26,14 @@ protected :
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
     //QOpenGLTexture *texture;
+
     float time;
 
 
 public :
     QVector2D spriteCoords;
+    int addXCoord;
+    QVector2D initText;
     SpriteRenderer(const SpriteRenderer&) = delete;
     QTimer timer;
     SpriteRenderer(QVector3D pos);

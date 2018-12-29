@@ -1,10 +1,10 @@
 #include "room.h"
-#include "door.h"
 #include <iostream>
 #include "rangedpile.h"
 #include "ennemi.h"
 #include <math.h>
 #include "largerpile.h"
+#include "key.h"
 
 Room::Room(){
     tiles = std::vector<Tile>();
@@ -12,6 +12,7 @@ Room::Room(){
     pickups = std::vector<Interactable2D*>();
     entities = std::vector<Movable*>();
     player = nullptr;
+    boss = nullptr;
 }
 
 Room::~Room(){
@@ -57,6 +58,11 @@ void Room::setPlayer(Player* _p){
 }
 
 void Room::CreateGeometry(){
+    if (boss != nullptr && player->getHoldKey()){
+        boss->Unlock();
+        //std::cout << "unlocked " << std::endl;
+    }
+
     for (int i = 0; i < tiles.size(); i++){
         tiles[i].renderer.CreateGeometry();
     }
@@ -104,7 +110,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
                 dir.setY(-1);
             else if (y==-14)
                 dir.setY(1);
-            Door* d = new Door(QVector2D(x+xRoom,y+yRoom),QVector2D(e3->IntAttribute("tx")/16.0,e3->IntAttribute("ty")/16.0),false,dir,p,c);
+            Door* d = new Door(QVector2D(x+xRoom,y+yRoom),QVector2D(e3->IntAttribute("tx")/16.0,e3->IntAttribute("ty")/16.0),QVector2D(e3->IntAttribute("tx")/16.0,e3->IntAttribute("ty")/16.0),false,dir,p,c);
             d->setCollider(Hitbox(QVector2D(d->position.x(),d->position.y()),1,1));//porte ont un collider spécial
             pickups.push_back(d);
         }//Fin construction doors !
@@ -139,6 +145,27 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
                 //    std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
                 //}
             }//fin for piles, rajouter des fors pour les autres entités
+
+            for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Key"); e5 != nullptr; e5 = e5->NextSiblingElement("Key")){//Liste des Key
+                //float x = (float)e5->IntAttribute("x"), y = (float)(-1*e5->IntAttribute("y"));
+                Key* e =new Key(p,QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),false, QVector2D(e5->IntAttribute("xatltext")/16.0,e5->IntAttribute("yalttext")/16.0));
+                e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
+                pickups.push_back(e);
+                //std::cout << "clé cree lol " << std::endl;
+                //for (int i = 0; i < interacts.size(); i++){
+                //    std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
+                //}
+            }//si clé lol
+
+            for (tinyxml2::XMLElement* e3 = d4->FirstChildElement("BossDoor"); e3 != nullptr; e3 = e3->NextSiblingElement("BossDoor")){//y
+                float x = (float)e3->IntAttribute("x"), y = (float)(-1*e3->IntAttribute("y"));
+                QVector2D dir;
+                dir.setY(-1);
+                Door* d = new Door(QVector2D(x/16.0+xRoom,y/16.0+yRoom),QVector2D(e3->IntAttribute("xtextcoord")/16.0,e3->IntAttribute("ytextcoord")/16.0),QVector2D(e3->IntAttribute("xalttext")/16.0,e3->IntAttribute("yalttext")/16.0),!player->getHoldKey(),dir,p,c);
+                d->setCollider(Hitbox(QVector2D(d->position.x(),d->position.y()),1,1));//porte ont un collider spécial
+                pickups.push_back(d);
+                boss = d;
+            }
         }
         doc.Clear();//vider le doc
 }
@@ -207,49 +234,72 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
 
 
 bool Room::IsPointInCircle(QVector2D *pt, QVector2D *center, float rayon)
-{
-    if( sqrt( pow(pt->x() - center->x(),2) + pow(pt->y() - center->y(),2) ) < rayon )
+{   float distPlayerToEnnemi = sqrt( pow(pt->x() - center->x(),2) + pow(pt->y() - center->y(),2) );
+    if( distPlayerToEnnemi < rayon )
         return true;
     else
         return false;
 }
 
+bool Room::wallOnTheVector(QVector2D vect){
+    for (unsigned i = 0; i < collisions.size(); i++){
+        QVector3D vec1 = QVector3D(collisions[i].getCorner().x() - player->GetPosition().x(),collisions[i].getCorner().y() - player->GetPosition().y(),0);//joueur -> mur
+        //std::cout << "Joueur vers mur : " << vec1.x() << " " << vec1.y() << std::endl;
+        QVector3D vec2 = QVector3D((player->GetPosition() + vect).x() - player->GetPosition().x(),(player->GetPosition() + vect).y() - player->GetPosition().y(),0);//joueur -> ennemi
+        //std::cout << "Joueur vers ennemi : " << vec2.x() << " " << vec2.y() << std::endl;
+        QVector3D cp = QVector3D::crossProduct(vec1,vec2);
+        //std::cout << "CP = " << cp.x() << " " << cp.y() << " " << std::endl;
+        if (cp.x() == 0 && cp.y() == 0 && vec1.length() < vec2.length()){ //si ils sont colinéaires,conflit
+            //std::cout<< "Collision lampe mur" << std::endl;
+            return true;
+        }
+    }
+    //std::cout<< "pas Collision lampe mur" << std::endl;
+    return false;
+}
+
 bool Room::CheckColl(float rayon, float angle, QVector2D point)
 {
-    QVector2D center = QVector2D(player->x(),player->y());
+    // Position du joueur in world
+    QVector2D center = QVector2D(player->GetPosition().x(),player->GetPosition().y());
     if( !IsPointInCircle(&point, &center, rayon) )
         return false;
     else
     {
-        QVector2D vectDirect = player->GetVectDirect();
+        // vectDirecteur de la lampe
+        QVector2D vectDirect = player->GetDirection();
+        vectDirect.normalize();
+        vectDirect.setX( -vectDirect.x()*3 );
+        vectDirect.setY( vectDirect.y()*3 );
+        //std::cout<<"vectDirect = "<<vectDirect.x()<<" "<<vectDirect.y()<<std::endl;
+        // Vecteur qui va du joueur -> ennemi
         QVector2D center_ennemi = QVector2D(point.x() - center.x() , point.y() - center.y());
-
-        float produitScalaire = vectDirect.x() * center_ennemi.x() + vectDirect.y() * center_ennemi.y();
+        //std::cout<<"center_ennemi = "<<center_ennemi.x()<<" "<<center_ennemi.y()<<std::endl;
+        float produitScalaire = (vectDirect.x() * center_ennemi.x()) + (vectDirect.y() * center_ennemi.y());
         float produitNorme = vectDirect.length() * center_ennemi.length();
         float cosTeta = produitScalaire / produitNorme;
-        float angle = acos(cosTeta);
-        float angleDegree = angle*(180/3.14159265358979323846); // radian to degree
-        std::cout<<"degree = "<<angleDegree<<std::endl;
-        if ( std::abs(angleDegree) < angle/2 ) return true;
-        else return true;
+        float angleRadian = acos(cosTeta);
+        float angleDegree = angleRadian*(180/3.14159265358979323846); // radian to degree
+        //std::cout<<"Radian = "<<angleRadian<<std::endl;
+        //std::cout<<"Degree = "<<angleDegree<<std::endl;
+        if ( angleDegree < angle/2 ) {
+            //std::cout << "collision ennemi possible " << std::endl;
+            return !wallOnTheVector(center_ennemi);                                 //vérifier ca que si l'ennemi est dans le cone (economie de temps)
+        }
+        else return false;
     }
 }
 
 void Room::affectEnemiesInRange(){
-    float rayon;
-    float angle;
+    float rayon = player->getRange();
+    float angle = player->getAngle();
     bool isUsingMainLamp = false;
     bool isUsingSecondLamp = false;
 
     if (player->utilisePilePrincipale()){
-        rayon = player->GetPilePrincipale()->GetRange();
-        angle = player->GetPilePrincipale()->GetConeAngle();
         isUsingMainLamp = true;
-        std::cout << "utilise pile principale " << std::endl;
     }
     else if (player->utilisePileSecondaire()){
-        rayon = player->getPileSecondaire()->GetRange();
-        angle = player->getPileSecondaire()->GetConeAngle();
         isUsingSecondLamp = true;
     }
 

@@ -6,12 +6,16 @@ SpriteRenderer::SpriteRenderer(QVector3D pos):spritePath("sprites.png"),timer(),
     initializeOpenGLFunctions();
     arrayBuf.create();
     indexBuf.create();
+    addXCoord = 0;
+    initText=spriteCoords;
 }
 
 SpriteRenderer::SpriteRenderer(std::string p,QVector2D coords,float t,QVector3D pos):spritePath(p),timer(),spriteCoords(coords),indexBuf(QOpenGLBuffer::IndexBuffer),time(t),position(pos){
     initializeOpenGLFunctions();
     arrayBuf.create();
     indexBuf.create();
+    addXCoord = 0;
+    initText=spriteCoords;
 }
 void SpriteRenderer::ReleaseBuffers(){
     arrayBuf.release();
@@ -128,6 +132,7 @@ void SpriteRenderer::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
     int texcoordLocation = program->attributeLocation("a_texcoord");
     program->enableAttributeArray(texcoordLocation);
     program->setAttributeBuffer(texcoordLocation, GL_FLOAT, offset, 2, sizeof(VertexData));
+
     // Draw cube geometry using indices from VBO 1
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 }

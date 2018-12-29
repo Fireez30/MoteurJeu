@@ -16,7 +16,7 @@ protected:
     Pile *secondaire = nullptr;
     QVector3D lastMove;
     float orientationRatio;
-    QVector2D vectDirect;
+    bool holdKey;
 
 public :
     Player();
@@ -28,14 +28,17 @@ public :
     void SetPilePrincipale(Pile *p);
     void SetPileSecondaire(Pile *s);
     void Update() override;
-    QVector2D GetVectDirect();
     QVector3D GetLastMove() override;
     void SetLastMove(QVector3D p);
     Pile* getPileSecondaire();
     bool utilisePilePrincipale();
     bool utilisePileSecondaire();
     void setUtilisationPrincipale(bool b);
+    float getRange();
+    float getAngle();
     void setUtilisationSecondaire(bool b);
+    void PickKey();
+    bool getHoldKey();
     Pile* GetPilePrincipale();
 };
 

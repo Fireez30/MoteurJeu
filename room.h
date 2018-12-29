@@ -1,17 +1,18 @@
 #ifndef ROOM_H
 #define ROOM_H
 
+class Door;
 class Room;
 
 #include <stdlib.h>
 #include <stdio.h>
 #include "tile.h"
-#include "door.h"
 #include "player.h"
 #include "camera.h"
 #include <QOpenGLShaderProgram>
 #include "tinyxml2.h"
 #include "movable.h"
+#include "door.h"
 
 class Room {
 
@@ -21,6 +22,7 @@ protected:
     std::vector<Interactable2D*> pickups;
     std::vector<Movable*> entities;
     Player* player;
+    Door* boss;
 
 public :
     Room();
@@ -40,6 +42,7 @@ public :
     bool CheckColl(float rayon, float angle, QVector2D point);
     void setPlayer(Player* _p);
     void affectEnemiesInRange();
+    bool wallOnTheVector(QVector2D vect);
 
 private:
     int x, y;

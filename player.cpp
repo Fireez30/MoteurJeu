@@ -11,7 +11,7 @@
 #include "rangedpile.h"
 #include "mainpile.h"
 
-Player::Player():Movable(3,1,0,0.2,QVector2D(162,83),QVector2D(0.0,8.0/16.0)),usePilePrincipale(false),usePileSecondaire(false){
+Player::Player():Movable(3,1,0,0.2,QVector2D(162,83),QVector2D(0.0,8.0/16.0)),usePilePrincipale(false),usePileSecondaire(false),holdKey(false){
     sprites.push_back(QVector2D(0.0,11.0/16.0));//facing up
     sprites.push_back(QVector2D(0.0,10.0/16.0));//facing right
     sprites.push_back(QVector2D(0.0,8.0/16.0));//basic sprite orientation (facing down)
@@ -20,7 +20,7 @@ Player::Player():Movable(3,1,0,0.2,QVector2D(162,83),QVector2D(0.0,8.0/16.0)),us
     principale = new MainPile(QVector2D(0,0),QVector2D(0,0));
 }
 
-Player::Player(int h,float x,float y, float sp,QVector2D dir):Movable(h,x,y,sp,dir,QVector2D(0.0,8.0/16.0)),usePilePrincipale(false),usePileSecondaire(false){
+Player::Player(int h,float x,float y, float sp,QVector2D dir):Movable(h,x,y,sp,dir,QVector2D(0.0,8.0/16.0)),usePilePrincipale(false),usePileSecondaire(false),holdKey(false){
     sprites.push_back(QVector2D(0.0,8.0/16.0));//basic sprite orientation (facing down)
     sprites.push_back(QVector2D(0.0,9.0/16.0));//facing left
     sprites.push_back(QVector2D(0.0,10.0/16.0));//facing right
@@ -49,6 +49,13 @@ void Player::Update(){
 
 }
 
+void Player::PickKey(){
+    holdKey = true;
+}
+
+bool Player::getHoldKey(){
+    return holdKey;
+}
 
 void Player::ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj,QVector2D size){
     QVector3D mousePos = QVector3D(s.x(),s.y(),0);//pos souris
@@ -61,21 +68,21 @@ void Player::ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj,QVector2D s
 
     this->direction = QVector2D(worldpos - mousePos).normalized();
     //std::cout << "direction = " << direction.x() << " " << direction.y() << std::endl;
-    if (direction.x() > orientationRatio){
+    if (direction.x() > orientationRatio && renderer.spriteCoords != sprites[3]){
         //std::cout << "sprite tourné vers la droite \n";
-        renderer.spriteCoords = sprites[3];
+        renderer.spriteCoords.setY(sprites[3].y());
     }
-    else  if (direction.x() < -orientationRatio){
+    else  if (direction.x() < -orientationRatio && renderer.spriteCoords != sprites[1]){
         //std::cout << "sprite tourné vers la gauche \n";
-        renderer.spriteCoords = sprites[1];
+        renderer.spriteCoords.setY(sprites[1].y());
     }
-    else if (direction.y() > orientationRatio){
+    else if (direction.y() > orientationRatio && renderer.spriteCoords != sprites[0]){
         //std::cout << "sprite tourné vers le bas \n";
-        renderer.spriteCoords = sprites[0];
+        renderer.spriteCoords.setY(sprites[0].y());
     }
-    else  if (direction.y() < -orientationRatio){
+    else  if (direction.y() < -orientationRatio && renderer.spriteCoords != sprites[2] ){
         //std::cout << "sprite tourné vers le hait \n";
-        renderer.spriteCoords = sprites[2];
+        renderer.spriteCoords.setY(sprites[2].y());
     }
 
     renderer.CreateGeometry();
@@ -88,6 +95,28 @@ void Player::SetPilePrincipale(Pile *p){
 
 Pile* Player::GetPilePrincipale(){
     return principale;
+}
+
+float Player::getRange(){
+    if (usePilePrincipale){
+        return principale->GetRange();
+    }
+    else if (usePileSecondaire) {
+        return secondaire->GetRange();
+    }
+
+    return 0;
+}
+
+float Player::getAngle(){
+    if (usePilePrincipale){
+        return principale->GetConeAngle();
+    }
+    else if (usePileSecondaire) {
+        return secondaire->GetConeAngle();
+    }
+
+    return 0;
 }
 
 void Player::SetPileSecondaire(Pile *s){
@@ -114,9 +143,3 @@ void Player::setUtilisationPrincipale(bool b){
 void Player::setUtilisationSecondaire(bool b){
     usePileSecondaire = b;
 }
-
-
-QVector2D Player::GetVectDirect(){
-    return this->vectDirect;
-}
-
