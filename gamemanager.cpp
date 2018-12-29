@@ -447,15 +447,37 @@ void GameManager::paintGL()
     scene[camera->getCurrentRoom()]->affectEnemiesInRange();
     // !! if player HP is 1 , change shaders to color the scren in red ?
     if (player->isDead()){
-        this->close();
+        //this->close();
         //
     }
     // Set modelview-projection matrix
     program.setUniformValue("mvp_matrix", projection * matrix);
 
-    program.setUniformValue("playerpos",QVector4D(player->position.x(),player->position.y(),0,0));
-    program.setUniformValue("radius",2000);
-    program.setUniformValue("test",shader);
+    QRect vp = QRect(0,0,size.x(),size.y());
+    QVector3D screenpos = player->position.project(matrix,projection,vp);
+    //program.setUniformValue("playerpos",QVector4D(screenpos.x()+24,720-(screenpos.y()+24),0,0));
+ program.setUniformValue("test",shader);
+    program.setUniformValue("numLights", 2);
+    program.setUniformValue("allLights[0].position",QVector4D(screenpos.x()+24,720-(screenpos.y()+24),0,0));
+    program.setUniformValue("allLights[0].color",QVector3D(1,1,1));
+    program.setUniformValue("allLights[0].attenuation",0.0005f);
+    program.setUniformValue("allLights[0].ambientCoefficient",0.5f);
+    program.setUniformValue("allLights[0].coneAngle",180.0f);
+    program.setUniformValue("allLights[0].maxAngle",180.0f);
+    program.setUniformValue("allLights[0].coneDirection",QVector3D(1,0,0));
+    program.setUniformValue("allLights[0].dist",150.0f);
+    program.setUniformValue("allLights[0].maxDist",200.0f);
+
+    program.setUniformValue("allLights[1].position",QVector4D(screenpos.x()+24,720-(screenpos.y()+24),0,0));
+    program.setUniformValue("allLights[1].color",QVector3D(3,3,0));
+    program.setUniformValue("allLights[1].attenuation",0.005f);
+    program.setUniformValue("allLights[1].ambientCoefficient",0.5f);
+    program.setUniformValue("allLights[1].coneAngle",20.0f);
+    program.setUniformValue("allLights[1].maxAngle",25.0f);
+    program.setUniformValue("allLights[1].coneDirection",QVector3D(0,1,0));
+    program.setUniformValue("allLights[1].dist",250.0f);
+    program.setUniformValue("allLights[1].maxDist",300.0f);
+
     // Use texture unit 0 which contains sprite sheet
     program.setUniformValue("texture", 0);
     player->Render(&program,texture);
@@ -463,6 +485,8 @@ void GameManager::paintGL()
     //for (size_t i = 0; i < scene.size(); i++){
     //    scene[i]->Render(&program,texture);
     //}
-    scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
+    for(int i=0;i<scene.size();i++)
+         scene[i]->Render(&program,texture);//render different components of the room
+    //scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
 
 }
