@@ -17,6 +17,7 @@ protected :
     int health;
     bool dead;
     std::vector<Projectile*> projectiles;
+    bool affected;
 
 public :
     MovAnimator* movAnim;
@@ -38,6 +39,8 @@ public :
     void RenderProjectile(QOpenGLShaderProgram *program,QOpenGLTexture *text);
     void CreateProjectileGeometry();
     std::vector<Projectile*> getProjectiles();
+    bool getAffected();
+    void setAffected(bool);
 };
 
 #endif // MOVABLE_H

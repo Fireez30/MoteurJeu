@@ -34,7 +34,16 @@ void Boss_torche::IA(){
      ennemitoplayer = QVector3D(player->position.x() - position.x(), player->position.y() - position.y(), 0);
      ennemitoplayer.normalize();
      ennemitoplayer *= speed;
-     this->Move(ennemitoplayer * 0.0166);//collision check a faire
+     if( !affected ){
+        this->Move(ennemitoplayer * 0.0166);//collision check a faire
+     }
+     else {
+        this->Move(-(ennemitoplayer * 0.0166));//collision check a faire
+        if (room->CollisionCheck(this->getCollider())){//si la collision amene le joueur dans le mur, la reset
+            this->Move(ennemitoplayer * 0.0166);
+        }
+     }
+     affected = false;
 }
 
 QVector3D Boss_torche::GetLastMove(){
@@ -44,6 +53,7 @@ QVector3D Boss_torche::GetLastMove(){
 void Boss_torche::Update(){
     IA();
     speed = initSpeed;
+    std::cout<<"vie BOSS = "<<getHealth()<<std::endl;
     for (unsigned i = 0; i < projectiles.size(); i++){
         if (projectiles[i]->Update() == -1){
             Projectile* truc = projectiles[i];
@@ -71,4 +81,8 @@ int Boss_torche::OnTriggerEnter(Interactable2D* other){
     }
 
     return 1;
+}
+
+void Boss_torche::SetLastMove(QVector3D p){
+    lastMove = p;
 }

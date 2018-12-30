@@ -6,6 +6,7 @@
 #include "largerpile.h"
 #include "key.h"
 #include "boss_torche.h"
+#include "torche.h"
 
 Room::Room(){
     tiles = std::vector<Tile>();
@@ -42,6 +43,7 @@ void Room::UpdateEntities(){
             //entities[i]->Move((entities[i]->GetLastMove()+QVector2D(0,1))*0.0166);
         }
     }
+    TriggerCheck(boss2);
 }
 
 QVector2D Room::getPos(){
@@ -174,7 +176,14 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
                 Boss_torche* e =new Boss_torche(this,p,e5->IntAttribute("health"),0,0,e5->IntAttribute("speed"),QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),200,2,false);
                 e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
                 entities.push_back(e);
+                boss2 = e;
             }//fin for piles, rajouter des fors pour les autres entités
+
+            for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Torche"); e5 != nullptr; e5 = e5->NextSiblingElement("Torche")){//Liste des Torches
+                Torche* e =new Torche(QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom), e5->IntAttribute("range"), 1, QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),this);
+                e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),e5->IntAttribute("range"),e5->IntAttribute("range")));
+                pickups.push_back(e);
+            }//si clé lol
         }
         doc.Clear();//vider le doc
 }
@@ -324,6 +333,8 @@ void Room::affectEnemiesInRange(){
         for (int i = 0; i < entities.size(); i++){
             if (CheckColl(rayon,angle,QVector2D(entities[i]->GetPosition().x(),entities[i]->GetPosition().y())))
             {
+                entities[i]->setAffected(true);
+
                 std::cout << "Debut collision lampe ennemie" << std::endl;
                 if (isUsingMainLamp){
                  player->GetPilePrincipale()->Affect(entities[i]);
@@ -337,5 +348,9 @@ void Room::affectEnemiesInRange(){
                 }
                  std::cout << "Fin collision lampe ennemie" << std::endl;
             }
+            else{
+                entities[i]->setAffected(false);
+            }
+
         }
 }

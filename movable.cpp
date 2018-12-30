@@ -5,12 +5,14 @@ Movable::Movable():Interactable2D(QVector2D(0,0),QVector2D(0,0),1000),speed(1),d
     movAnim = new MovAnimator(this);
     initSpeed = speed;
     projectiles =  std::vector<Projectile*>();
+    affected = false;
 }
 
 Movable::Movable(int h,float x, float y,float sp,QVector2D pos,QVector2D text,int animtime,int nbframes,bool animstatus):Interactable2D(pos,text,1000),speed(sp),direction(x,y),initPos(pos),health(h),dead(false){
     movAnim = new MovAnimator(this,animtime,nbframes,animstatus);
     initSpeed = speed;
     projectiles =  std::vector<Projectile*>();
+    affected = false;
 }
 
 QVector2D Movable::GetDirection(){
@@ -80,5 +82,15 @@ void Movable::Damage(int d){
 
 bool Movable::isDead(){
     return dead;
+}
+
+bool Movable::getAffected()
+{
+    return affected;
+}
+
+void Movable::setAffected(bool a)
+{
+    affected = a;
 }
 
