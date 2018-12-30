@@ -43,7 +43,10 @@ void Room::UpdateEntities(){
             //entities[i]->Move((entities[i]->GetLastMove()+QVector2D(0,1))*0.0166);
         }
     }
-    TriggerCheck(boss2);
+    if (boss2 != nullptr){
+        TriggerCheck(boss2);
+    }
+
 }
 
 QVector2D Room::getPos(){
