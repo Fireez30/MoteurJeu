@@ -34,7 +34,7 @@ int Door::OnTriggerEnter(Interactable2D* other){
     }
     else{
         //std::cout << "RECULE" << std::endl;
-        player->Move(-player->GetLastMove());
+        player->Move(-player->GetLastMove()*0.166);
     }
 }
 
