@@ -4,7 +4,7 @@ Hitbox::Hitbox():leftCorner(0,0),width(1),height(1){
 
 }
 
-Hitbox::Hitbox(QVector2D p,int h, int w):leftCorner(p), width(w), height(h){
+Hitbox::Hitbox(QVector2D p,float h, float w):leftCorner(p), width(w), height(h){
 
 }
 

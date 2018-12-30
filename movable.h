@@ -5,6 +5,7 @@ class MovAnimator;
 
 #include "interactable2d.h"
 #include "movanimator.h"
+#include "projectile.h"
 
 class Movable: public Interactable2D
 {
@@ -15,6 +16,7 @@ protected :
     QVector2D initPos;
     int health;
     bool dead;
+    std::vector<Projectile*> projectiles;
 
 public :
     MovAnimator* movAnim;
@@ -33,6 +35,9 @@ public :
     void setHealth(int h);
     void Damage(int d);
     bool isDead();
+    void RenderProjectile(QOpenGLShaderProgram *program,QOpenGLTexture *text);
+    void CreateProjectileGeometry();
+    std::vector<Projectile*> getProjectiles();
 };
 
 #endif // MOVABLE_H

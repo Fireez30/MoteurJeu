@@ -34,6 +34,9 @@ void Ennemi::IA(){
      ennemitoplayer.normalize();
      ennemitoplayer *= speed;
      this->Move(ennemitoplayer * 0.0166);//collision checvk a faire
+     if (projectiles.size() == 0){
+         projectiles.push_back(new Projectile(QVector2D(position.x(),position.y()),QVector2D(4/16.0,13/16.0),0,1,1,1,QVector2D(ennemitoplayer.x(),ennemitoplayer.y())));
+     }
 }
 
 QVector3D Ennemi::GetLastMove(){
@@ -43,11 +46,12 @@ QVector3D Ennemi::GetLastMove(){
 void Ennemi::Update(){
     IA();
     speed = initSpeed;
-    if (player->utilisePilePrincipale()){
-        //if (player->CheckColl())
-    }
-    else {
-
+    for (unsigned i = 0; i < projectiles.size(); i++){
+        if (projectiles[i]->Update() == -1){
+            Projectile* truc = projectiles[i];
+            projectiles.erase(projectiles.begin()+i);
+            delete truc;
+        }
     }
 }
 
@@ -67,5 +71,6 @@ int Ennemi::OnTriggerEnter(Interactable2D* other){
         }
         return 0;
     }
-    else return 1;
+
+    return 1;
 }

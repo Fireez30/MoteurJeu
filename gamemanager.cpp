@@ -521,6 +521,7 @@ void GameManager::paintGL()
     //    scene[i]->Render(&program,texture);
     //}
     //std::cout << "AH" << std::endl;
+    std::cout << "Player life = " << player->getHealth() << std::endl;
     //std::cout << "Player tient la clé ? " << player->getHoldKey() << std::endl;
     scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
     //std::cout << player->renderer.spriteCoords.x() << " " << player->renderer.spriteCoords.y() << std::endl;

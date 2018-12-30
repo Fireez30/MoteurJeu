@@ -74,6 +74,7 @@ void Room::CreateGeometry(){
 
     for (int i = 0 ; i < entities.size(); i++){
         entities[i]->ResetPos();
+        entities[i]->CreateProjectileGeometry();
     }
 }
 
@@ -177,6 +178,7 @@ void Room::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
     }
     for (int i = 0; i < entities.size(); i++){
         entities[i]->Render(program,text);//contient entités
+        entities[i]->RenderProjectile(program,text);
     }
     for (int i = 0; i < tiles.size(); i++){
         tiles[i].Render(program,text);//contient sol + murs
@@ -221,6 +223,13 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
     }
 
     for (int i = 0; i <  entities.size(); i++){
+        for (unsigned j = 0; j < entities[i]->getProjectiles().size(); j++){
+            if (entities[i]->getProjectiles()[j]->getCollider().TestCollision(other->getCollider())){
+               std::cout << "Collision projectile ! " << std::endl;
+               entities[i]->getProjectiles()[j]->OnTriggerEnter(other);
+               return 0;
+            }
+        }
         if(entities[i]->canCollide && entities[i]->getCollider().TestCollision(other->getCollider())){
             if (entities[i]->OnTriggerEnter(other) == -1){
                 Movable* truc = entities[i];
@@ -229,7 +238,7 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
             }
             return true;
         }
-    }
+    }//fin collision entité
     return false;
 }
 

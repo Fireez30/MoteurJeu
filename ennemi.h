@@ -4,6 +4,7 @@
 #include "movable.h"
 #include "player.h"
 #include "room.h"
+#include "projectile.h"
 
 class Ennemi : public Movable{
 

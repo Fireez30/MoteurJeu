@@ -11,7 +11,7 @@ protected :
     float height;
 public :
     Hitbox();
-    Hitbox(QVector2D p,int w,int h);
+    Hitbox(QVector2D p,float w,float h);
     bool TestCollision(Hitbox other);
     float getXMax();
     QVector2D getCorner();

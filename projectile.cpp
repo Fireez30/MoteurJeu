@@ -10,7 +10,7 @@ Projectile::Projectile():Interactable2D(QVector2D(0,0),QVector2D(0,0),0),lifespa
 
 Projectile::Projectile(QVector2D pos,QVector2D text,int collidetime,int lifetime,int dmg,float sp,QVector2D dir): Interactable2D (pos,text,collidetime),lifespan(lifetime),damage(dmg),speed(sp),direction(dir){
     alive = true;
-    setCollider(Hitbox(pos,1,1));
+    setCollider(Hitbox(pos,0.5,0.5));
     timer.start(lifespan*1000,this);
 }
 
@@ -26,7 +26,7 @@ int Projectile::Update(){
     QVector2D movement = direction * speed;
     movement.normalize();
     movement *= speed;
-    position += movement * 1.66667;
+    position += (movement * 0.166667);
     collider.setPoint(QVector2D(position.x(),position.y()));
     renderer.SetPosition(position);
     renderer.CreateGeometry();
