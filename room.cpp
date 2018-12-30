@@ -15,6 +15,7 @@ Room::Room(){
     entities = std::vector<Movable*>();
     player = nullptr;
     boss = nullptr;
+    boss2 = nullptr;
 }
 
 Room::~Room(){
