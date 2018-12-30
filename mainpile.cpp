@@ -1,7 +1,7 @@
 #include "mainpile.h"
 #include <iostream>
 
-MainPile::MainPile(QVector2D pos,QVector2D text):Pile(pos,5,90,60,0,text,0){
+MainPile::MainPile(QVector2D pos,QVector2D text):Pile(pos,7,50,60,0,text,0){
 
 }
 
