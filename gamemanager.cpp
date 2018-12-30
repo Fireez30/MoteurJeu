@@ -100,6 +100,10 @@ void GameManager::keyPressEvent (QKeyEvent * event){
         shader++;
         shader = shader % 2;
     }
+
+    if (event->key() == Qt::Key_K){
+        player->PickKey();
+    }
 /*
     if(event->key() == Qt::Key_W)
         camera->moveCamera(QVector3D(0,0,1));
