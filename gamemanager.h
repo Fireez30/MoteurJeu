@@ -30,7 +30,8 @@ public:
     float z = -25.0;
     explicit GameManager(QWidget *parent = 0,int maxfps=60);
     ~GameManager() override;
-
+    int transX;
+    int transY;
 
     QVector2D mousePressPosition;
     QVector3D rotationAxis;

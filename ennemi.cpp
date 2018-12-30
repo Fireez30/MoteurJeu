@@ -2,22 +2,26 @@
 #include <iostream>
 
 Ennemi::Ennemi(int h,float x, float y, float s,QVector2D pos,QVector2D text): Movable(h,x,y,s,pos,text,200,3,false),ennemitoplayer(0,0,0){
+    movAnim->StartAnimator();
+    movAnim->Walk();
 }
 
 Ennemi::Ennemi(Room* r,Player* p,int h, float x, float y, float s,QVector2D pos,QVector2D text,int animtime,int nbframes,bool animstatus): Movable(h,x,y,s,pos,text,animtime,nbframes,animstatus),ennemitoplayer(0,0,0){
     this->player = p;
     this->room = r;
     //startTimer();
-}
-
-void Ennemi::startTimer(){
-    timer.start(1000,this);
     movAnim->StartAnimator();
     movAnim->Walk();
 }
 
+void Ennemi::startTimer(){
+    timer.start(1000,this);
+
+}
+
 void Ennemi::timerEvent(QTimerEvent *){
     //std::cout << "timer ia " << std::endl;
+
     ennemitoplayer = QVector3D(player->position.x() - position.x(), player->position.y() - position.y(), 0);
     ennemitoplayer.normalize();
     ennemitoplayer *= speed;

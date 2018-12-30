@@ -1,4 +1,5 @@
 #include "spritemodifier.h"
+#include <iostream>
 
 SpriteModifier::SpriteModifier(Interactable2D* obj):Object(obj){
 
@@ -17,6 +18,7 @@ void SpriteModifier::ChangeSprite(int index){
     Object->renderer.spriteCoords = sprites[index];
     Object->renderer.initText = sprites[index];
     Object->renderer.CreateGeometry();
+   // std::cout << "(changesprite) Renderer: " << Object->renderer.spriteCoords.x() << " " << Object->renderer.spriteCoords.y() << std::endl;
 }
 
 int SpriteModifier::nbOfSprites(){

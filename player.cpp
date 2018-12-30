@@ -11,13 +11,14 @@
 #include "rangedpile.h"
 #include "mainpile.h"
 
-Player::Player():Movable(3,1,0,0.2,QVector2D(162,83),QVector2D(0.0,8.0/16.0),200,3,false),usePilePrincipale(false),usePileSecondaire(false),holdKey(false),spriteModif(this){
+Player::Player():Movable(3,1,0,3,QVector2D(162,83),QVector2D(0.0,8.0/16.0),200,3,false),usePilePrincipale(false),usePileSecondaire(false),holdKey(false),spriteModif(this){
     spriteModif.AddSprite(QVector2D(0.0,11.0/16.0));//facing up
     spriteModif.AddSprite(QVector2D(0.0,10.0/16.0));//facing right
     spriteModif.AddSprite(QVector2D(0.0,8.0/16.0));//basic sprite orientation (facing down)
     spriteModif.AddSprite(QVector2D(0.0,9.0/16.0));//facing left
     orientationRatio = 0.7;
     principale = new MainPile(QVector2D(0,0),QVector2D(0,0));
+    movAnim->StartAnimator();
     std::cout << "spriteModif size " << spriteModif.nbOfSprites() << std::endl;
 }
 
@@ -28,6 +29,7 @@ Player::Player(int h,float x,float y, float sp,QVector2D dir,int animtime,int nb
     spriteModif.AddSprite(QVector2D(0.0,11.0/16.0));//facing up
     orientationRatio = 0.7;
     principale = new MainPile(QVector2D(0,0),QVector2D(0,0));
+    movAnim->StartAnimator();
     std::cout << "spriteModif size " << spriteModif.nbOfSprites() << std::endl;
 }
 

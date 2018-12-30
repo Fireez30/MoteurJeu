@@ -23,6 +23,8 @@ GameManager::GameManager(QWidget *parent,int maxfps) :
     texture(0),
     angularSpeed(0)
 {
+    transX = 0;
+    transY = 0;
     if (maxfps == 0)
         max_fps = 1;
     else
@@ -52,17 +54,17 @@ Player* GameManager::getPlayer(){return player;}
 //
 
 void GameManager::keyReleaseEvent (QKeyEvent * event){
-    if(event->key() == Qt::Key_Q || event->key() == Qt::Key_D || event->key() == Qt::Key_S || event->key() == Qt::Key_T){
+    if(event->key() == Qt::Key_Q || event->key() == Qt::Key_D || event->key() == Qt::Key_S || event->key() == Qt::Key_Z){
         player->movAnim->StopWalk();
+        transX = 0;
+        transY = 0;
     }
 }
 
 void GameManager::keyPressEvent (QKeyEvent * event){
-    float transX=0, transY=0;
-    if (!player->movAnim->isStarted()){
-        player->movAnim->StartAnimator();
-    }
-    player->movAnim->StopWalk();
+    transX=0;
+    transY=0;
+    //player->movAnim->StopWalk();
     if(event->key() == Qt::Key_Q){
         transX--;
         player->movAnim->Walk();
@@ -89,21 +91,6 @@ void GameManager::keyPressEvent (QKeyEvent * event){
     if (event->key() == Qt::Key_T){
         shader++;
         shader = shader % 2;
-    }
-
-    QVector3D vector(transX,transY,0);
-    vector.normalize();
-    vector *= player->GetSpeed();
-    player->Move(vector);
-    player->SetLastMove(vector);
-    int i=0;
-    scene[camera->getCurrentRoom()]->TriggerCheck(player);
-    i=0;
-
-    if(scene[camera->getCurrentRoom()]->CollisionCheck(player->getCollider()))
-    {
-        player->movAnim->StopWalk();
-        player->Move(-vector);
     }
 
     if(event->key() == Qt::Key_W)
@@ -157,6 +144,30 @@ void GameManager::timerEvent(QTimerEvent *)
         // Update rotation
         rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
         et.restart();
+    }
+
+    QVector3D vector(transX,transY,0);
+    vector.normalize();
+    vector *= player->GetSpeed();
+    player->Move(vector*0.0166);
+    player->SetLastMove(vector);
+    int i=0;
+    scene[camera->getCurrentRoom()]->TriggerCheck(player);
+    i=0;
+
+    if(scene[camera->getCurrentRoom()]->CollisionCheck(player->getCollider()))
+    {
+        //player->movAnim->StopWalk();
+        player->Move(-vector*0.0166);
+    }
+
+    scene[camera->getCurrentRoom()]->UpdateEntities();
+    scene[camera->getCurrentRoom()]->TriggerCheck(player);
+    scene[camera->getCurrentRoom()]->affectEnemiesInRange();
+    // !! if player HP is 1 , change shaders to color the scren in red ?
+    if (player->isDead()){
+        //this->close();
+        //
     }
 
     update();
@@ -460,14 +471,7 @@ void GameManager::paintGL()
     QVector2D size = QVector2D(this->width(),this->height());
     player->ChangeOrientation(this->mapFromGlobal(QCursor::pos()),matrix,projection,size);
     //std::cout << "Player life : " << player->getHealth() << std::endl;
-    scene[camera->getCurrentRoom()]->UpdateEntities();
-    scene[camera->getCurrentRoom()]->TriggerCheck(player);
-    scene[camera->getCurrentRoom()]->affectEnemiesInRange();
-    // !! if player HP is 1 , change shaders to color the scren in red ?
-    if (player->isDead()){
-        //this->close();
-        //
-    }
+
     // Set modelview-projection matrix
     program.setUniformValue("mvp_matrix", projection * matrix);
 
