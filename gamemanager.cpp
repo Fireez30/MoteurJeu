@@ -29,6 +29,7 @@ GameManager::GameManager(QWidget *parent,int maxfps) :
         max_fps = maxfps;
     et.start();
     scene = std::vector<Room*>();
+    std::cout << "fin constructeur gamemanager" << std::endl;
 }
 
 GameManager::~GameManager()
@@ -63,26 +64,26 @@ void GameManager::keyPressEvent (QKeyEvent * event){
     }
     player->movAnim->StopWalk();
     if(event->key() == Qt::Key_Q){
-           transX--;
-           player->movAnim->Walk();
+        transX--;
+        player->movAnim->Walk();
     }
 
     if(event->key() == Qt::Key_D)
     {
-           transX++;
-           player->movAnim->Walk();
+        transX++;
+        player->movAnim->Walk();
     }
 
 
     if(event->key() == Qt::Key_Z)
     {
-          transY++;
-          player->movAnim->Walk();
+        transY++;
+        player->movAnim->Walk();
     }
 
     if(event->key() == Qt::Key_S){
-          transY--;
-          player->movAnim->Walk();
+        transY--;
+        player->movAnim->Walk();
     }
 
     if (event->key() == Qt::Key_T){
@@ -100,19 +101,19 @@ void GameManager::keyPressEvent (QKeyEvent * event){
     i=0;
 
     if(scene[camera->getCurrentRoom()]->CollisionCheck(player->getCollider()))
-       {
+    {
         player->movAnim->StopWalk();
         player->Move(-vector);
     }
 
     if(event->key() == Qt::Key_W)
-          camera->moveCamera(QVector3D(0,0,1));
+        camera->moveCamera(QVector3D(0,0,1));
 
     if(event->key() == Qt::Key_X)
-          camera->moveCamera(QVector3D(0,0,-1));
+        camera->moveCamera(QVector3D(0,0,-1));
 
     if(event->key() == Qt::Key_U)
-          angularSpeed = 0;
+        angularSpeed = 0;
 
 }
 
@@ -283,7 +284,7 @@ void GameManager::initializeGL()
 
     glClearColor(0,0,0, 1);
 
-   // glOrtho(-17.0,17.0,-17.0,17.0,3.0,7.0);
+    // glOrtho(-17.0,17.0,-17.0,17.0,3.0,7.0);
     initShaders();
     initTextures();
 
@@ -296,20 +297,21 @@ void GameManager::initializeGL()
     player = new Player();
     std::cout << "PLayer créé" << std::endl;
     camera = new Camera();
-
+    std::cout << "Camera créé" << std::endl;
     //srand(13);
     int seed = 14562;
+    std::cout << "avant srand" << std::endl;
     srand(seed);
-    std::cout << "Seed : " << seed << "\n";
+    std::cout << "apres srand Seed : " << seed << "\n";
     std::vector<Rooms>* rooms = new std::vector<Rooms>();
     int maxdist = 6,distSecondaire = 4;
     int x = maxdist;//x in tile-coordinates (used for generation)
     int y = maxdist;//y in tile-coordinates (used for generation)
     int** minMap = new int*[maxdist*2];
     for(int i = 0; i < maxdist*2; ++i){
-       minMap[i] = new int[maxdist*2];
-       for(int i2=0;i2<maxdist*2;i2++)
-           minMap[i][i2]=0;
+        minMap[i] = new int[maxdist*2];
+        for(int i2=0;i2<maxdist*2;i2++)
+            minMap[i][i2]=0;
     }
     rooms->push_back({"start",x,y});//stockage initial
     minMap[x][y] = 2;
@@ -321,21 +323,21 @@ void GameManager::initializeGL()
 
     int dir = rand()%3;
     if(dir==0)
-       generateLevel(minMap, 1,maxdist,distSecondaire,x+1,y,true,rooms);
+        generateLevel(minMap, 1,maxdist,distSecondaire,x+1,y,true,rooms);
     else if(dir==1)
-       generateLevel(minMap, 1,maxdist,distSecondaire,x-1,y,true,rooms);
+        generateLevel(minMap, 1,maxdist,distSecondaire,x-1,y,true,rooms);
     else
-       generateLevel(minMap, 1,maxdist,distSecondaire,x,y-1,true,rooms);
+        generateLevel(minMap, 1,maxdist,distSecondaire,x,y-1,true,rooms);
     int chanceSecondaire = rand()%100;
     double maxChance = 100 - 2/(double)maxdist*100;
     if(minMap[x-1][y]==0 && chanceSecondaire < maxChance)
-       generateLevel(minMap,1,distSecondaire,distSecondaire,x-1,y,false, rooms);
+        generateLevel(minMap,1,distSecondaire,distSecondaire,x-1,y,false, rooms);
     chanceSecondaire = rand()%100;
     if(minMap[x+1][y]==0 && chanceSecondaire < maxChance)
-       generateLevel(minMap,1,distSecondaire,distSecondaire,x+1,y,false, rooms);
+        generateLevel(minMap,1,distSecondaire,distSecondaire,x+1,y,false, rooms);
     chanceSecondaire = rand()%100;
     if(minMap[x][y-1]==0 && chanceSecondaire < maxChance)
-       generateLevel(minMap,1,distSecondaire,distSecondaire,x,y-1,false, rooms);
+        generateLevel(minMap,1,distSecondaire,distSecondaire,x,y-1,false, rooms);
 
     attributeRoom(minMap, rooms,path);
 
@@ -440,7 +442,7 @@ void GameManager::paintGL()
         last_fps = frame_count/ (final_time - initial_time);
         frame_count = 0;
         initial_time = final_time;
-//        std::cout << "Fps : " << last_fps << std::endl;
+        //        std::cout << "Fps : " << last_fps << std::endl;
     }
 
     // Clear color and depth buffer
@@ -472,7 +474,7 @@ void GameManager::paintGL()
     QRect vp = QRect(0,0,size.x(),size.y());
     QVector3D screenpos = player->position.project(matrix,projection,vp);
     //program.setUniformValue("playerpos",QVector4D(screenpos.x()+24,720-(screenpos.y()+24),0,0));
- program.setUniformValue("test",shader);
+    program.setUniformValue("test",shader);
     program.setUniformValue("numLights", 2);
     program.setUniformValue("allLights[0].position",QVector4D(screenpos.x()+24,720-(screenpos.y()+24),0,0));
     program.setUniformValue("allLights[0].color",QVector3D(1,1,1));
@@ -484,15 +486,28 @@ void GameManager::paintGL()
     program.setUniformValue("allLights[0].dist",150.0f);
     program.setUniformValue("allLights[0].maxDist",200.0f);
 
-    program.setUniformValue("allLights[1].position",QVector4D(screenpos.x()+24,720-(screenpos.y()+24),0,0));
-    program.setUniformValue("allLights[1].color",QVector3D(3,3,0));
-    program.setUniformValue("allLights[1].attenuation",0.005f);
-    program.setUniformValue("allLights[1].ambientCoefficient",0.5f);
-    program.setUniformValue("allLights[1].coneAngle",20.0f);
-    program.setUniformValue("allLights[1].maxAngle",25.0f);
-    program.setUniformValue("allLights[1].coneDirection",player->GetDirection());
-    program.setUniformValue("allLights[1].dist",250.0f);
-    program.setUniformValue("allLights[1].maxDist",300.0f);
+    if (player->utilisePilePrincipale() || player->utilisePileSecondaire()){
+        program.setUniformValue("allLights[1].position",QVector4D(screenpos.x()+24,720-(screenpos.y()+24),0,0));
+        program.setUniformValue("allLights[1].color",QVector3D(3,3,0));
+        program.setUniformValue("allLights[1].attenuation",0.005f);
+        program.setUniformValue("allLights[1].ambientCoefficient",0.5f);
+        program.setUniformValue("allLights[1].coneAngle",20.0f);
+        program.setUniformValue("allLights[1].maxAngle",25.0f);
+        program.setUniformValue("allLights[1].coneDirection",QVector3D(-player->GetDirection().x(),-player->GetDirection().y(),0));
+        program.setUniformValue("allLights[1].dist",250.0f);
+        program.setUniformValue("allLights[1].maxDist",300.0f);
+    }
+    else {
+        program.setUniformValue("allLights[1].position",QVector4D(screenpos.x()+24,720-(screenpos.y()+24),0,0));
+        program.setUniformValue("allLights[1].color",QVector3D(3,3,0));
+        program.setUniformValue("allLights[1].attenuation",0.005f);
+        program.setUniformValue("allLights[1].ambientCoefficient",0.5f);
+        program.setUniformValue("allLights[1].coneAngle",20.0f);
+        program.setUniformValue("allLights[1].maxAngle",25.0f);
+        program.setUniformValue("allLights[1].coneDirection",QVector3D(-player->GetDirection().x(),-player->GetDirection().y(),0));
+        program.setUniformValue("allLights[1].dist",0.0f);
+        program.setUniformValue("allLights[1].maxDist",0.0f);
+    }
 
     // Use texture unit 0 which contains sprite sheet
     program.setUniformValue("texture", 0);

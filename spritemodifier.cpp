@@ -18,3 +18,13 @@ void SpriteModifier::ChangeSprite(int index){
     Object->renderer.initText = sprites[index];
     Object->renderer.CreateGeometry();
 }
+
+int SpriteModifier::nbOfSprites(){
+    return sprites.size();
+}
+
+QVector2D SpriteModifier::GetSprite(int i){
+    if (i < sprites.size()){
+        return sprites[i];
+    }
+}

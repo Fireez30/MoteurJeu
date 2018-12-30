@@ -14,6 +14,8 @@ public :
     SpriteModifier(Interactable2D* obj);
     void AddSprite(QVector2D spr);
     void ChangeSprite(int index);
+    int nbOfSprites();
+    QVector2D GetSprite(int i);
 };
 
 #endif // SPRITEMODIFIER_H

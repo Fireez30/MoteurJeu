@@ -8,7 +8,6 @@
 class Player : public Movable
 {
 protected:
-    std::vector<QVector2D> sprites;
     int h, w;
     bool usePilePrincipale;
     bool usePileSecondaire;

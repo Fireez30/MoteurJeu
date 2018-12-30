@@ -18,6 +18,7 @@ Player::Player():Movable(3,1,0,0.2,QVector2D(162,83),QVector2D(0.0,8.0/16.0),200
     spriteModif.AddSprite(QVector2D(0.0,9.0/16.0));//facing left
     orientationRatio = 0.7;
     principale = new MainPile(QVector2D(0,0),QVector2D(0,0));
+    std::cout << "spriteModif size " << spriteModif.nbOfSprites() << std::endl;
 }
 
 Player::Player(int h,float x,float y, float sp,QVector2D dir,int animtime,int nbframes,bool animstatus):Movable(h,x,y,sp,dir,QVector2D(0.0,8.0/16.0),animtime,nbframes,animstatus),usePilePrincipale(false),usePileSecondaire(false),holdKey(false),spriteModif(this){
@@ -27,6 +28,7 @@ Player::Player(int h,float x,float y, float sp,QVector2D dir,int animtime,int nb
     spriteModif.AddSprite(QVector2D(0.0,11.0/16.0));//facing up
     orientationRatio = 0.7;
     principale = new MainPile(QVector2D(0,0),QVector2D(0,0));
+    std::cout << "spriteModif size " << spriteModif.nbOfSprites() << std::endl;
 }
 
 void Player::Input(){
@@ -68,19 +70,19 @@ void Player::ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj,QVector2D s
 
     this->direction = QVector2D(worldpos - mousePos).normalized();
     //std::cout << "direction = " << direction.x() << " " << direction.y() << std::endl;
-    if (direction.x() > orientationRatio && renderer.spriteCoords != sprites[3]){
+    if (direction.x() > orientationRatio && renderer.spriteCoords != spriteModif.GetSprite(3)){
         //std::cout << "sprite tourné vers la droite \n";
         spriteModif.ChangeSprite(3);
     }
-    else  if (direction.x() < -orientationRatio && renderer.spriteCoords != sprites[1]){
+    else  if (direction.x() < -orientationRatio && renderer.spriteCoords != spriteModif.GetSprite(1)){
         //std::cout << "sprite tourné vers la gauche \n";
         spriteModif.ChangeSprite(1);
     }
-    else if (direction.y() > orientationRatio && renderer.spriteCoords != sprites[0]){
+    else if (direction.y() > orientationRatio && renderer.spriteCoords != spriteModif.GetSprite(0)){
         //std::cout << "sprite tourné vers le bas \n";
         spriteModif.ChangeSprite(0);
     }
-    else  if (direction.y() < -orientationRatio && renderer.spriteCoords != sprites[2] ){
+    else  if (direction.y() < -orientationRatio && renderer.spriteCoords != spriteModif.GetSprite(2)){
         //std::cout << "sprite tourné vers le hait \n";
        spriteModif.ChangeSprite(2);
     }
