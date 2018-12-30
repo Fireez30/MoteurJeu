@@ -22,6 +22,7 @@ public :
     Door(QVector2D pos,QVector2D text,QVector2D AltText, bool state, QVector2D d, Player* p, Camera* c);
     bool IsLocked();
     void Unlock();
+    void Lock();
     int OnTriggerEnter(Interactable2D* other) override;
     void setRoomAct(int i);
     void setRoomLink(int i);

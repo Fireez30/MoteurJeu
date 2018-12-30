@@ -18,6 +18,11 @@ void Door::Unlock(){
     this->renderer.spriteCoords = altText;
 }
 
+void Door::Lock(){
+    locked = true;
+    this->renderer.spriteCoords = renderer.initText;
+}
+
 int Door::OnTriggerEnter(Interactable2D* other){
 	//Si memory leak, regarder ici
     if (!locked){

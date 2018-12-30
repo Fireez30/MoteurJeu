@@ -5,6 +5,7 @@
 #include <math.h>
 #include "largerpile.h"
 #include "key.h"
+#include "boss_torche.h"
 
 Room::Room(){
     tiles = std::vector<Tile>();
@@ -168,6 +169,12 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
                 pickups.push_back(d);
                 boss = d;
             }
+
+            for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Boss_torche"); e5 != nullptr; e5 = e5->NextSiblingElement("Boss_torche")){//Liste des Boss_torche
+                Boss_torche* e =new Boss_torche(this,p,e5->IntAttribute("health"),0,0,e5->IntAttribute("speed"),QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),200,2,false);
+                e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
+                entities.push_back(e);
+            }//fin for piles, rajouter des fors pour les autres entités
         }
         doc.Clear();//vider le doc
 }
