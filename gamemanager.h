@@ -32,7 +32,10 @@ public:
     ~GameManager() override;
     int transX;
     int transY;
-
+    bool walkDown;
+    bool walkUp;
+    bool walkLeft;
+    bool walkRight;
     QVector2D mousePressPosition;
     QVector3D rotationAxis;
     qreal angularSpeed;

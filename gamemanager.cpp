@@ -31,6 +31,10 @@ GameManager::GameManager(QWidget *parent,int maxfps) :
         max_fps = maxfps;
     et.start();
     scene = std::vector<Room*>();
+    walkDown = false;
+    walkUp = false;
+    walkLeft = false;
+    walkRight = false;
     std::cout << "fin constructeur gamemanager" << std::endl;
 }
 
@@ -54,10 +58,18 @@ Player* GameManager::getPlayer(){return player;}
 //
 
 void GameManager::keyReleaseEvent (QKeyEvent * event){
-    if(event->key() == Qt::Key_Q || event->key() == Qt::Key_D || event->key() == Qt::Key_S || event->key() == Qt::Key_Z){
-        player->movAnim->StopWalk();
-        transX = 0;
-        transY = 0;
+
+    if (event->key() == Qt::Key_Q){
+        walkLeft = false;
+    }
+    if (event->key() == Qt::Key_D){
+        walkRight = false;
+    }
+    if (event->key() == Qt::Key_Z){
+        walkUp = false;
+    }
+    if (event->key() == Qt::Key_S){
+        walkDown = false;
     }
 }
 
@@ -66,33 +78,29 @@ void GameManager::keyPressEvent (QKeyEvent * event){
     transY=0;
     //player->movAnim->StopWalk();
     if(event->key() == Qt::Key_Q){
-        transX--;
-        player->movAnim->Walk();
+        walkLeft = true;
     }
 
     if(event->key() == Qt::Key_D)
     {
-        transX++;
-        player->movAnim->Walk();
+        walkRight = true;
     }
 
 
     if(event->key() == Qt::Key_Z)
     {
-        transY++;
-        player->movAnim->Walk();
+        walkUp = true;
     }
 
     if(event->key() == Qt::Key_S){
-        transY--;
-        player->movAnim->Walk();
+        walkDown = true;
     }
 
     if (event->key() == Qt::Key_T){
         shader++;
         shader = shader % 2;
     }
-
+/*
     if(event->key() == Qt::Key_W)
         camera->moveCamera(QVector3D(0,0,1));
 
@@ -101,7 +109,7 @@ void GameManager::keyPressEvent (QKeyEvent * event){
 
     if(event->key() == Qt::Key_U)
         angularSpeed = 0;
-
+*/
 }
 
 void GameManager::mousePressEvent(QMouseEvent *e)
@@ -134,31 +142,33 @@ void GameManager::mouseMoveEvent(QMouseEvent *e){
 
 void GameManager::timerEvent(QTimerEvent *)
 {
-    // Decrease angular speed (friction)
-    angularSpeed *= 0.99;
+    transX = 0;
+    transY = 0;
+    if (walkUp)
+        transY++;
+    if (walkDown)
+        transY--;
+    if (walkLeft)
+        transX--;
+    if (walkRight)
+        transX++;
 
-    // Stop rotation when speed goes below threshold
-    if (angularSpeed < 0.01) {
-        angularSpeed = 0.0;
-    } else {
-        // Update rotation
-        rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
-        et.restart();
-    }
-
-    QVector3D vector(transX,transY,0);
-    vector.normalize();
-    vector *= player->GetSpeed();
-    player->Move(vector*0.0166);
-    player->SetLastMove(vector);
-    int i=0;
-    scene[camera->getCurrentRoom()]->TriggerCheck(player);
-    i=0;
-
-    if(scene[camera->getCurrentRoom()]->CollisionCheck(player->getCollider()))
+    if (transX == 0 && transY == 0)
     {
-        //player->movAnim->StopWalk();
-        player->Move(-vector*0.0166);
+        player->movAnim->StopWalk();
+    }
+    else{
+        player->movAnim->Walk();
+        QVector3D vector(transX,transY,0);
+        vector.normalize();
+        vector *= player->GetSpeed();
+        player->Move(vector*0.0166);
+        player->SetLastMove(vector);
+        if(scene[camera->getCurrentRoom()]->CollisionCheck(player->getCollider()))
+        {
+            //player->movAnim->StopWalk();
+            player->Move(-vector*0.0166);
+        }
     }
     scene[camera->getCurrentRoom()]->affectEnemiesInRange();
     scene[camera->getCurrentRoom()]->UpdateEntities();
