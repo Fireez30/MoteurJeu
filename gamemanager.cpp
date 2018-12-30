@@ -102,6 +102,7 @@ void GameManager::keyPressEvent (QKeyEvent * event){
     }
 
     if (event->key() == Qt::Key_K){
+        player->setHealth(9999);
         player->PickKey();
     }
 /*
@@ -179,7 +180,7 @@ void GameManager::timerEvent(QTimerEvent *)
     scene[camera->getCurrentRoom()]->TriggerCheck(player);
     // !! if player HP is 1 , change shaders to color the scren in red ?
     if (player->isDead()){
-        //this->close();
+        this->close();
         //
     }
 
