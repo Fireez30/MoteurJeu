@@ -160,10 +160,9 @@ void GameManager::timerEvent(QTimerEvent *)
         //player->movAnim->StopWalk();
         player->Move(-vector*0.0166);
     }
-
+    scene[camera->getCurrentRoom()]->affectEnemiesInRange();
     scene[camera->getCurrentRoom()]->UpdateEntities();
     scene[camera->getCurrentRoom()]->TriggerCheck(player);
-    scene[camera->getCurrentRoom()]->affectEnemiesInRange();
     // !! if player HP is 1 , change shaders to color the scren in red ?
     if (player->isDead()){
         //this->close();
@@ -521,7 +520,7 @@ void GameManager::paintGL()
     //    scene[i]->Render(&program,texture);
     //}
     //std::cout << "AH" << std::endl;
-    std::cout << "Player life = " << player->getHealth() << std::endl;
+    //std::cout << "Player life = " << player->getHealth() << std::endl;
     //std::cout << "Player tient la clé ? " << player->getHoldKey() << std::endl;
     scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
     //std::cout << player->renderer.spriteCoords.x() << " " << player->renderer.spriteCoords.y() << std::endl;

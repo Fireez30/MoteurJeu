@@ -324,12 +324,18 @@ void Room::affectEnemiesInRange(){
         for (int i = 0; i < entities.size(); i++){
             if (CheckColl(rayon,angle,QVector2D(entities[i]->GetPosition().x(),entities[i]->GetPosition().y())))
             {
+                std::cout << "Debut collision lampe ennemie" << std::endl;
                 if (isUsingMainLamp){
                  player->GetPilePrincipale()->Affect(entities[i]);
                 }
                 else {
                    player->getPileSecondaire()->Affect(entities[i]);
                 }
+                 std::cout << "avant change speed" << std::endl;
+                for (unsigned j = 0; j < entities[i]->getProjectiles().size(); j++){
+                    entities[i]->getProjectiles()[j]->changeSpeed(0.5);
+                }
+                 std::cout << "Fin collision lampe ennemie" << std::endl;
             }
         }
 }
