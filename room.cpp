@@ -270,8 +270,8 @@ bool Room::CheckColl(float rayon, float angle, QVector2D point)
         // vectDirecteur de la lampe
         QVector2D vectDirect = player->GetDirection();
         vectDirect.normalize();
-        vectDirect.setX( -vectDirect.x()*3 );
-        vectDirect.setY( vectDirect.y()*3 );
+        vectDirect.setX( -vectDirect.x()*100 );
+        vectDirect.setY( vectDirect.y()*100 );
         //std::cout<<"vectDirect = "<<vectDirect.x()<<" "<<vectDirect.y()<<std::endl;
         // Vecteur qui va du joueur -> ennemi
         QVector2D center_ennemi = QVector2D(point.x() - center.x() , point.y() - center.y());
