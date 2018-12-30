@@ -23,6 +23,7 @@ protected:
     std::vector<Movable*> entities;
     Player* player;
     Door* boss;
+    Movable* boss2;
 
 public :
     Room();

@@ -381,6 +381,10 @@
   <Entite>
     <Boss_torche id="0" x="192" y="80" xtextcoord="0" ytextcoord="12" index="0" health="10" speed="2,1" />
     <BossDoor id="1" x="192" y="224" xtextcoord="10" ytextcoord="5" index="0" xalttext="4" yalttext="6" />
+    <Torche id="2" x="48" y="48" xtextcoord="13" ytextcoord="12" range="0" />
+    <Torche id="3" x="336" y="48" xtextcoord="13" ytextcoord="12" range="0" />
+    <Torche id="6" x="336" y="176" xtextcoord="13" ytextcoord="12" range="0" />
+    <Torche id="7" x="48" y="176" xtextcoord="13" ytextcoord="12" range="0" />
   </Entite>
   <Décors exportMode="Bitstring">0000000000000000000000000
 0000000000000000000000000

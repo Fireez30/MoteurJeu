@@ -6,6 +6,7 @@
 #include "largerpile.h"
 #include "key.h"
 #include "boss_torche.h"
+#include "torche.h"
 
 Room::Room(){
     tiles = std::vector<Tile>();
@@ -42,6 +43,7 @@ void Room::UpdateEntities(){
             //entities[i]->Move((entities[i]->GetLastMove()+QVector2D(0,1))*0.0166);
         }
     }
+    TriggerCheck(boss2);
 }
 
 QVector2D Room::getPos(){
@@ -118,42 +120,6 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
         pickups.push_back(d);
     }//Fin construction doors !
 
-    tinyxml2::XMLElement* d4 = doc2->FirstChildElement("Entite");
-    if (d4){//si la salle que l'on lit contient une entité
-        for (tinyxml2::XMLElement* e4 = d4->FirstChildElement("RangedPile"); e4 != nullptr; e4 = e4->NextSiblingElement("RangedPile")){//Liste des piles
-            RangedPile *r = new RangedPile(QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0));
-            r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
-            pickups.push_back(r);
-        }
-        for (tinyxml2::XMLElement* e4 = d4->FirstChildElement("LargerPile"); e4 != nullptr; e4 = e4->NextSiblingElement("LargerPile")){//Liste des piles
-            LargerPile *r = new LargerPile(QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0));
-            r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
-            pickups.push_back(r);
-        }
-        //for (int i = 0; i < interacts.size(); i++){
-        //    std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
-        //}
-        //fin for piles, rajouter des fors pour les autres entités
-
-        for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Ghost"); e5 != nullptr; e5 = e5->NextSiblingElement("Ghost")){//Liste des Ghosts
-            Ennemi* e =new Ennemi(this,p,10,0,0,2.5,QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),200,3,false);
-            e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
-            entities.push_back(e);
-            //for (int i = 0; i < interacts.size(); i++){
-            //    std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
-            //}
-        }//fin for piles, rajouter des fors pour les autres entités
-
-        for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Key"); e5 != nullptr; e5 = e5->NextSiblingElement("Key")){//Liste des Key
-            //float x = (float)e5->IntAttribute("x"), y = (float)(-1*e5->IntAttribute("y"));
-            Key* e =new Key(p,QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),false, QVector2D(e5->IntAttribute("xatltext")/16.0,e5->IntAttribute("yalttext")/16.0));
-            e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
-            pickups.push_back(e);
-            //std::cout << "clé cree lol " << std::endl;
-            //for (int i = 0; i < interacts.size(); i++){
-            //    std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
-            //}
-        }//si clé lol
 
         for (tinyxml2::XMLElement* e3 = d4->FirstChildElement("BossDoor"); e3 != nullptr; e3 = e3->NextSiblingElement("BossDoor")){//y
             float x = (float)e3->IntAttribute("x"), y = (float)(-1*e3->IntAttribute("y"));
@@ -162,15 +128,71 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
             Door* d = new Door(QVector2D(x/16.0+xRoom,y/16.0+yRoom),QVector2D(e3->IntAttribute("xtextcoord")/16.0,e3->IntAttribute("ytextcoord")/16.0),QVector2D(e3->IntAttribute("xalttext")/16.0,e3->IntAttribute("yalttext")/16.0),!player->getHoldKey(),dir,p,c);
             d->setCollider(Hitbox(QVector2D(d->position.x(),d->position.y()),1,1));//porte ont un collider spécial
             pickups.push_back(d);
-            boss = d;
-        }
 
-        for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Boss_torche"); e5 != nullptr; e5 = e5->NextSiblingElement("Boss_torche")){//Liste des Boss_torche
-            Boss_torche* e =new Boss_torche(this,p,e5->IntAttribute("health"),0,0,e5->IntAttribute("speed"),QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),200,2,false);
-            e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
-            entities.push_back(e);
-        }//fin for piles, rajouter des fors pour les autres entités
-    }
+            boss = d;
+        }//Fin construction doors !
+
+        tinyxml2::XMLElement* d4 = doc2->FirstChildElement("Entite");
+        if (d4){//si la salle que l'on lit contient une entité
+
+            for (tinyxml2::XMLElement* e4 = d4->FirstChildElement("RangedPile"); e4 != nullptr; e4 = e4->NextSiblingElement("RangedPile")){//Liste des piles
+            RangedPile *r = new RangedPile(QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0));
+            r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
+            pickups.push_back(r);
+            }
+            for (tinyxml2::XMLElement* e4 = d4->FirstChildElement("LargerPile"); e4 != nullptr; e4 = e4->NextSiblingElement("LargerPile")){//Liste des piles
+            LargerPile *r = new LargerPile(QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0));
+            r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
+            pickups.push_back(r);
+            }
+                //for (int i = 0; i < interacts.size(); i++){
+                //    std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
+                //}
+            //fin for piles, rajouter des fors pour les autres entités
+
+            for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Ghost"); e5 != nullptr; e5 = e5->NextSiblingElement("Ghost")){//Liste des Ghosts
+                Ennemi* e =new Ennemi(this,p,10,0,0,2.5,QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),200,3,false);
+                e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
+                entities.push_back(e);
+                //for (int i = 0; i < interacts.size(); i++){
+                //    std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
+                //}
+            }//fin for piles, rajouter des fors pour les autres entités
+
+            for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Key"); e5 != nullptr; e5 = e5->NextSiblingElement("Key")){//Liste des Key
+                //float x = (float)e5->IntAttribute("x"), y = (float)(-1*e5->IntAttribute("y"));
+                Key* e =new Key(p,QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),false, QVector2D(e5->IntAttribute("xatltext")/16.0,e5->IntAttribute("yalttext")/16.0));
+                e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
+                pickups.push_back(e);
+                //std::cout << "clé cree lol " << std::endl;
+                //for (int i = 0; i < interacts.size(); i++){
+                //    std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
+                //}
+            }//si clé lol
+
+            for (tinyxml2::XMLElement* e3 = d4->FirstChildElement("BossDoor"); e3 != nullptr; e3 = e3->NextSiblingElement("BossDoor")){//y
+                float x = (float)e3->IntAttribute("x"), y = (float)(-1*e3->IntAttribute("y"));
+                QVector2D dir;
+                dir.setY(-1);
+                Door* d = new Door(QVector2D(x/16.0+xRoom,y/16.0+yRoom),QVector2D(e3->IntAttribute("xtextcoord")/16.0,e3->IntAttribute("ytextcoord")/16.0),QVector2D(e3->IntAttribute("xalttext")/16.0,e3->IntAttribute("yalttext")/16.0),!player->getHoldKey(),dir,p,c);
+                d->setCollider(Hitbox(QVector2D(d->position.x(),d->position.y()),1,1));//porte ont un collider spécial
+                pickups.push_back(d);
+                boss = d;
+            }
+
+            for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Boss_torche"); e5 != nullptr; e5 = e5->NextSiblingElement("Boss_torche")){//Liste des Boss_torche
+                Boss_torche* e =new Boss_torche(this,p,e5->IntAttribute("health"),0,0,e5->IntAttribute("speed"),QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),200,2,false);
+                e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
+                entities.push_back(e);
+                boss2 = e;
+            }//fin for piles, rajouter des fors pour les autres entités
+
+            for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Torche"); e5 != nullptr; e5 = e5->NextSiblingElement("Torche")){//Liste des Torches
+                Torche* e =new Torche(QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom), e5->IntAttribute("range"), 1, QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),this);
+                e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),e5->IntAttribute("range"),e5->IntAttribute("range")));
+                pickups.push_back(e);
+            }//si clé lol
+        }
     doc.Clear();//vider le doc
 }
 
@@ -322,6 +344,8 @@ void Room::affectEnemiesInRange(){
             if (CheckColl(rayon,angle,QVector2D(entities[i]->GetPosition().x(),entities[i]->GetPosition().y())))
             {
                 //std::cout << "Debut collision lampe ennemie" << std::endl;
+                entities[i]->setAffected(true);
+
                 if (isUsingMainLamp){
                     player->GetPilePrincipale()->Affect(entities[i]);
                 }
@@ -334,8 +358,9 @@ void Room::affectEnemiesInRange(){
                 }
                 //std::cout << "Fin collision lampe ennemie" << std::endl;
             }
-            else {
-
+            else{
+                entities[i]->setAffected(false);
             }
+
         }
 }
