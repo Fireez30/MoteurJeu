@@ -489,13 +489,24 @@ void GameManager::paintGL()
     program.setUniformValue("allLights[0].dist",150.0f);
     program.setUniformValue("allLights[0].maxDist",200.0f);
 
-    if (player->utilisePilePrincipale() || player->utilisePileSecondaire()){
+    if (player->utilisePilePrincipale()){
         program.setUniformValue("allLights[1].position",QVector4D(screenpos.x()+24,720-(screenpos.y()+24),0,0));
-        program.setUniformValue("allLights[1].color",QVector3D(3,3,0));
+        program.setUniformValue("allLights[1].color",player->GetPilePrincipale()->getColor());
         program.setUniformValue("allLights[1].attenuation",0.005f);
         program.setUniformValue("allLights[1].ambientCoefficient",0.5f);
-        program.setUniformValue("allLights[1].coneAngle",20.0f);
-        program.setUniformValue("allLights[1].maxAngle",25.0f);
+        program.setUniformValue("allLights[1].coneAngle",player->GetPilePrincipale()->GetConeAngle());
+        program.setUniformValue("allLights[1].maxAngle",player->GetPilePrincipale()->GetConeAngle()+5.0f);
+        program.setUniformValue("allLights[1].coneDirection",QVector3D(-player->GetDirection().x(),-player->GetDirection().y(),0));
+        program.setUniformValue("allLights[1].dist",250.0f);
+        program.setUniformValue("allLights[1].maxDist",300.0f);
+    }
+    else if (player->utilisePileSecondaire()){
+        program.setUniformValue("allLights[1].position",QVector4D(screenpos.x()+24,720-(screenpos.y()+24),0,0));
+        program.setUniformValue("allLights[1].color",player->getPileSecondaire()->getColor());
+        program.setUniformValue("allLights[1].attenuation",0.005f);
+        program.setUniformValue("allLights[1].ambientCoefficient",0.5f);
+        program.setUniformValue("allLights[1].coneAngle",player->getPileSecondaire()->GetConeAngle());
+        program.setUniformValue("allLights[1].maxAngle",player->getPileSecondaire()->GetConeAngle()+5.0f);
         program.setUniformValue("allLights[1].coneDirection",QVector3D(-player->GetDirection().x(),-player->GetDirection().y(),0));
         program.setUniformValue("allLights[1].dist",250.0f);
         program.setUniformValue("allLights[1].maxDist",300.0f);

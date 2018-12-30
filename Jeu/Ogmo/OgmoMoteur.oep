@@ -16,7 +16,7 @@
     <Width>400</Width>
     <Height>240</Height>
   </LevelMaximumSize>
-  <Filename>C:\Users\bornt\Documents\GitHub\MoteurJeu\Jeu\Ogmo\OgmoMoteur.oep</Filename>
+  <Filename>C:\Users\Fireez\Documents\GitHub\MoteurJeu\Jeu\Ogmo\OgmoMoteur.oep</Filename>
   <AngleMode>Radians</AngleMode>
   <CameraEnabled>false</CameraEnabled>
   <CameraSize>
@@ -101,7 +101,7 @@
     </Tileset>
   </Tilesets>
   <EntityDefinitions>
-    <EntityDefinition Name="Pile" Limit="-1" ResizableX="false" ResizableY="false" Rotatable="false" RotateIncrement="15">
+    <EntityDefinition Name="RangedPile" Limit="-1" ResizableX="false" ResizableY="false" Rotatable="false" RotateIncrement="15">
       <Size>
         <Width>16</Width>
         <Height>16</Height>
@@ -110,12 +110,12 @@
         <X>0</X>
         <Y>0</Y>
       </Origin>
-      <ImageDefinition DrawMode="Image" ImagePath="..\sprites.png" Tiled="true">
+      <ImageDefinition DrawMode="Rectangle" ImagePath="..\sprites.png" Tiled="true">
         <RectColor A="255" R="255" G="0" B="0" />
       </ImageDefinition>
       <ValueDefinitions>
-        <ValueDefinition xsi:type="IntValueDefinition" Name="xtextcoord" Default="0" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="ytextcoord" Default="0" Min="0" Max="100" ShowSlider="false" />
+        <ValueDefinition xsi:type="IntValueDefinition" Name="xtextcoord" Default="13" Min="0" Max="100" ShowSlider="false" />
+        <ValueDefinition xsi:type="IntValueDefinition" Name="ytextcoord" Default="14" Min="0" Max="100" ShowSlider="false" />
         <ValueDefinition xsi:type="IntValueDefinition" Name="type" Default="0" Min="0" Max="100" ShowSlider="false" />
       </ValueDefinitions>
       <NodesDefinition Enabled="false" Limit="-1" DrawMode="None" Ghost="false" />
@@ -198,6 +198,25 @@
         <ValueDefinition xsi:type="IntValueDefinition" Name="index" Default="0" Min="0" Max="100" ShowSlider="false" />
         <ValueDefinition xsi:type="IntValueDefinition" Name="health" Default="10" Min="0" Max="100" ShowSlider="false" />
         <ValueDefinition xsi:type="FloatValueDefinition" Name="speed" Default="2.1" Min="0" Max="100" Round="0.1" />
+      </ValueDefinitions>
+      <NodesDefinition Enabled="false" Limit="-1" DrawMode="None" Ghost="false" />
+    </EntityDefinition>
+    <EntityDefinition Name="LargerPile" Limit="-1" ResizableX="false" ResizableY="false" Rotatable="false" RotateIncrement="15">
+      <Size>
+        <Width>16</Width>
+        <Height>16</Height>
+      </Size>
+      <Origin>
+        <X>0</X>
+        <Y>0</Y>
+      </Origin>
+      <ImageDefinition DrawMode="Rectangle" ImagePath="" Tiled="false">
+        <RectColor A="255" R="0" G="0" B="255" />
+      </ImageDefinition>
+      <ValueDefinitions>
+        <ValueDefinition xsi:type="IntValueDefinition" Name="xtextcoord" Default="13" Min="0" Max="100" ShowSlider="false" />
+        <ValueDefinition xsi:type="IntValueDefinition" Name="ytextcoord" Default="13" Min="0" Max="100" ShowSlider="false" />
+        <ValueDefinition xsi:type="IntValueDefinition" Name="type" Default="0" Min="0" Max="100" ShowSlider="false" />
       </ValueDefinitions>
       <NodesDefinition Enabled="false" Limit="-1" DrawMode="None" Ghost="false" />
     </EntityDefinition>

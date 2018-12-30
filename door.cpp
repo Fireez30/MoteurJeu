@@ -20,7 +20,6 @@ void Door::Unlock(){
 
 void Door::Lock(){
     locked = true;
-    this->renderer.spriteCoords = renderer.initText;
 }
 
 int Door::OnTriggerEnter(Interactable2D* other){

@@ -12,10 +12,11 @@ protected:
     float lifespan;
     int damage;
     int idPile;
+    QVector3D color;
 
 public :
     Pile(QVector2D pos,QVector2D text);
-    Pile(QVector2D pos,float r, float c, float l, int d,QVector2D text, int id);
+    Pile(QVector2D pos,float r, float c, float l, int d,QVector2D text, int id,QVector3D thecolor);
     virtual void Affect(Movable* m) = 0;
     float GetRange();
     int OnTriggerEnter(Interactable2D* other) override;
@@ -25,6 +26,7 @@ public :
     int getID();
     void setLifespan(float life);
     float getLifespan();
+    QVector3D getColor();
 };
 
 #endif // PILE_H

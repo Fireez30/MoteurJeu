@@ -382,6 +382,8 @@
   <Entite>
     <Ghost id="0" x="304" y="64" xtextcoord="6" ytextcoord="8" index="0" />
     <BossDoor id="1" x="192" y="0" xtextcoord="10" ytextcoord="5" index="0" xalttext="4" yalttext="6" />
+    <RangedPile id="2" x="64" y="64" xtextcoord="13" ytextcoord="14" type="0" />
+    <LargerPile id="3" x="64" y="176" xtextcoord="13" ytextcoord="13" type="0" />
   </Entite>
   <Décors exportMode="Bitstring">0000000000000000000000000
 0000000000000000000000000
