@@ -127,7 +127,7 @@ float Player::getAngle(){
 
 void Player::SetPileSecondaire(Pile *s){
     secondaire = s;
-    //secondaire->getCollider().~Hitbox();
+    secondaire->getCollider().~Hitbox();
 }
 
 Pile* Player::getPileSecondaire(){
