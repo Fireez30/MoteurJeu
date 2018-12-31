@@ -31,6 +31,7 @@ GameManager::GameManager(QWidget *parent,int maxfps) :
         max_fps = maxfps;
     et.start();
     scene = std::vector<Room*>();
+    lights = std::vector<LightSource*>();
     walkDown = false;
     walkUp = false;
     walkLeft = false;
@@ -46,6 +47,9 @@ GameManager::~GameManager()
     delete texture;
     for (int i = 0; i < scene.size(); i++){
         delete scene[i];
+    }
+    for (int i = 0; i < lights.size(); i++){
+        delete lights[i];
     }
     delete player;
     doneCurrent();
@@ -301,10 +305,6 @@ void GameManager::initializeGL()
 
     std::string path = qApp->applicationDirPath().toUtf8().constData();
     path += "/Rooms";
-    //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\Rooms"; - Benj portable
-    //"C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\Rooms" - Benj fixe
-    //"D:\\Git\\MoteurJeu\\Rooms" - Romain portable
-    //"C:\\Users\\bornt\\Documents\\GitHub\\MoteurJeu\\Rooms" - Benoit portable
     initializeOpenGLFunctions();
 
     glClearColor(0,0,0, 1);
@@ -321,6 +321,8 @@ void GameManager::initializeGL()
     // Use QBasicTimer because its faster than QTimer
     player = new Player();
     std::cout << "PLayer créé" << std::endl;
+    lights.push_back(player->getLight());
+    lights.push_back(player->getLampeLight());
     camera = new Camera();
     std::cout << "Camera créé" << std::endl;
     //srand(13);
@@ -367,7 +369,7 @@ void GameManager::initializeGL()
     attributeRoom(minMap, rooms,path);
 
     for (int i = 0; i < rooms->size();i++){
-        Room* r = new Room;
+        Room* r = new Room(&lights);
         r->setPosition(rooms->at(i).x,rooms->at(i).y);
         r->setPlayer(player);
         r->ReadFile(rooms,i, path, player, camera);
@@ -414,14 +416,9 @@ void GameManager::initShaders()
 void GameManager::initTextures()
 {
     QImage img;
-    //std::string s = "D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\sprites.png";
     std::string s = qApp->applicationDirPath().toUtf8().constData();
     s += "/sprites.png";
     std::cout << s << std::endl;
-    //"D:\\Enseignement\\Moteur de jeux\\TP\\MoteurHere\\MoteurJeu\\sprites.png"; - Benj portable
-    //"C:\\Users\\Fireez\\Documents\\GitHub\\MoteurJeu\\sprites.png" - Benj fixe
-    //"D:\\Git\\MoteurJeu\\sprites.png" - Romain portable
-    //"C:\\Users\\bornt\\Documents\\GitHub\\MoteurJeu\\sprites.png" - Benoit portable
 
     img.load(s.data());
     texture = new QOpenGLTexture(img); //chargement de la sprite sheet ici
@@ -490,21 +487,45 @@ void GameManager::paintGL()
     program.setUniformValue("mvp_matrix", projection * matrix);
 
     QRect vp = QRect(0,0,size.x(),size.y());
-    QVector3D screenpos = player->position.project(matrix,projection,vp);
     //program.setUniformValue("playerpos",QVector4D(screenpos.x()+24,720-(screenpos.y()+24),0,0));
     program.setUniformValue("test",shader);
-    program.setUniformValue("numLights", 2);
-    program.setUniformValue("allLights[0].position",QVector4D(screenpos.x()+24,720-(screenpos.y()+24),0,0));
-    program.setUniformValue("allLights[0].color",QVector3D(1,1,1));
-    program.setUniformValue("allLights[0].attenuation",0.0005f);
-    program.setUniformValue("allLights[0].ambientCoefficient",0.5f);
-    program.setUniformValue("allLights[0].coneAngle",180.0f);
-    program.setUniformValue("allLights[0].maxAngle",180.0f);
-    program.setUniformValue("allLights[0].coneDirection",QVector3D(1,0,0));
-    program.setUniformValue("allLights[0].dist",150.0f);
-    program.setUniformValue("allLights[0].maxDist",200.0f);
+    int nbLights = lights.size();
+    program.setUniformValue("numLights", nbLights);
+    for(int i=0;i<lights.size();i++){
+        QVector3D conversionDeMerde = QVector3D(lights[i]->position.x(),lights[i]->position.y(),0);
+        QVector3D screenpos = conversionDeMerde.project(matrix,projection,vp);
+        std::string sBase = "allLights[" + std::to_string(i);
+        std::string var = "].position";
+        std::string s = sBase + var;
+        program.setUniformValue(s.data(),QVector4D(screenpos.x()+24,720-(screenpos.y()+24),0,0));
+        var = "].color";
+        s = sBase + var;
+        program.setUniformValue(s.data(),lights[i]->color);
+        var = "].attenuation";
+        s = sBase + var;
+        program.setUniformValue(s.data(),lights[i]->attenuation);
+        var = "].ambientCoefficient";
+        s = sBase + var;
+        program.setUniformValue(s.data(),lights[i]->ambientCoefficient);
+        var = "].coneAngle";
+        s = sBase + var;
+        program.setUniformValue(s.data(),lights[i]->coneAngle);
+        var = "].maxAngle";
+        s = sBase + var;
+        program.setUniformValue(s.data(),lights[i]->maxAngle);
+        var = "].coneDirection";
+        s = sBase + var;
+        program.setUniformValue(s.data(),lights[i]->direction);
+        var = "].dist";
+        s = sBase + var;
+        program.setUniformValue(s.data(),lights[i]->dist);
+        var = "].maxDist";
+        s = sBase + var;
+        program.setUniformValue(s.data(),lights[i]->maxDist);
+    }
 
-    if (player->utilisePilePrincipale()){
+
+   /* if (player->utilisePilePrincipale()){
         program.setUniformValue("allLights[1].position",QVector4D(screenpos.x()+24,720-(screenpos.y()+24),0,0));
         program.setUniformValue("allLights[1].color",player->GetPilePrincipale()->getColor());
         program.setUniformValue("allLights[1].attenuation",0.005f);
@@ -536,18 +557,10 @@ void GameManager::paintGL()
         program.setUniformValue("allLights[1].coneDirection",QVector3D(-player->GetDirection().x(),-player->GetDirection().y(),0));
         program.setUniformValue("allLights[1].dist",0.0f);
         program.setUniformValue("allLights[1].maxDist",0.0f);
-    }
+    }*/
 
     // Use texture unit 0 which contains sprite sheet
     program.setUniformValue("texture", 0);
     player->Render(&program,texture);
-    // Draw cube geometry
-    //for (size_t i = 0; i < scene.size(); i++){
-    //    scene[i]->Render(&program,texture);
-    //}
-    //std::cout << "AH" << std::endl;
-    //std::cout << "Player life = " << player->getHealth() << std::endl;
-    //std::cout << "Player tient la clé ? " << player->getHoldKey() << std::endl;
     scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
-    //std::cout << player->renderer.spriteCoords.x() << " " << player->renderer.spriteCoords.y() << std::endl;
 }

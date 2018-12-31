@@ -8,7 +8,7 @@
 #include "boss_torche.h"
 #include "torche.h"
 
-Room::Room(){
+Room::Room(std::vector<LightSource*>* l):lights(l){
     tiles = std::vector<Tile>();
     collisions  = std::vector<Hitbox>();
     pickups = std::vector<Interactable2D*>();
@@ -190,8 +190,11 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
 }
 
 void Room::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
+   lights->erase(lights->begin()+2,lights->begin()+lights->size()-1);
     for (int i = 0; i < pickups.size(); i++){
         pickups[i]->Render(program,text);//contient piles + portes
+        if(dynamic_cast<Pile*>(pickups[i])!=nullptr)
+            lights->push_back(dynamic_cast<Pile*>(pickups[i])->getLightSource());
     }
     for (int i = 0; i < entities.size(); i++){
         entities[i]->Render(program,text);//contient entités
@@ -261,7 +264,8 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
 
 
 bool Room::IsPointInCircle(QVector2D *pt, QVector2D *center, float rayon)
-{   float distPlayerToEnnemi = sqrt( pow(pt->x() - center->x(),2) + pow(pt->y() - center->y(),2) );
+{
+    float distPlayerToEnnemi = sqrt( pow(pt->x() - center->x(),2) + pow(pt->y() - center->y(),2) );
     if( distPlayerToEnnemi < rayon )
         return true;
     else

@@ -11,7 +11,7 @@
 #include "rangedpile.h"
 #include "mainpile.h"
 
-Player::Player():Movable(3,1,0,6,QVector2D(162,83),QVector2D(0.0,8.0/16.0),200,3,false),usePilePrincipale(false),usePileSecondaire(false),holdKey(false),spriteModif(this){
+Player::Player():Movable(3,1,0,6,QVector2D(162,83),QVector2D(0.0,8.0/16.0),200,3,false),usePilePrincipale(false),usePileSecondaire(false),holdKey(false),spriteModif(this),light(QVector2D(0,0),QVector3D(1,1,1),0.0005f,0.5f,180.0f,180.0f,QVector3D(1,0,0),150.0f,200.0f){
     spriteModif.AddSprite(QVector2D(0.0,11.0/16.0));//facing up
     spriteModif.AddSprite(QVector2D(0.0,10.0/16.0));//facing right
     spriteModif.AddSprite(QVector2D(0.0,8.0/16.0));//basic sprite orientation (facing down)
@@ -22,7 +22,7 @@ Player::Player():Movable(3,1,0,6,QVector2D(162,83),QVector2D(0.0,8.0/16.0),200,3
     std::cout << "spriteModif size " << spriteModif.nbOfSprites() << std::endl;
 }
 
-Player::Player(int h,float x,float y, float sp,QVector2D dir,int animtime,int nbframes,bool animstatus):Movable(h,x,y,sp,dir,QVector2D(0.0,8.0/16.0),animtime,nbframes,animstatus),usePilePrincipale(false),usePileSecondaire(false),holdKey(false),spriteModif(this){
+Player::Player(int h,float x,float y, float sp,QVector2D dir,int animtime,int nbframes,bool animstatus):Movable(h,x,y,sp,dir,QVector2D(0.0,8.0/16.0),animtime,nbframes,animstatus),usePilePrincipale(false),usePileSecondaire(false),holdKey(false),spriteModif(this),light(QVector2D(x,y),QVector3D(1,1,1),0.0005f,0.5f,180.0f,180.0f,QVector3D(1,0,0),150.0f,200.0f){
     spriteModif.AddSprite(QVector2D(0.0,8.0/16.0));//basic sprite orientation (facing down)
     spriteModif.AddSprite(QVector2D(0.0,9.0/16.0));//facing left
     spriteModif.AddSprite(QVector2D(0.0,10.0/16.0));//facing right
@@ -146,4 +146,20 @@ void Player::setUtilisationPrincipale(bool b){
 
 void Player::setUtilisationSecondaire(bool b){
     usePileSecondaire = b;
+}
+
+LightSource* Player::getLight(){
+    return &light;
+}
+
+LightSource* Player::getLampeLight(){
+    if(usePilePrincipale)
+        return principale->getLightSource();
+    return secondaire->getLightSource();
+}
+
+void Player::updateLights(){
+    principale->getLightSource()->position = QVector2D(position.x(),position.y());
+    if(secondaire != nullptr)
+        secondaire->getLightSource()->position = QVector2D(position.x(),position.y());
 }

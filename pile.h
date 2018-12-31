@@ -3,6 +3,7 @@
 
 #include "interactable2d.h"
 #include "movable.h"
+#include "lightsource.h"
 
 class Pile : public Interactable2D{
 
@@ -13,6 +14,7 @@ protected:
     int damage;
     int idPile;
     QVector3D color;
+    LightSource ls;
 
 public :
     Pile(QVector2D pos,QVector2D text);
@@ -27,6 +29,8 @@ public :
     void setLifespan(float life);
     float getLifespan();
     QVector3D getColor();
+    LightSource* getLightSource();
+    void changeLight();
 };
 
 #endif // PILE_H

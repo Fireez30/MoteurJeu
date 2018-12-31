@@ -10,10 +10,12 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include <QTime>
+#include <QtUiTools/QUiLoader>
+
+#include "camera.h"
+#include "lightsource.h"
 #include "room.h"
 #include "player.h"
-#include <QtUiTools/QUiLoader>
-#include "camera.h"
 
 class GameManager : public QOpenGLWidget, protected QOpenGLFunctions
 {
@@ -61,6 +63,7 @@ private:
     QOpenGLShaderProgram program;
     QOpenGLTexture *texture;
     std::vector<Room*> scene;
+    std::vector<LightSource*> lights;
     Player *player;
     Camera* camera;
     QMatrix4x4 projection;

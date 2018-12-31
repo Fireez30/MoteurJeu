@@ -6,13 +6,15 @@ class Room;
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <QOpenGLShaderProgram>
+
 #include "tile.h"
 #include "player.h"
 #include "camera.h"
-#include <QOpenGLShaderProgram>
 #include "tinyxml2.h"
 #include "movable.h"
 #include "door.h"
+#include "lightsource.h";
 
 class Room {
 
@@ -21,12 +23,13 @@ protected:
     std::vector<Hitbox> collisions;
     std::vector<Interactable2D*> pickups;
     std::vector<Movable*> entities;
+    std::vector<LightSource*>* lights;
     Player* player;
     Door* boss;
     Movable* boss2;
 
 public :
-    Room();
+    Room(std::vector<LightSource*>* l);
     ~Room();
     void CreateGeometry();
     void Render(QOpenGLShaderProgram *program,QOpenGLTexture *text);

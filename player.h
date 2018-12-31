@@ -4,6 +4,7 @@
 #include "movable.h"
 #include "pile.h"
 #include "spritemodifier.h"
+#include "lightsource.h";
 
 class Player : public Movable
 {
@@ -17,6 +18,7 @@ protected:
     float orientationRatio;
     bool holdKey;
     SpriteModifier spriteModif;
+    LightSource light;
 
 public :
     Player();
@@ -40,6 +42,9 @@ public :
     void PickKey();
     bool getHoldKey();
     Pile* GetPilePrincipale();
+    LightSource* getLight();
+    LightSource* getLampeLight();
+    void updateLights();
 };
 
 #endif // PLAYER_H
