@@ -24,7 +24,7 @@ float Pile::GetLifepan(){
 
 int Pile::OnTriggerEnter(Interactable2D* other){
     //si memory leak check here
-    std::cout << "CONTACT" << std::endl;
+    //std::cout << "CONTACT" << std::endl;
     Player* p;
     p = dynamic_cast<Player*> (other);
     if(p != NULL){
