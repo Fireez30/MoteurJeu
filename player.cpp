@@ -18,6 +18,7 @@ Player::Player():Movable(3,1,0,6,QVector2D(162,83),QVector2D(0.0,8.0/16.0),200,3
     spriteModif.AddSprite(QVector2D(0.0,9.0/16.0));//facing left
     orientationRatio = 0.7;
     principale = new MainPile(QVector2D(0,0),QVector2D(0,0));
+    principale->changeLight();
     secondaire = nullptr;
     movAnim->StartAnimator();
     std::cout << "spriteModif size " << spriteModif.nbOfSprites() << std::endl;
@@ -119,7 +120,7 @@ float Player::getAngle(){
         return secondaire->GetConeAngle();
     }
     else{
-        return secondaire->GetConeAngle();
+        return principale->GetConeAngle();
     }
 
     return 0;

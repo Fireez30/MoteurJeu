@@ -106,3 +106,6 @@ void Movable::setAffected(bool a)
     affected = a;
 }
 
+QVector2D Movable::getDirection(){
+    return direction;
+}

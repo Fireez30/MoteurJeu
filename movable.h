@@ -42,6 +42,7 @@ public :
     void CreateProjectileGeometry();
     std::vector<Projectile*> getProjectiles();
     bool getAffected();
+    QVector2D getDirection();
     void setAffected(bool);
 };
 

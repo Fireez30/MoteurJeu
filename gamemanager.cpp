@@ -491,6 +491,9 @@ void GameManager::paintGL()
     program.setUniformValue("test",shader);
     int nbLights = lights.size();
     program.setUniformValue("numLights", nbLights);
+    lights[0]->position = QVector2D(player->position.x(),player->position.y());
+    lights[1]->position = QVector2D(player->position.x(),player->position.y());
+    lights[1]->direction= -player->getDirection();
     for(int i=0;i<lights.size();i++){
         QVector3D conversionDeMerde = QVector3D(lights[i]->position.x(),lights[i]->position.y(),0);
         QVector3D screenpos = conversionDeMerde.project(matrix,projection,vp);
@@ -523,41 +526,6 @@ void GameManager::paintGL()
         s = sBase + var;
         program.setUniformValue(s.data(),lights[i]->maxDist);
     }
-
-
-   /* if (player->utilisePilePrincipale()){
-        program.setUniformValue("allLights[1].position",QVector4D(screenpos.x()+24,720-(screenpos.y()+24),0,0));
-        program.setUniformValue("allLights[1].color",player->GetPilePrincipale()->getColor());
-        program.setUniformValue("allLights[1].attenuation",0.005f);
-        program.setUniformValue("allLights[1].ambientCoefficient",0.5f);
-        program.setUniformValue("allLights[1].coneAngle",player->GetPilePrincipale()->GetConeAngle());
-        program.setUniformValue("allLights[1].maxAngle",player->GetPilePrincipale()->GetConeAngle()+5.0f);
-        program.setUniformValue("allLights[1].coneDirection",QVector3D(-player->GetDirection().x(),-player->GetDirection().y(),0));
-        program.setUniformValue("allLights[1].dist",250.0f);
-        program.setUniformValue("allLights[1].maxDist",300.0f);
-    }
-    else if (player->utilisePileSecondaire()){
-        program.setUniformValue("allLights[1].position",QVector4D(screenpos.x()+24,720-(screenpos.y()+24),0,0));
-        program.setUniformValue("allLights[1].color",player->getPileSecondaire()->getColor());
-        program.setUniformValue("allLights[1].attenuation",0.005f);
-        program.setUniformValue("allLights[1].ambientCoefficient",0.5f);
-        program.setUniformValue("allLights[1].coneAngle",player->getPileSecondaire()->GetConeAngle());
-        program.setUniformValue("allLights[1].maxAngle",player->getPileSecondaire()->GetConeAngle()+5.0f);
-        program.setUniformValue("allLights[1].coneDirection",QVector3D(-player->GetDirection().x(),-player->GetDirection().y(),0));
-        program.setUniformValue("allLights[1].dist",250.0f);
-        program.setUniformValue("allLights[1].maxDist",300.0f);
-    }
-    else {
-        program.setUniformValue("allLights[1].position",QVector4D(screenpos.x()+24,720-(screenpos.y()+24),0,0));
-        program.setUniformValue("allLights[1].color",QVector3D(3,3,0));
-        program.setUniformValue("allLights[1].attenuation",0.005f);
-        program.setUniformValue("allLights[1].ambientCoefficient",0.5f);
-        program.setUniformValue("allLights[1].coneAngle",20.0f);
-        program.setUniformValue("allLights[1].maxAngle",25.0f);
-        program.setUniformValue("allLights[1].coneDirection",QVector3D(-player->GetDirection().x(),-player->GetDirection().y(),0));
-        program.setUniformValue("allLights[1].dist",0.0f);
-        program.setUniformValue("allLights[1].maxDist",0.0f);
-    }*/
 
     // Use texture unit 0 which contains sprite sheet
     program.setUniformValue("texture", 0);
