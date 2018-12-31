@@ -206,9 +206,11 @@ void Room::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
 bool Room::CollisionCheck(Hitbox h){//collisions des murs unqiuements
     for (int i = 0; i < collisions.size();i++){
         if (collisions[i].TestCollision(h)){
+            //std::cout << "collisionChecktrue" << std::endl;
             return true;
         }
     }
+   // std::cout << "collisionCheck false" << std::endl;
     return false;
 }
 bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
@@ -217,7 +219,7 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
     for(int i=0;i<pickups.size();i++){
         if(pickups[i]->canCollide && pickups[i]->getCollider().TestCollision(other->getCollider())){
             triggerCount++;
-            std::cout << "triggercheck " << std::endl;
+            //std::cout << "triggercheck " << std::endl;
             Pile* pile = dynamic_cast<Pile*> (pickups[i]);
             Player* p= dynamic_cast<Player*> (other);
             if(pile != nullptr && p != nullptr){
@@ -227,6 +229,7 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
                 if(pileJoueur!= nullptr)
                     idPile = pileJoueur->getID();
                 if(idPile==0){
+                    std::cout << "drop" << std::endl;
                     RangedPile *r = new RangedPile(QVector2D(pile->position.x(),pile->position.y()),pileJoueur->renderer.GetTextCoords());
                     r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
                     r->renderer.CreateGeometry();
@@ -236,6 +239,7 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
                     pickups.push_back(r);
                 }
                 else if(idPile==1){
+                     std::cout << "drop" << std::endl;
                     LargerPile *r = new LargerPile(QVector2D(pile->position.x(),pile->position.y()),pileJoueur->renderer.GetTextCoords());
                     r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
                     r->renderer.CreateGeometry();

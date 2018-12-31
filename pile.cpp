@@ -31,9 +31,8 @@ int Pile::OnTriggerEnter(Interactable2D* other){
         startTimer();
         canCollide = false;
         p->SetPileSecondaire(this);
+        return -1;
     }
-
-    return -1;
 }
 
 int Pile::GetDamage(){

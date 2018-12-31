@@ -8,5 +8,5 @@ LargerPile::LargerPile(QVector2D pos,float r,float c,float l,int d,QVector2D tex
 }
 
 void LargerPile::Affect(Movable *m){
-     m->ChangeSpeed(m->GetSpeed()*0.5);
+     m->ChangeSpeed(m->GetSpeed()*0.01);
 }
