@@ -13,7 +13,6 @@ protected:
     bool usePileSecondaire;
     Pile *principale;
     Pile *secondaire = nullptr;
-    QVector3D lastMove;
     float orientationRatio;
     bool holdKey;
     SpriteModifier spriteModif;
@@ -28,8 +27,7 @@ public :
     void SetPilePrincipale(Pile *p);
     void SetPileSecondaire(Pile *s);
     void Update() override;
-    QVector3D GetLastMove() override;
-    void SetLastMove(QVector3D p);
+    void changeRoom(QVector2D dir);
     Pile* getPileSecondaire();
     bool utilisePilePrincipale();
     bool utilisePileSecondaire();

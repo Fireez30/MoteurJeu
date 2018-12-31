@@ -25,11 +25,10 @@ int Torche::OnTriggerEnter(Interactable2D* other){
         QVector3D pos_player = other->position;
         QVector3D ennemi_to_player = QVector3D(pos_player.x() - pos_ennemi.x(), pos_player.y() - pos_ennemi.y(), 0);
         ennemi_to_player.normalize();
-        QVector3D dirJoueur = QVector3D(ennemi_to_player.x()*0.8, ennemi_to_player.y()*0.8 ,0);
+        QVector2D dirJoueur = QVector2D(ennemi_to_player.x()*0.8, ennemi_to_player.y()*0.8);
         bt->Move(dirJoueur);//collision checvk a faire
-        bt->SetLastMove(dirJoueur);
         if (room->CollisionCheck(bt->getCollider())){//si la collision amene le joueur dans le mur, la reset
-            bt->Move(-dirJoueur);
+            bt->ResetMove();
         }
         return 0;
     }

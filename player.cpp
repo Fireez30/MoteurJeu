@@ -41,14 +41,6 @@ int Player::OnTriggerEnter(Interactable2D* other){
 
 }
 
-void Player::SetLastMove(QVector3D p){
-    lastMove = p;
-}
-
-QVector3D Player::GetLastMove(){
-    return lastMove;
-}
-
 void Player::Update(){
 
 }
@@ -110,6 +102,14 @@ float Player::getRange(){
     }
 
     return 0;
+}
+
+void Player::changeRoom(QVector2D dir){
+    lastMove = dir;
+    position += lastMove;
+    collider.setPoint(QVector2D(position.x(),position.y()));
+    renderer.SetPosition(position);
+    renderer.CreateGeometry();
 }
 
 float Player::getAngle(){

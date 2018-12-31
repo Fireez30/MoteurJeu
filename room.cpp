@@ -40,7 +40,8 @@ void Room::UpdateEntities(){
     for (int i = 0; i < entities.size(); i++){
         entities[i]->Update();
         if (CollisionCheck(entities[i]->getCollider())){//si l'entité a collide avec un mur, reset sa position
-            entities[i]->Move(-(entities[i]->GetLastMove()*0.0166));
+            std::cout << "collision ennemi mur" << std::endl;
+            entities[i]->ResetMove();
             //entities[i]->Move((entities[i]->GetLastMove()+QVector2D(0,1))*0.0166);
         }
     }

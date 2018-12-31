@@ -164,15 +164,14 @@ void GameManager::timerEvent(QTimerEvent *)
     }
     else{
         player->movAnim->Walk();
-        QVector3D vector(transX,transY,0);
+        QVector2D vector(transX,transY);
         vector.normalize();
         vector *= player->GetSpeed();
-        player->Move(vector*0.0166);
-        player->SetLastMove(vector);
+        player->Move(vector);
         if(scene[camera->getCurrentRoom()]->CollisionCheck(player->getCollider()))
         {
             //player->movAnim->StopWalk();
-            player->Move(-vector*0.0166);
+            player->ResetMove();
         }
     }
     scene[camera->getCurrentRoom()]->affectEnemiesInRange();

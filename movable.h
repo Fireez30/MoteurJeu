@@ -14,6 +14,7 @@ protected :
     float initSpeed;
     QVector2D direction;
     QVector2D initPos;
+    QVector2D lastMove;
     int health;
     bool dead;
     std::vector<Projectile*> projectiles;
@@ -28,10 +29,11 @@ public :
     float GetSpeed();
     void ChangeSpeed(float s);
     void ChangeDirection(QVector2D dir);
-    void Move(QVector3D dir);
+    void Move(QVector2D dir);
     void ResetPos();
     virtual void Update() = 0;
-    virtual QVector3D GetLastMove() = 0;
+    QVector2D GetLastMove();
+    void ResetMove();
     int getHealth();
     void setHealth(int h);
     void Damage(int d);
