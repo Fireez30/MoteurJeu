@@ -349,28 +349,23 @@ void Room::affectEnemiesInRange(){
     //std::cout << "Rayon affect : " << rayon << std::endl;
     float angle = player->getAngle();
     //std::cout << "Angle affect : " << angle << std::endl;
-    bool isUsingMainLamp = false;
+    //bool isUsingMainLamp = false;
     bool isUsingSecondLamp = false;
 
-    if (player->utilisePilePrincipale()){
-        isUsingMainLamp = true;
-    }
-    else if (player->utilisePileSecondaire()){
+    if (player->utilisePileSecondaire()){
         isUsingSecondLamp = true;
     }
-
-    if (isUsingSecondLamp || isUsingMainLamp)
         for (int i = 0; i < entities.size(); i++){
             if (CheckColl(rayon,angle,QVector2D(entities[i]->GetPosition().x(),entities[i]->GetPosition().y())))
             {
                 //std::cout << "Debut collision lampe ennemie" << std::endl;
                 entities[i]->setAffected(true);
 
-                if (isUsingMainLamp){
-                    player->GetPilePrincipale()->Affect(entities[i]);
+                if (isUsingSecondLamp){
+                    player->getPileSecondaire()->Affect(entities[i]);
                 }
                 else {
-                    player->getPileSecondaire()->Affect(entities[i]);
+                    player->GetPilePrincipale()->Affect(entities[i]);
                 }
                 //std::cout << "avant change speed" << std::endl;
                 for (unsigned j = 0; j < entities[i]->getProjectiles().size(); j++){

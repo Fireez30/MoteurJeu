@@ -123,20 +123,14 @@ void GameManager::keyPressEvent (QKeyEvent * event){
 
 void GameManager::mousePressEvent(QMouseEvent *e)
 {
-    if (e->button() == Qt::LeftButton){
-        player->setUtilisationPrincipale(true);
-    }
-    else if (e->button() == Qt::RightButton && player->getPileSecondaire() != nullptr){
+    if (e->button() == Qt::RightButton){
         player->setUtilisationSecondaire(true);
     }
 }
 
 void GameManager::mouseReleaseEvent(QMouseEvent *e)
 {
-    if (e->button() == Qt::LeftButton){
-        player->setUtilisationPrincipale(false);
-    }
-    else if (e->button() == Qt::RightButton){
+    if (e->button() == Qt::RightButton){
         player->setUtilisationSecondaire(false);
     }
 }
