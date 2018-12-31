@@ -4,7 +4,7 @@
 #include <QVector3D>
 #include <vector>
 
-class Camera;
+class Room;
 
 #include "room.h"
 

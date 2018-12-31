@@ -2,7 +2,7 @@
 #define ROOM_H
 
 class Door;
-class Room;
+class Camera;
 
 #include <stdlib.h>
 #include <stdio.h>
