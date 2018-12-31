@@ -168,20 +168,26 @@ void GameManager::timerEvent(QTimerEvent *)
     }
     else{
         player->movAnim->Walk();
-        QVector3D vector(transX,transY,0);
+        QVector2D vector(transX,transY);
         vector.normalize();
         vector *= player->GetSpeed();
-        player->Move(vector*0.0166);
-        player->SetLastMove(vector);
+        player->Move(vector);
         if(scene[camera->getCurrentRoom()]->CollisionCheck(player->getCollider()))
         {
             //player->movAnim->StopWalk();
-            player->Move(-vector*0.0166);
+            player->ResetMove();
         }
     }
     scene[camera->getCurrentRoom()]->affectEnemiesInRange();
     scene[camera->getCurrentRoom()]->UpdateEntities();
-    scene[camera->getCurrentRoom()]->TriggerCheck(player);
+    if (player->canCollide){
+       // std::cout << "je peux collider lol "<< std::endl;
+        scene[camera->getCurrentRoom()]->TriggerCheck(player);
+    }
+    else {
+       // std::cout << "je peux pas collider :( "<< std::endl;
+    }
+
     // !! if player HP is 1 , change shaders to color the scren in red ?
     if (player->isDead()){
         this->close();

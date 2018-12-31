@@ -23,19 +23,22 @@ void Door::Lock(){
 }
 
 int Door::OnTriggerEnter(Interactable2D* other){
+    std::cout << "Trigger enter porte" << std::endl;
 	//Si memory leak, regarder ici
     if (!locked){
         if(dynamic_cast<Player*> (other)!=NULL){
             camera->moveCamera(QVector3D(dir.x()*25,dir.y()*15,0));
             camera->setCurrentRoom(dir);
-            QVector3D dirJoueur = QVector3D(dir.x()*-3,dir.y()*-3,0);
-            player->Move(dirJoueur);
+            QVector2D dirJoueur = QVector2D(dir.x()*-3,dir.y()*-3);
+            player->changeRoom(dirJoueur);
         }
     }
     else{
         //std::cout << "RECULE" << std::endl;
-        player->Move(-player->GetLastMove()*0.166);
+        player->ResetMove();
     }
+
+    return 1;
 }
 
 Door::Door(const Door& d):Interactable2D(QVector2D(d.position.x(),d.position.y()),d.renderer.spriteCoords,0),locked(d.locked){

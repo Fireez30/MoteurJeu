@@ -40,7 +40,8 @@ void Room::UpdateEntities(){
     for (int i = 0; i < entities.size(); i++){
         entities[i]->Update();
         if (CollisionCheck(entities[i]->getCollider())){//si l'entité a collide avec un mur, reset sa position
-            entities[i]->Move(-(entities[i]->GetLastMove()*0.0166));
+            std::cout << "collision ennemi mur" << std::endl;
+            entities[i]->ResetMove();
             //entities[i]->Move((entities[i]->GetLastMove()+QVector2D(0,1))*0.0166);
         }
     }
@@ -181,8 +182,9 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
             }//fin for piles, rajouter des fors pour les autres entités
 
             for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Torche"); e5 != nullptr; e5 = e5->NextSiblingElement("Torche")){//Liste des Torches
-                Torche* e =new Torche(QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom), e5->IntAttribute("range"), 1, QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),this);
-                e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),e5->IntAttribute("range"),e5->IntAttribute("range")));
+                int trange = e5->IntAttribute("range");
+                Torche* e =new Torche(QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom), trange, 1, QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),this);
+                e->setCollider(Hitbox(QVector2D(e->position.x()-trange/2,e->position.y()+trange/2),trange,trange));
                 pickups.push_back(e);
             }//si clé lol
         }
@@ -208,23 +210,41 @@ void Room::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
 bool Room::CollisionCheck(Hitbox h){//collisions des murs unqiuements
     for (int i = 0; i < collisions.size();i++){
         if (collisions[i].TestCollision(h)){
+            //std::cout << "collisionChecktrue" << std::endl;
             return true;
         }
     }
+   // std::cout << "collisionCheck false" << std::endl;
     return false;
 }
 bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
+    bool flag = false;
+    int triggerCount = 0;
     for(int i=0;i<pickups.size();i++){
         if(pickups[i]->canCollide && pickups[i]->getCollider().TestCollision(other->getCollider())){
+            triggerCount++;
+            //std::cout << "triggercheck " << std::endl;
             Pile* pile = dynamic_cast<Pile*> (pickups[i]);
             Player* p= dynamic_cast<Player*> (other);
             if(pile != nullptr && p != nullptr){
+                std::cout << "triggercheck if pile" << std::endl;
                 int idPile = -1;
                 Pile * pileJoueur = p->getPileSecondaire() ;
                 if(pileJoueur!= nullptr)
                     idPile = pileJoueur->getID();
                 if(idPile==0){
+                    std::cout << "drop" << std::endl;
                     RangedPile *r = new RangedPile(QVector2D(pile->position.x(),pile->position.y()),pileJoueur->renderer.GetTextCoords());
+                    r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
+                    r->renderer.CreateGeometry();
+                    r->canCollide = false;
+                    r->startTimer();
+                    r->setLifespan(pileJoueur->getLifespan());
+                    pickups.push_back(r);
+                }
+                else if(idPile==1){
+                     std::cout << "drop" << std::endl;
+                    LargerPile *r = new LargerPile(QVector2D(pile->position.x(),pile->position.y()),pileJoueur->renderer.GetTextCoords());
                     r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
                     r->renderer.CreateGeometry();
                     r->canCollide = false;
@@ -234,32 +254,35 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
                 }
             }//fin traitement des piles
             if (pickups[i]->OnTriggerEnter(other) == -1){
+                std::cout << "suprresion" << std::endl;
                 Interactable2D* truc = pickups[i];
                 pickups.erase(pickups.begin()+i);
                 delete truc;
             }//par défaut (si -1 alors supprimer)
-            return true;
+        flag = true;
         }
     }
-
+    //std::cout << "Nb triggers = " << triggerCount << std::endl;
+    //std::cout << "Nb interactable " << pickups.size() << std::endl;
     for (int i = 0; i <  entities.size(); i++){
         for (unsigned j = 0; j < entities[i]->getProjectiles().size(); j++){
             if (entities[i]->getProjectiles()[j]->getCollider().TestCollision(other->getCollider())){
                 //std::cout << "Collision projectile ! " << std::endl;
                 entities[i]->getProjectiles()[j]->OnTriggerEnter(other);
-                return 0;
+                flag = true;
             }
         }
+
         if(entities[i]->canCollide && entities[i]->getCollider().TestCollision(other->getCollider())){
+            flag = true;
             if (entities[i]->OnTriggerEnter(other) == -1){
                 Movable* truc = entities[i];
                 entities.erase(entities.begin()+i);
                 delete truc;
             }
-            return true;
         }
     }//fin collision entité
-    return false;
+    return flag;
 }
 
 
@@ -323,9 +346,9 @@ bool Room::CheckColl(float rayon, float angle, QVector2D point)
 
 void Room::affectEnemiesInRange(){
     float rayon = player->getRange();
-    std::cout << "Rayon affect : " << rayon << std::endl;
+    //std::cout << "Rayon affect : " << rayon << std::endl;
     float angle = player->getAngle();
-    std::cout << "Angle affect : " << angle << std::endl;
+    //std::cout << "Angle affect : " << angle << std::endl;
     bool isUsingMainLamp = false;
     bool isUsingSecondLamp = false;
 

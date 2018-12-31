@@ -1,6 +1,8 @@
 #ifndef DOOR_H
 #define DOOR_H
 
+class Camera;
+
 #include "interactable2d.h"
 #include "player.h"
 #include "camera.h"
