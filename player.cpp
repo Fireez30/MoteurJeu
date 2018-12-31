@@ -100,7 +100,7 @@ float Player::getRange(){
         return secondaire->GetRange();
     }
     else{
-        return secondaire->GetRange();
+        return principale->GetRange();
     }
 
     return 0;
