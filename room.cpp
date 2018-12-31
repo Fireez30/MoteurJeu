@@ -232,6 +232,7 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
                 Pile * pileJoueur = p->getPileSecondaire() ;
                 if(pileJoueur!= nullptr)
                     idPile = pileJoueur->getID();
+                std::cout << idPile << std::endl;
                 if(idPile==0){
                     std::cout << "drop" << std::endl;
                     RangedPile *r = new RangedPile(QVector2D(pile->position.x(),pile->position.y()),pileJoueur->renderer.GetTextCoords());
