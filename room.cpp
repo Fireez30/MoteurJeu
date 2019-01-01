@@ -133,12 +133,12 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
         if (d4){//si la salle que l'on lit contient une entité
 
             for (tinyxml2::XMLElement* e4 = d4->FirstChildElement("RangedPile"); e4 != nullptr; e4 = e4->NextSiblingElement("RangedPile")){//Liste des piles
-            RangedPile *r = new RangedPile(QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0));
+            RangedPile *r = new RangedPile(QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),e4->FloatAttribute("range"),e4->FloatAttribute("coneangle"),e4->IntAttribute("lifetime"),e4->IntAttribute("damage"),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0));
             r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
             pickups.push_back(r);
             }
             for (tinyxml2::XMLElement* e4 = d4->FirstChildElement("LargerPile"); e4 != nullptr; e4 = e4->NextSiblingElement("LargerPile")){//Liste des piles
-            LargerPile *r = new LargerPile(QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0));
+            LargerPile *r = new LargerPile(QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),e4->FloatAttribute("range"),e4->FloatAttribute("coneangle"),e4->IntAttribute("lifetime"),e4->IntAttribute("damage"),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0));
             r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
             pickups.push_back(r);
             }
@@ -148,7 +148,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
             //fin for piles, rajouter des fors pour les autres entités
 
             for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Ghost"); e5 != nullptr; e5 = e5->NextSiblingElement("Ghost")){//Liste des Ghosts
-                Ennemi* e =new Ennemi(this,p,10,0,0,2.5,QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),200,3,false);
+                Ennemi* e =new Ennemi(this,p,e5->IntAttribute("vie"),e5->IntAttribute("directionx"),e5->IntAttribute("directiony"),e5->FloatAttribute("vitesse"),QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),e5->IntAttribute("animtime"),e5->IntAttribute("nbFrames"),false);
                 e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
                 entities.push_back(e);
                 //for (int i = 0; i < interacts.size(); i++){
@@ -178,7 +178,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
             }
 
             for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Boss_torche"); e5 != nullptr; e5 = e5->NextSiblingElement("Boss_torche")){//Liste des Boss_torche
-                Boss_torche* e =new Boss_torche(this,p,e5->IntAttribute("health"),0,0,e5->IntAttribute("speed"),QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),200,2,false);
+                Boss_torche* e =new Boss_torche(this,p,e5->IntAttribute("health"),e5->IntAttribute("directionx"),e5->IntAttribute("directiony"),e5->IntAttribute("speed"),QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),e5->IntAttribute("animtime"),e5->IntAttribute("nbFrames"),false);
                 e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
                 entities.push_back(e);
                 boss2 = e;
@@ -186,7 +186,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
 
             for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Torche"); e5 != nullptr; e5 = e5->NextSiblingElement("Torche")){//Liste des Torches
                 int trange = e5->IntAttribute("range");
-                Torche* e =new Torche(QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom), trange, 1, QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),this);
+                Torche* e =new Torche(QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom), trange, e5->IntAttribute("damage"), QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),this);
                 e->setCollider(Hitbox(QVector2D(e->position.x()-trange/2,e->position.y()+trange/2),trange,trange));
                 pickups.push_back(e);
             }//si clé lol
