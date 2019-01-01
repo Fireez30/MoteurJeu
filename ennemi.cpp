@@ -20,33 +20,33 @@ void Ennemi::startTimer(){
 }
 
 void Ennemi::timerEvent(QTimerEvent *){
-//    ennemitoplayer = QVector3D(player->position.x() - position.x(), player->position.y() - position.y(), 0);
-//    ennemitoplayer.normalize();
-//    ennemitoplayer *= speed;
-//    timer.stop();
-//    timer.start(1000,this);
+    //    ennemitoplayer = QVector3D(player->position.x() - position.x(), player->position.y() - position.y(), 0);
+    //    ennemitoplayer.normalize();
+    //    ennemitoplayer *= speed;
+    //    timer.stop();
+    //    timer.start(1000,this);
 }
 
 void Ennemi::IA(){
-     ennemitoplayer = QVector2D(player->position.x() - position.x(), player->position.y() - position.y());
-     ennemitoplayer.normalize();
-     ennemitoplayer *= speed;
-     this->Move(ennemitoplayer);//collision checvk a faire
-     if (projectiles.size() == 0){
-         projectiles.push_back(new Projectile(QVector2D(position.x(),position.y()),QVector2D(4/16.0,13/16.0),0,1,1,1,QVector2D(ennemitoplayer.x(),ennemitoplayer.y())));
-     }
+    ennemitoplayer = QVector2D(player->position.x() - position.x(), player->position.y() - position.y());
+    ennemitoplayer.normalize();
+    ennemitoplayer *= speed;
+    this->Move(ennemitoplayer);//collision checvk a faire
+    if (player->getHoldKey()){
+        if (projectiles.size() == 0){
+            projectiles.push_back(new Projectile(QVector2D(position.x(),position.y()),QVector2D(4/16.0,13/16.0),0,1,1,1,QVector2D(ennemitoplayer.x(),ennemitoplayer.y())));
+        }
+    }
 }
 
 void Ennemi::Update(){
     IA();
     speed = initSpeed;
-    if (player->getHoldKey()){
-        for (unsigned i = 0; i < projectiles.size(); i++){
-            if (projectiles[i]->Update() == -1){
-                Projectile* truc = projectiles[i];
-                projectiles.erase(projectiles.begin()+i);
-                delete truc;
-            }
+    for (unsigned i = 0; i < projectiles.size(); i++){
+        if (projectiles[i]->Update() == -1){
+            Projectile* truc = projectiles[i];
+            projectiles.erase(projectiles.begin()+i);
+            delete truc;
         }
     }
 }
