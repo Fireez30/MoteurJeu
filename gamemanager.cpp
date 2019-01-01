@@ -492,6 +492,7 @@ void GameManager::paintGL()
     int nbLights = lights.size();
     program.setUniformValue("numLights", nbLights);
     lights[0]->position = QVector2D(player->position.x(),player->position.y());
+    lights[1] = player->getLampeLight();
     lights[1]->position = QVector2D(player->position.x(),player->position.y());
     lights[1]->direction= -player->getDirection();
     for(int i=0;i<lights.size();i++){
