@@ -29,6 +29,9 @@ Room::~Room(){
     for (int i = 0; i < entities.size(); i++){
         delete entities[i];
     }
+    for (int i = lights->size(); i < 1; i--){
+        delete lights->at(i);
+    }
     entities.clear();
 }
 
@@ -192,7 +195,8 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
 }
 
 void Room::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
-   lights->erase(lights->begin()+2,lights->begin()+lights->size()-1);
+    if(lights->size() > 2)
+       lights->erase(lights->begin()+2,lights->begin()+lights->size()-1);
     for (int i = 0; i < pickups.size(); i++){
         pickups[i]->Render(program,text);//contient piles + portes
         if(dynamic_cast<Pile*>(pickups[i])!=nullptr)
