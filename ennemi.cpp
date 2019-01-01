@@ -40,11 +40,13 @@ void Ennemi::IA(){
 void Ennemi::Update(){
     IA();
     speed = initSpeed;
-    for (unsigned i = 0; i < projectiles.size(); i++){
-        if (projectiles[i]->Update() == -1){
-            Projectile* truc = projectiles[i];
-            projectiles.erase(projectiles.begin()+i);
-            delete truc;
+    if (player->getHoldKey()){
+        for (unsigned i = 0; i < projectiles.size(); i++){
+            if (projectiles[i]->Update() == -1){
+                Projectile* truc = projectiles[i];
+                projectiles.erase(projectiles.begin()+i);
+                delete truc;
+            }
         }
     }
 }
