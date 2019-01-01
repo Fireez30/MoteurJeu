@@ -60,13 +60,13 @@ void Player::ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj,QVector2D s
     QVector3D mousePos = QVector3D(s.x(),s.y(),0);//pos souris
     QRect vp = QRect(0,0,size.x(),size.y());
     QVector3D worldpos = position.project(m,proj,vp);
-
-    //std::cout << "player position " << worldpos.x() << " " << worldpos.y() << " " << worldpos.z() << std::endl;
-    //USELESSstd::cout << "mouse position " << vIn.x() << " " << vIn.y() << " " << vIn.z() << std::endl;
-    //std::cout << "mouse position " << mousePos.x() << " " << mousePos.y() << " " << mousePos.z() << std::endl;
-
+    worldpos.setY(720-worldpos.y());
     this->direction = QVector2D(worldpos - mousePos).normalized();
-    //std::cout << "direction = " << direction.x() << " " << direction.y() << std::endl;
+
+    std::cout << "player position " << worldpos.x() << " " << worldpos.y() << " " << worldpos.z() << std::endl;
+    std::cout << "mouse position " << mousePos.x() << " " << mousePos.y() << " " << mousePos.z() << std::endl;
+    std::cout << "direction = " << direction.x() << " " << direction.y() << std::endl;
+
     if (direction.x() > orientationRatio && renderer.spriteCoords != spriteModif.GetSprite(3)){
         //std::cout << "sprite tourné vers la droite \n";
         spriteModif.ChangeSprite(3);

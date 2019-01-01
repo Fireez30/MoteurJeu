@@ -16,7 +16,7 @@ void SpriteModifier::AddSprite(QVector2D spr){
 
 void SpriteModifier::ChangeSprite(int index){
     //Object->renderer.spriteCoords = sprites[index];
-    Object->renderer.initText = sprites[index];
+    Object->renderer.SetYSpriteCoord(sprites[index].y());
     Object->renderer.CreateGeometry();
    // std::cout << "(changesprite) Renderer: " << Object->renderer.spriteCoords.x() << " " << Object->renderer.spriteCoords.y() << std::endl;
 }
