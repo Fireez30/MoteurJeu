@@ -43,7 +43,7 @@ void Room::UpdateEntities(){
     for (int i = 0; i < entities.size(); i++){
         entities[i]->Update();
         if (CollisionCheck(entities[i]->getCollider())){//si l'entité a collide avec un mur, reset sa position
-            std::cout << "collision ennemi mur" << std::endl;
+            //std::cout << "collision ennemi mur" << std::endl;
             entities[i]->ResetMove();
             //entities[i]->Move((entities[i]->GetLastMove()+QVector2D(0,1))*0.0166);
         }
@@ -350,37 +350,50 @@ bool Room::CheckColl(float rayon, float angle, QVector2D point)
 }
 
 void Room::affectEnemiesInRange(){
+    std::cout << "Debug affect" << std::endl;
     float rayon = player->getRange();
     //std::cout << "Rayon affect : " << rayon << std::endl;
     float angle = player->getAngle();
     //std::cout << "Angle affect : " << angle << std::endl;
+     std::cout << "Apres recup range/angle" << std::endl;
     //bool isUsingMainLamp = false;
     bool isUsingSecondLamp = false;
 
     if (player->utilisePileSecondaire()){
         isUsingSecondLamp = true;
+         std::cout << "Player use secondaire" << std::endl;
     }
         for (int i = 0; i < entities.size(); i++){
             if (CheckColl(rayon,angle,QVector2D(entities[i]->GetPosition().x(),entities[i]->GetPosition().y())))
             {
+                 std::cout << "Un ennemi collide" << std::endl;
                 //std::cout << "Debut collision lampe ennemie" << std::endl;
                 entities[i]->setAffected(true);
-
+                std::cout << "apres set affected" << std::endl;
                 if (isUsingSecondLamp){
+                     std::cout << "avant affect pile secondaire" << std::endl;
                     player->getPileSecondaire()->Affect(entities[i]);
+                    std::cout << "apres affectpile secondaire" << std::endl;
                 }
                 else {
+                    std::cout << "avant affect pile principale" << std::endl;
                     player->GetPilePrincipale()->Affect(entities[i]);
+                    std::cout << "apres affectpile principale" << std::endl;
                 }
-                //std::cout << "avant change speed" << std::endl;
+                std::cout << "avant change speed projectiles" << std::endl;
                 for (unsigned j = 0; j < entities[i]->getProjectiles().size(); j++){
                     entities[i]->getProjectiles()[j]->changeSpeed(0.5);
                 }
-                //std::cout << "Fin collision lampe ennemie" << std::endl;
+                std::cout << "apres change speed projectiles" << std::endl;
+                std::cout << "Fin collision lampe ennemie" << std::endl;
             }
             else{
+                 std::cout << "Chnagement affected" << std::endl;
                 entities[i]->setAffected(false);
+             std::cout << "fin Chnagement affected" << std::endl;
             }
 
         }
+
+        std::cout << "fin affect " << std::endl;
 }

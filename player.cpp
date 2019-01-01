@@ -128,11 +128,15 @@ float Player::getAngle(){
 
 void Player::SetPileSecondaire(Pile *s){
     secondaire = s;
-    secondaire->getCollider().~Hitbox();
+    //secondaire->getCollider().~Hitbox();
 }
 
 Pile* Player::getPileSecondaire(){
-    return secondaire;
+    std::cout << "recuperation pile secondaire avant" << std::endl;
+    if (secondaire != nullptr){
+        std::cout << "secondaire pas nulle" << std::endl;
+        return secondaire;
+    }
 }
 
 bool Player::utilisePilePrincipale(){
@@ -157,7 +161,7 @@ LightSource* Player::getLight(){
 }
 
 LightSource* Player::getLampeLight(){
-    if(usePileSecondaire)
+    if(usePileSecondaire && secondaire != nullptr)
         return secondaire->getLightSource();
     return principale->getLightSource();
 }
