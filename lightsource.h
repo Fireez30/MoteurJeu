@@ -14,6 +14,7 @@ public :
 	float dist, maxDist;
 
     LightSource(QVector2D pos, QVector3D c, float at, float ambient, float angle, float angleMax, QVector3D dir, float d, float maxD);
+    ~LightSource();
 };
 
 #endif // LIGHTSOURCE_H

@@ -48,9 +48,9 @@ GameManager::~GameManager()
     for (int i = 0; i < scene.size(); i++){
         delete scene[i];
     }
-    for (int i = 0; i < lights.size(); i++){
-        delete lights[i];
-    }
+   /* for (int i = 0; i < lights.size(); i++){
+         delete lights[i];
+    }*/
     delete player;
     doneCurrent();
 }
