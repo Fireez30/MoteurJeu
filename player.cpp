@@ -11,7 +11,7 @@
 #include "rangedpile.h"
 #include "mainpile.h"
 
-Player::Player():Movable(3,1,0,6,QVector2D(162,83),QVector2D(0.0,8.0/16.0),200,3,false),usePilePrincipale(true),usePileSecondaire(false),holdKey(false),spriteModif(this),light(QVector2D(0,0),QVector3D(1,1,1),0.0005f,0.5f,180.0f,180.0f,QVector3D(1,0,0),150.0f,200.0f){
+Player::Player():Movable(3,1,0,6,QVector2D(162,83),QVector2D(0.0,8.0/16.0),200,3,false),usePilePrincipale(true),usePileSecondaire(false),holdKey(false),spriteModif(this),light(QVector2D(0,0),QVector3D(1,1,1),0.0005f,0.5f,180.0f,180.0f,QVector3D(1,0,0),3.5f,3.7f){
     spriteModif.AddSprite(QVector2D(0.0,11.0/16.0));//facing up
     spriteModif.AddSprite(QVector2D(0.0,10.0/16.0));//facing right
     spriteModif.AddSprite(QVector2D(0.0,8.0/16.0));//basic sprite orientation (facing down)
@@ -24,7 +24,7 @@ Player::Player():Movable(3,1,0,6,QVector2D(162,83),QVector2D(0.0,8.0/16.0),200,3
     std::cout << "spriteModif size " << spriteModif.nbOfSprites() << std::endl;
 }
 
-Player::Player(int h,float x,float y, float sp,QVector2D dir,int animtime,int nbframes,bool animstatus):Movable(h,x,y,sp,dir,QVector2D(0.0,8.0/16.0),animtime,nbframes,animstatus),usePilePrincipale(true),usePileSecondaire(false),holdKey(false),spriteModif(this),light(QVector2D(x,y),QVector3D(1,1,1),0.0005f,0.5f,180.0f,180.0f,QVector3D(1,0,0),150.0f,200.0f){
+Player::Player(int h,float x,float y, float sp,QVector2D dir,int animtime,int nbframes,bool animstatus):Movable(h,x,y,sp,dir,QVector2D(0.0,8.0/16.0),animtime,nbframes,animstatus),usePilePrincipale(true),usePileSecondaire(false),holdKey(false),spriteModif(this),light(QVector2D(x,y),QVector3D(1,1,1),0.0005f,0.5f,180.0f,180.0f,QVector3D(1,0,0),3.5f,3.7f){
     spriteModif.AddSprite(QVector2D(0.0,8.0/16.0));//basic sprite orientation (facing down)
     spriteModif.AddSprite(QVector2D(0.0,9.0/16.0));//facing left
     spriteModif.AddSprite(QVector2D(0.0,10.0/16.0));//facing right
@@ -62,10 +62,6 @@ void Player::ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj,QVector2D s
     QVector3D worldpos = position.project(m,proj,vp);
     worldpos.setY(720-worldpos.y());
     this->direction = QVector2D(worldpos - mousePos).normalized();
-
-    std::cout << "player position " << worldpos.x() << " " << worldpos.y() << " " << worldpos.z() << std::endl;
-    std::cout << "mouse position " << mousePos.x() << " " << mousePos.y() << " " << mousePos.z() << std::endl;
-    std::cout << "direction = " << direction.x() << " " << direction.y() << std::endl;
 
     if (direction.x() > orientationRatio && renderer.spriteCoords != spriteModif.GetSprite(3)){
         //std::cout << "sprite tourné vers la droite \n";
@@ -132,9 +128,9 @@ void Player::SetPileSecondaire(Pile *s){
 }
 
 Pile* Player::getPileSecondaire(){
-    std::cout << "recuperation pile secondaire avant" << std::endl;
+    //std::cout << "recuperation pile secondaire avant" << std::endl;
     if (secondaire != nullptr){
-        std::cout << "secondaire pas nulle" << std::endl;
+        //std::cout << "secondaire pas nulle" << std::endl;
         return secondaire;
     }
 }

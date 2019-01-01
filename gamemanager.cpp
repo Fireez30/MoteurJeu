@@ -36,7 +36,6 @@ GameManager::GameManager(QWidget *parent,int maxfps) :
     walkUp = false;
     walkLeft = false;
     walkRight = false;
-    std::cout << "fin constructeur gamemanager" << std::endl;
 }
 
 GameManager::~GameManager()
@@ -167,7 +166,6 @@ void GameManager::timerEvent(QTimerEvent *)
         vector *= player->GetSpeed();
         player->Move(vector);
         if (player->canCollide){
-           // std::cout << "je peux collider lol "<< std::endl;
             scene[camera->getCurrentRoom()]->TriggerCheck(player);
         }
         if(scene[camera->getCurrentRoom()]->CollisionCheck(player->getCollider()))
@@ -317,16 +315,12 @@ void GameManager::initializeGL()
     glEnable(GL_CULL_FACE);
     // Use QBasicTimer because its faster than QTimer
     player = new Player();
-    std::cout << "PLayer créé" << std::endl;
     lights.push_back(player->getLight());
     lights.push_back(player->getLampeLight());
     camera = new Camera();
-    std::cout << "Camera créé" << std::endl;
     //srand(13);
     int seed = 14562;
-    std::cout << "avant srand" << std::endl;
     srand(seed);
-    std::cout << "apres srand Seed : " << seed << "\n";
     std::vector<Rooms>* rooms = new std::vector<Rooms>();
     int maxdist = 6,distSecondaire = 4;
     int x = maxdist;//x in tile-coordinates (used for generation)
@@ -519,10 +513,16 @@ void GameManager::paintGL()
         program.setUniformValue(s.data(),lights[i]->direction);
         var = "].dist";
         s = sBase + var;
-        program.setUniformValue(s.data(),lights[i]->dist);
+        program.setUniformValue(s.data(),lights[i]->dist*48);
         var = "].maxDist";
         s = sBase + var;
-        program.setUniformValue(s.data(),lights[i]->maxDist);
+        program.setUniformValue(s.data(),lights[i]->maxDist*48);
+        /*std::cout << "i : " << i << std::endl;
+        std::cout << "couleur : " << lights[i]->color.x() << "/" << lights[i]->color.y() << "/" << lights[i]->color.z() << std::endl;
+        std::cout << "angle : " << lights[i]->coneAngle << std::endl;
+        std::cout << "max angle : " << lights[i]->maxAngle << std::endl;
+        std::cout << "distance : " << lights[i]->dist << std::endl;
+        std::cout << "distance max : " << lights[i]->maxDist << std::endl;*/
     }
 
     // Use texture unit 0 which contains sprite sheet
