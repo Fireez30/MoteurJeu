@@ -393,9 +393,6 @@ void Room::affectEnemiesInRange(){
             std::cout << "apres affect" << std::endl;
             //}
             //std::cout << "avant change speed projectiles" << std::endl;
-            for (unsigned j = 0; j < entities[i]->getProjectiles().size(); j++){
-                //entities[i]->getProjectiles()[j]->changeSpeed(0.5);
-            }
             //std::cout << "apres change speed projectiles" << std::endl;
             //std::cout << "Fin collision lampe ennemie" << std::endl;
         }

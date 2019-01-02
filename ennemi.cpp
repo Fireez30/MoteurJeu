@@ -42,6 +42,13 @@ void Ennemi::IA(){
 void Ennemi::Update(){
     IA();
     speed = initSpeed;
+
+    if (affected)
+    {
+        for (unsigned i = 0; i < projectiles.size(); i++){
+            projectiles[i]->changeSpeed(0.5);
+        }
+    }
     for (unsigned i = 0; i < projectiles.size(); i++){
         if (projectiles[i]->Update() == -1){
             Projectile* truc = projectiles[i];
