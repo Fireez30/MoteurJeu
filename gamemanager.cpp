@@ -155,6 +155,9 @@ void GameManager::timerEvent(QTimerEvent *)
     if (walkRight)
         transX++;
 
+    if (player->canCollide){
+        scene[camera->getCurrentRoom()]->TriggerCheck(player);
+    }
     if (transX == 0 && transY == 0)
     {
         player->movAnim->StopWalk();
@@ -165,9 +168,7 @@ void GameManager::timerEvent(QTimerEvent *)
         vector.normalize();
         vector *= player->GetSpeed();
         player->Move(vector);
-        if (player->canCollide){
-            scene[camera->getCurrentRoom()]->TriggerCheck(player);
-        }
+
         if(scene[camera->getCurrentRoom()]->CollisionCheck(player->getCollider()))
         {
             //player->movAnim->StopWalk();
