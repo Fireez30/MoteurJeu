@@ -28,7 +28,7 @@ void TurretEnnemi::timerEvent(QTimerEvent *){
 void TurretEnnemi::IA(){
     //std::cout << "taille projectiles " << projectiles.size() << std::endl;
     if (targetPlayer){
-        std::cout << "je tire vers l'ennemi peut etre" << std::endl;
+        //std::cout << "je tire vers l'ennemi peut etre" << std::endl;
         shootdir = QVector2D(player->position.x() - position.x(), player->position.y() - position.y());
         shootdir.normalize();
     }

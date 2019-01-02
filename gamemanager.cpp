@@ -176,7 +176,7 @@ void GameManager::timerEvent(QTimerEvent *)
     }
     scene[camera->getCurrentRoom()]->affectEnemiesInRange();
     scene[camera->getCurrentRoom()]->UpdateEntities();
-
+    player->Update();
     // !! if player HP is 1 , change shaders to color the scren in red ?
     if (player->isDead()){
         this->close();

@@ -1,6 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+class Pile;
+
 #include "movable.h"
 #include "pile.h"
 #include "spritemodifier.h"
@@ -36,6 +38,7 @@ public :
     void setUtilisationPrincipale(bool b);
     float getRange();
     float getAngle();
+    void RemovePileSecondaire();
     void setUtilisationSecondaire(bool b);
     void PickKey();
     bool getHoldKey();
