@@ -318,8 +318,10 @@ void GameManager::initializeGL()
     lights.push_back(player->getLight());
     lights.push_back(player->getLampeLight());
     camera = new Camera();
-    //srand(13);
-    int seed = 484642185;
+    //srand(484642185) (salle couloir)
+    //srand (14562) seed de base
+    //srand(132355) seed salle 4
+    int seed = 132355;
     srand(seed);
     std::vector<Rooms>* rooms = new std::vector<Rooms>();
     int maxdist = 6,distSecondaire = 4;
