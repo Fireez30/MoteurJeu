@@ -1,16 +1,18 @@
 #include "turretennemy.h"
 #include <iostream>
 
-TurretEnnemi::TurretEnnemi(int h,float x, float y, float s,QVector2D pos,QVector2D text): Movable(h,x,y,s,pos,text,200,3,false),shootdir(0,0),targetPlayer(false),timerTime(2),projectileSpeed(1),projectileTravelTime(1){
+TurretEnnemi::TurretEnnemi(int h,float x, float y, float s,QVector2D pos,QVector2D text): Movable(h,x,y,s,pos,text,200,3,false),shootdir(0,0),targetPlayer(false),timerTime(0.5),projectileSpeed(1),projectileTravelTime(1){
     canShoot = true;
     startTimer();
+    initTime = timerTime;
 }
 
-TurretEnnemi::TurretEnnemi(Room* r,Player* p,int h, float x, float y, float s,QVector2D pos,QVector2D text,int animtime,int nbframes,bool animstatus,bool targplayer,int cooldown,float projspeed,int projtime): Movable(h,x,y,s,pos,text,animtime,nbframes,animstatus),shootdir(x,y),targetPlayer(targplayer),timerTime(cooldown),projectileSpeed(projspeed),projectileTravelTime(projtime){
+TurretEnnemi::TurretEnnemi(Room* r,Player* p,int h, float x, float y, float s,QVector2D pos,QVector2D text,int animtime,int nbframes,bool animstatus,bool targplayer,float cooldown,float projspeed,int projtime): Movable(h,x,y,s,pos,text,animtime,nbframes,animstatus),shootdir(x,y),targetPlayer(targplayer),timerTime(cooldown),projectileSpeed(projspeed),projectileTravelTime(projtime){
     this->player = p;
     this->room = r;
     canShoot = true;
     startTimer();
+    initTime = timerTime;
 }
 
 void TurretEnnemi::startTimer(){
@@ -19,7 +21,8 @@ void TurretEnnemi::startTimer(){
 
 void TurretEnnemi::timerEvent(QTimerEvent *){
     canShoot = true;
-    //shoottimer.start(timerTime*1000,this);
+    shoottimer.stop();
+    shoottimer.start(timerTime*1000,this);
 }
 
 void TurretEnnemi::IA(){
@@ -39,10 +42,12 @@ void TurretEnnemi::Update(){
     IA();
     if (affected)
     {
-        for (unsigned i = 0; i < projectiles.size(); i++){
-            projectiles[i]->changeSpeed(0.5);
-        }
+        timerTime = initTime * 5;
     }
+    else {
+        timerTime = initTime;
+    }
+
     for (unsigned i = 0; i < projectiles.size(); i++){
         if (projectiles[i]->Update() == -1){
             Projectile* truc = projectiles[i];

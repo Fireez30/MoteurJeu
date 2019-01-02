@@ -319,7 +319,7 @@ void GameManager::initializeGL()
     lights.push_back(player->getLampeLight());
     camera = new Camera();
     //srand(13);
-    int seed = 14562;
+    int seed = 484642185;
     srand(seed);
     std::vector<Rooms>* rooms = new std::vector<Rooms>();
     int maxdist = 6,distSecondaire = 4;

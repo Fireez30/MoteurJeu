@@ -281,7 +281,7 @@
         <ValueDefinition xsi:type="IntValueDefinition" Name="animtime" Default="200" Min="0" Max="100" ShowSlider="false" />
         <ValueDefinition xsi:type="IntValueDefinition" Name="nbframes" Default="3" Min="0" Max="100" ShowSlider="false" />
         <ValueDefinition xsi:type="IntValueDefinition" Name="targetplayer" Default="0" Min="0" Max="1" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="shootcooldown" Default="2" Min="0" Max="100" ShowSlider="false" />
+        <ValueDefinition xsi:type="FloatValueDefinition" Name="shootcooldown" Default="0" Min="0" Max="100" Round="0.1" />
         <ValueDefinition xsi:type="FloatValueDefinition" Name="projspeed" Default="1" Min="0" Max="100" Round="0.1" />
         <ValueDefinition xsi:type="IntValueDefinition" Name="projtime" Default="3" Min="0" Max="100" ShowSlider="false" />
       </ValueDefinitions>
