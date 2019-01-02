@@ -8,7 +8,7 @@ class RangedPile :public Pile{
 
 public :
     RangedPile(Player* p,QVector2D pos,QVector2D text);
-    RangedPile(Player* p,QVector2D pos,float r, float c, float l, int d,QVector2D text);
+    RangedPile(Player* p,QVector2D pos,float r, float c, int l, int d,QVector2D text);
     void Affect(Movable* m) override;
 };
 

@@ -15,7 +15,7 @@ class Pile : public Interactable2D {
 protected:
     float range;
     float coneAngle;
-    float lifespan;
+    int lifespan;
     int damage;
     int idPile;
     QVector3D color;
@@ -25,7 +25,7 @@ protected:
 
 public :
     Pile(Player* p,QVector2D pos,QVector2D text);
-    Pile(Player* p,QVector2D pos,float r, float c, float l, int d,QVector2D text, int id,QVector3D thecolor);
+    Pile(Player* p,QVector2D pos,float r, float c, int l, int d,QVector2D text, int id,QVector3D thecolor);
     virtual void Affect(Movable* m) = 0;
     float GetRange();
     int OnTriggerEnter(Interactable2D* other) override;
@@ -34,8 +34,8 @@ public :
     int GetDamage();
     int getID();
     void EndOfTimer();
-    void setLifespan(float life);
-    float getLifespan();
+    void setLifespan(int life);
+    int getLifespan();
     QVector3D getColor();
     LightSource* getLightSource();
     void changeLight();

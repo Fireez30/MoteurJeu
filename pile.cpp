@@ -6,7 +6,7 @@ Pile::Pile(Player* p,QVector2D pos,QVector2D text):Interactable2D (pos,text,1),r
 
 }
 
-Pile::Pile(Player* p,QVector2D pos,float r, float c, float l, int d,QVector2D text, int id,QVector3D thecolor):Interactable2D (pos,text,3000),range(r),coneAngle(c),lifespan(l*60),damage(d),idPile(id),color(thecolor),ls(pos,thecolor,0.0005f,0.5f,180,180.0f,QVector3D(1,0,0),1.0f,1.2f),player(p){
+Pile::Pile(Player* p,QVector2D pos,float r, float c, int l, int d,QVector2D text, int id,QVector3D thecolor):Interactable2D (pos,text,3000),range(r),coneAngle(c),lifespan(l*60),damage(d),idPile(id),color(thecolor),ls(pos,thecolor,0.0005f,0.5f,180,180.0f,QVector3D(1,0,0),1.0f,1.2f),player(p){
 }
 
 float Pile::GetRange(){
@@ -17,9 +17,6 @@ float Pile::GetConeAngle(){
     return coneAngle;
 }
 
-float Pile::GetLifepan(){
-    return lifespan;
-}
 
 void Pile::EndOfTimer(){
     player->RemovePileSecondaire();
@@ -64,10 +61,10 @@ QVector3D Pile::getColor(){
     return color;
 }
 
-void Pile::setLifespan(float life){
+void Pile::setLifespan(int life){
     lifespan  = life;
 }
-float Pile::getLifespan(){
+int Pile::getLifespan(){
     return lifespan;
 }
 
