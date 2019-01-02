@@ -24,14 +24,15 @@ void TurretEnnemi::timerEvent(QTimerEvent *){
 }
 
 void TurretEnnemi::IA(){
-    std::cout << "taille projectiles " << projectiles.size() << std::endl;
+    //std::cout << "taille projectiles " << projectiles.size() << std::endl;
     if (targetPlayer){
+        std::cout << "je tire vers l'ennemi peut etre" << std::endl;
         shootdir = QVector2D(player->position.x() - position.x(), player->position.y() - position.y());
         shootdir.normalize();
     }
-
     if (canShoot){
         projectiles.push_back(new Projectile(QVector2D(position.x(),position.y()),QVector2D(4/16.0,13/16.0),0,projectileTravelTime,1,projectileSpeed,QVector2D(shootdir.x(),shootdir.y())));
+        std::cout << "shootdir = " << shootdir.x() << " " << shootdir.y() << std::endl;
         canShoot = false;
     }
 }

@@ -18,6 +18,7 @@ Projectile::Projectile(QVector2D pos,QVector2D text,int collidetime,int lifetime
 
 void Projectile::timerEvent(QTimerEvent *e){
     alive = false;
+    timer.stop();
 }
 
 void Projectile::changeSpeed(float factor){
@@ -25,7 +26,7 @@ void Projectile::changeSpeed(float factor){
 }
 
 int Projectile::Update(){
-    std::cout << "projectile update" << std::endl;
+    //std::cout << "projectile update" << std::endl;
     if (!alive){
         return -1;
     }
