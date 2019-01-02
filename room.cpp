@@ -8,6 +8,7 @@
 #include "boss_torche.h"
 #include "torche.h"
 #include "turretennemy.h"
+#include "tinyxml2.h"
 
 Room::Room(std::vector<LightSource*>* l):lights(l){
     tiles = std::vector<Tile>();
@@ -181,8 +182,12 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
 
         for (tinyxml2::XMLElement* e3 = d4->FirstChildElement("BossDoor"); e3 != nullptr; e3 = e3->NextSiblingElement("BossDoor")){//y
             float x = (float)e3->IntAttribute("x"), y = (float)(-1*e3->IntAttribute("y"));
-            QVector2D dir;
-            dir.setY(-1);
+            QVector2D(dir);
+            int dirx = e3->IntAttribute("dirx");
+            int diry = e3->IntAttribute("diry");
+            dir.setX(dirx);
+            dir.setY(diry);
+            //std::cout << "Door direction x " << dirx << " y " << diry << std::endl;
             Door* d = new Door(QVector2D(x/16.0+xRoom,y/16.0+yRoom),QVector2D(e3->IntAttribute("xtextcoord")/16.0,e3->IntAttribute("ytextcoord")/16.0),QVector2D(e3->IntAttribute("xalttext")/16.0,e3->IntAttribute("yalttext")/16.0),!player->getHoldKey(),dir,p,c);
             d->setCollider(Hitbox(QVector2D(d->position.x(),d->position.y()),1,1));//porte ont un collider spécial
             pickups.push_back(d);
