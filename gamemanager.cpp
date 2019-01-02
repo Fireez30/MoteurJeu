@@ -524,7 +524,7 @@ void GameManager::paintGL()
         std::cout << "distance : " << lights[i]->dist << std::endl;
         std::cout << "distance max : " << lights[i]->maxDist << std::endl;*/
     }
-
+    //std::cout << "Pile secondaire null ?  " <<  (player->getPileSecondaire() == nullptr) << std::endl;
     // Use texture unit 0 which contains sprite sheet
     program.setUniformValue("texture", 0);
     player->Render(&program,texture);

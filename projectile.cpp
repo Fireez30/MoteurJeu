@@ -1,6 +1,6 @@
 #include "projectile.h"
 #include "player.h"
-
+#include <iostream>
 
 Projectile::Projectile():Interactable2D(QVector2D(0,0),QVector2D(0,0),0),lifespan(3),damage(1),speed(2),direction(QVector2D(0,0)){
     alive=true;
@@ -25,6 +25,7 @@ void Projectile::changeSpeed(float factor){
 }
 
 int Projectile::Update(){
+    std::cout << "projectile update" << std::endl;
     if (!alive){
         return -1;
     }

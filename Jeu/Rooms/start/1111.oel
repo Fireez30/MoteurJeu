@@ -220,10 +220,8 @@
     <tile x="18" y="6" tx="9" ty="0" />
     <tile x="18" y="7" tx="9" ty="0" />
     <tile x="18" y="8" tx="9" ty="0" />
-    <tile x="18" y="9" tx="9" ty="0" />
     <tile x="18" y="10" tx="9" ty="0" />
     <tile x="18" y="11" tx="9" ty="0" />
-    <tile x="18" y="12" tx="9" ty="0" />
     <tile x="18" y="13" tx="9" ty="0" />
     <tile x="19" y="1" tx="9" ty="0" />
     <tile x="19" y="2" tx="9" ty="0" />
@@ -232,12 +230,8 @@
     <tile x="19" y="5" tx="9" ty="0" />
     <tile x="19" y="6" tx="9" ty="0" />
     <tile x="19" y="7" tx="9" ty="0" />
-    <tile x="19" y="8" tx="9" ty="0" />
     <tile x="19" y="9" tx="9" ty="0" />
-    <tile x="19" y="10" tx="9" ty="0" />
-    <tile x="19" y="11" tx="9" ty="0" />
     <tile x="19" y="12" tx="9" ty="0" />
-    <tile x="19" y="13" tx="9" ty="0" />
     <tile x="20" y="1" tx="9" ty="0" />
     <tile x="20" y="2" tx="9" ty="0" />
     <tile x="20" y="3" tx="9" ty="0" />
@@ -246,10 +240,8 @@
     <tile x="20" y="6" tx="9" ty="0" />
     <tile x="20" y="7" tx="9" ty="0" />
     <tile x="20" y="8" tx="9" ty="0" />
-    <tile x="20" y="9" tx="9" ty="0" />
     <tile x="20" y="10" tx="9" ty="0" />
     <tile x="20" y="11" tx="9" ty="0" />
-    <tile x="20" y="12" tx="9" ty="0" />
     <tile x="20" y="13" tx="9" ty="0" />
     <tile x="21" y="1" tx="9" ty="0" />
     <tile x="21" y="2" tx="9" ty="0" />
@@ -348,10 +340,18 @@
     <tile x="17" y="0" tx="8" ty="0" />
     <tile x="17" y="14" tx="8" ty="0" />
     <tile x="18" y="0" tx="8" ty="0" />
+    <tile x="18" y="9" tx="8" ty="0" />
+    <tile x="18" y="12" tx="8" ty="0" />
     <tile x="18" y="14" tx="8" ty="0" />
     <tile x="19" y="0" tx="8" ty="0" />
+    <tile x="19" y="8" tx="8" ty="0" />
+    <tile x="19" y="10" tx="8" ty="0" />
+    <tile x="19" y="11" tx="8" ty="0" />
+    <tile x="19" y="13" tx="8" ty="0" />
     <tile x="19" y="14" tx="8" ty="0" />
     <tile x="20" y="0" tx="8" ty="0" />
+    <tile x="20" y="9" tx="8" ty="0" />
+    <tile x="20" y="12" tx="8" ty="0" />
     <tile x="20" y="14" tx="8" ty="0" />
     <tile x="21" y="0" tx="8" ty="0" />
     <tile x="21" y="14" tx="8" ty="0" />
@@ -384,6 +384,8 @@
     <BossDoor id="1" x="192" y="0" xtextcoord="10" ytextcoord="5" index="0" xalttext="4" yalttext="6" />
     <RangedPile id="2" x="64" y="64" xtextcoord="13" ytextcoord="14" type="0" range="10" coneangle="50" lifetime="60" damage="1" />
     <LargerPile id="3" x="64" y="176" xtextcoord="13" ytextcoord="13" type="0" range="7" coneangle="90" lifetime="90" damage="1" />
+    <TurretEnnemi id="4" x="304" y="144" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="0" directiony="0" vitesse="0" animtime="200" nbframes="1" targetplayer="False" shootcooldown="2" projspeed="1" projtime="2" />
+    <TurretEnnemi id="5" x="304" y="192" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="0" directiony="0" vitesse="0" animtime="200" nbframes="1" targetplayer="True" shootcooldown="2" projspeed="1" projtime="2" />
   </Entite>
   <Décors exportMode="Bitstring">0000000000000000000000000
 0000000000000000000000000

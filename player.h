@@ -39,6 +39,7 @@ public :
     void setUtilisationSecondaire(bool b);
     void PickKey();
     bool getHoldKey();
+    Pile* getPileEnCours();
     Pile* GetPilePrincipale();
     LightSource* getLight();
     LightSource* getLampeLight();
