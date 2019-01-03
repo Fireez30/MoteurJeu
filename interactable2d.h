@@ -21,7 +21,7 @@ public :
     void startTimer();
     QBasicTimer timer;
     bool canCollide;
-    float timeCollide;
+    int timeCollide;
 
 };
 
