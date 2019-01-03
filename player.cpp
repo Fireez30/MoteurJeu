@@ -47,10 +47,8 @@ int Player::OnTriggerEnter(Interactable2D* other){
 Pile* Player::getPileEnCours(){
     qDebug("getPileEncours");
     if (usePileSecondaire && secondaire != nullptr){
-        std::cout << "je retourne la secondaire"  << std::endl;
         return secondaire;
     }
-    std::cout << "je retourne la principale"  << std::endl;
     return principale;
 }
 

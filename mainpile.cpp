@@ -11,7 +11,6 @@ MainPile::MainPile(Player* p,QVector2D pos,float r, float c, int l, int d,QVecto
 }
 
 void MainPile::Affect(Movable* m){
-    std::cout << "affect main pile" << std::endl;
     Boss_torche* bt = dynamic_cast<Boss_torche*> (m);
     if(bt == nullptr){
         m->ChangeSpeed(m->GetSpeed()*0.01f);
