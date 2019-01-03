@@ -50,7 +50,7 @@ void Boss_torche::IA(){
 void Boss_torche::Update(){
     IA();
     speed = initSpeed;
-    std::cout<<"vie BOSS = "<<getHealth()<<std::endl;
+    //std::cout<<"vie BOSS = "<<getHealth()<<std::endl;
     for (unsigned i = 0; i < projectiles.size(); i++){
         if (projectiles[i]->Update() == -1){
             Projectile* truc = projectiles[i];

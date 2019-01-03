@@ -312,20 +312,38 @@ bool Room::IsPointInCircle(QVector2D *pt, QVector2D *center, float rayon)
         return false;
 }
 
-bool Room::wallOnTheVector(QVector2D vect){
+bool Room::wallOnTheVector(QVector2D vect, QVector2D player,QVector2D ennemi){
     for (unsigned i = 0; i < collisions.size(); i++){
-        QVector3D vec1 = QVector3D(collisions[i].getCorner().x() - player->GetPosition().x(),collisions[i].getCorner().y() - player->GetPosition().y(),0);//joueur -> mur
-        //std::cout << "Joueur vers mur : " << vec1.x() << " " << vec1.y() << std::endl;
-        QVector3D vec2 = QVector3D((player->GetPosition() + vect).x() - player->GetPosition().x(),(player->GetPosition() + vect).y() - player->GetPosition().y(),0);//joueur -> ennemi
-        //std::cout << "Joueur vers ennemi : " << vec2.x() << " " << vec2.y() << std::endl;
-        QVector3D cp = QVector3D::crossProduct(vec1,vec2);
-        //std::cout << "CP = " << cp.x() << " " << cp.y() << " " << std::endl;
-        if ((cp.x() < 0.001 && cp.x() > -0.001) && (cp.y() < 0.001 && cp.y() > -0.001) && vec1.length() < vec2.length()){ //si ils sont colinéaires,conflit
-            //std::cout<< "Collision lampe mur" << std::endl;
-            return true;
+        QVector2D p_to_wall = QVector2D(collisions[i].getCorner().x() - player.x() , collisions[i].getCorner().y() - player.y());
+        if(vect.lengthSquared() > p_to_wall.lengthSquared()){
+            QVector2D up = QVector2D(collisions[i].getXMin(),collisions[i].getYMin());
+            QVector2D down = QVector2D(collisions[i].getXMax(),collisions[i].getYMax());
+            if(player.x() != ennemi.x()){
+                float a1 = (player.y()-ennemi.y())/(player.x()-ennemi.x());
+                float a2 = (up.y()-down.y())/(up.x()-down.x());
+                if(a1 != a2){   //Si segment pas parralèle
+                    float b1 = player.y()-a1*player.x();
+                    float b2 = up.y()-a2*up.x();
+                    float xa = (b2-b1)/(a1-a2);
+                    if(!(xa < std::max(std::min(player.x(),ennemi.x()),std::min(up.x(),down.x())) || xa > std::min(std::max(player.x(),ennemi.x()),std::max(up.x(),down.x()))))
+                        return true;
+                    else{
+                        up = QVector2D(collisions[i].getXMax(),collisions[i].getYMin());
+                        down = QVector2D(collisions[i].getXMin(),collisions[i].getYMax());
+                        float a1 = (player.y()-ennemi.y())/(player.x()-ennemi.x());
+                        float a2 = (up.y()-down.y())/(up.x()-down.x());
+                        if(a1 != a2){   //Si segment pas parralèle
+                            float b1 = player.y()-a1*player.x();
+                            float b2 = up.y()-a2*up.x();
+                            float xa = (b2-b1)/(a1-a2);
+                            if(!(xa < std::max(std::min(player.x(),ennemi.x()),std::min(up.x(),down.x())) || xa > std::min(std::max(player.x(),ennemi.x()),std::max(up.x(),down.x()))))
+                                return true;
+                        }
+                    }
+                }
+            }
         }
     }
-    //std::cout<< "pas Collision lampe mur" << std::endl;
     return false;
 }
 
@@ -354,11 +372,10 @@ bool Room::CheckColl(float rayon, float angle, QVector2D point)
         float angleRadian = acos(cosTeta);
         float angleDegree = angleRadian*(180/3.14159265358979323846); // radian to degree
         //std::cout<<"Radian = "<<angleRadian<<std::endl;
-        ////std::cout<<"Degree = "<<angleDegree<<std::endl;
+        //std::cout<<"Degree = "<<angleDegree<<std::endl;
        // std::cout<< "Angle : " << angle<<std::endl;
         if ( angleDegree <= angle ) {
-         //   std::cout << "collision ennemi possible " << std::endl;
-            return !wallOnTheVector(center_ennemi);                                 //vérifier ca que si l'ennemi est dans le cone (economie de temps)
+            return !wallOnTheVector(center_ennemi,center, point);                                 //vérifier ca que si l'ennemi est dans le cone (economie de temps)
         }
 
         return false;
@@ -366,44 +383,16 @@ bool Room::CheckColl(float rayon, float angle, QVector2D point)
 }
 
 void Room::affectEnemiesInRange(){
-    //std::cout << "Debug affect" << std::endl;
     float rayon = player->getRange();
-    //std::cout << "Rayon affect : " << rayon << std::endl;
     float angle = player->getAngle();
-    //std::cout << "Angle affect : " << angle << std::endl;
-    //std::cout << "Apres recup range/angle" << std::endl;
-    //bool isUsingMainLamp = false;
-    //bool isUsingSecondLamp = player->utilisePileSecondaire();
     for (int i = 0; i < entities.size(); i++){
         if (CheckColl(rayon,angle,QVector2D(entities[i]->GetPosition().x(),entities[i]->GetPosition().y())))
         {
-            //std::cout << "Un ennemi collide" << std::endl;
-            //std::cout << "Debut collision lampe ennemie" << std::endl;
             entities[i]->setAffected(true);
-
-            std::cout <<"Player pile secondaire nulle ?" << (player->getPileSecondaire() == nullptr) << std::endl;
-            std::cout << "apres set affected" << std::endl;
-            //if (isUsingSecondLamp){
-            //std::cout << "avant affect pile secondaire" << std::endl;
-            //    player->getPileSecondaire()->Affect(entities[i]);
-            //std::cout << "apres affectpile secondaire" << std::endl;
-            //}
-            //else {
-            std::cout << "avant affect " << std::endl;
             player->getPileEnCours()->Affect(entities[i]);
-            std::cout << "apres affect" << std::endl;
-            //}
-            //std::cout << "avant change speed projectiles" << std::endl;
-            //std::cout << "apres change speed projectiles" << std::endl;
-            //std::cout << "Fin collision lampe ennemie" << std::endl;
         }
         else{
-            //std::cout << "Chnagement affected" << std::endl;
             entities[i]->setAffected(false);
-            //std::cout << "fin Chnagement affected" << std::endl;
         }
-
     }
-
-    //std::cout << "fin affect " << std::endl;
 }
