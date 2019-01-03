@@ -44,8 +44,8 @@ bool Room::isThisRoom(int _x, int _y){
 void Room::UpdateEntities(){
     for (int i = 0; i < entities.size(); i++){
         entities[i]->Update();
-        std::cout << "Vie de lentite : " <<i << " : " << entities[i]->getHealth() << std::endl;
-        std::cout << "Entity " << i << " can collide ? " << entities[i]->canCollide << std::endl;
+       // std::cout << "Vie de lentite : " <<i << " : " << entities[i]->getHealth() << std::endl;
+        //std::cout << "Entity " << i << " timer ? " << entities[i]->isTimerActive() << std::endl;
         if (entities[i]->isDead()){
             //std::cout << " ENTITE MORTE !!!!!!!!!!!!!" << std::endl;
             Movable* truc = entities[i];

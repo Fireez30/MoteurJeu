@@ -2,11 +2,15 @@
 #define INTERACTABLE2D_H
 
 #include <QOpenGLWidget>
+#include <QOpenGLFunctions>
+#include <QElapsedTimer>
 
 #include "hitbox.h"
 #include "base2d.h"
 
-class Interactable2D : public Base2D,public QOpenGLWidget {
+class Interactable2D : public Base2D , public QOpenGLWidget, protected QOpenGLFunctions {
+
+     //sQ_OBJECT
 
 protected:
     Hitbox collider;
@@ -20,6 +24,7 @@ public :
     virtual int OnTriggerEnter(Interactable2D* other) = 0;//abstract
     void startTimer();
     QBasicTimer timer;
+    bool isTimerActive();
     bool canCollide;
     int timeCollide;
 

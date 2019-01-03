@@ -18,6 +18,9 @@ void Interactable2D::startTimer(){
     std::cout << "Timer collision débute ! temps = " << timeCollide << "\n";
 }
 
+bool Interactable2D::isTimerActive(){
+    return timer.isActive();
+}
 void Interactable2D::timerEvent(QTimerEvent *){
     canCollide = true;
     std::cout << "Timer collision termine\n";
