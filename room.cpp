@@ -352,7 +352,7 @@ bool Room::CheckColl(float rayon, float angle, QVector2D point)
         //std::cout<<"vectDirect = "<<vectDirect.x()<<" "<<vectDirect.y()<<std::endl;
         // Vecteur qui va du joueur -> ennemi
         QVector2D center_ennemi = QVector2D(point.x() - center.x() , point.y() - center.y());
-       // std::cout<<"center_ennemi = "<<center_ennemi.x()<<" "<<center_ennemi.y()<<std::endl;
+        // std::cout<<"center_ennemi = "<<center_ennemi.x()<<" "<<center_ennemi.y()<<std::endl;
         float produitScalaire = (vectDirect.x() * center_ennemi.x()) + (vectDirect.y() * center_ennemi.y());
         float produitNorme = vectDirect.length() * center_ennemi.length();
         float cosTeta = produitScalaire / produitNorme;
@@ -360,9 +360,9 @@ bool Room::CheckColl(float rayon, float angle, QVector2D point)
         float angleDegree = angleRadian*(180/3.14159265358979323846); // radian to degree
         //std::cout<<"Radian = "<<angleRadian<<std::endl;
         ////std::cout<<"Degree = "<<angleDegree<<std::endl;
-       // std::cout<< "Angle : " << angle<<std::endl;
+        // std::cout<< "Angle : " << angle<<std::endl;
         if ( angleDegree <= angle ) {
-         //   std::cout << "collision ennemi possible " << std::endl;
+            //   std::cout << "collision ennemi possible " << std::endl;
             return !wallOnTheVector(center_ennemi);                                 //vérifier ca que si l'ennemi est dans le cone (economie de temps)
         }
 
@@ -384,7 +384,7 @@ void Room::affectEnemiesInRange(){
         {
             //std::cout << "Un ennemi collide" << std::endl;
             //std::cout << "Debut collision lampe ennemie" << std::endl;
-            //entities[i]->setAffected(true);
+            entities[i]->setAffected(true);
 
             std::cout <<"Player pile secondaire nulle ?" << (player->getPileEnCours() == nullptr) << std::endl;
             std::cout << "apres set affected" << std::endl;
@@ -399,11 +399,14 @@ void Room::affectEnemiesInRange(){
             std::cout << "bite" << std::endl; //affiché
             if (p!= nullptr)
             {
-                 std::cout << "bite 2" << std::endl;
-                p->Affect(entities[i]);
+                std::cout << "bite 2" << std::endl;
+                Movable* m = entities[i];
                 std::cout << "bite 3" << std::endl;
-            }
+                p->Affect(m);
+                std::cout << "bite 4" << std::endl;
+                m = nullptr;
                 p = nullptr;
+            }
             std::cout << "apres affect" << std::endl;
             //}
             //std::cout << "avant change speed projectiles" << std::endl;

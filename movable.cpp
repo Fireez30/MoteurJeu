@@ -79,13 +79,17 @@ void Movable::setHealth(int h){
 }
 
 void Movable::Damage(int d){
-    if (health > d){
-        health -= d;
+    if (canCollide){
+        if (health > d){
+            health -= d;
+        }
+        else {
+            health = 0;
+            dead = true;
+        }
     }
-    else {
-        health = 0;
-        dead = true;
-    }
+    canCollide = false;
+    startTimer();
 }
 
 QVector2D Movable::GetLastMove(){
