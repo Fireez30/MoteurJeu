@@ -260,7 +260,7 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
                     r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
                     r->renderer.CreateGeometry();
                     r->canCollide = false;
-                    //r->startTimer();
+                    r->startTimer();
                     r->setLifespan(pileJoueur->getLifespan());
                     pickups.push_back(r);
                 }
@@ -270,7 +270,7 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
                     r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
                     r->renderer.CreateGeometry();
                     r->canCollide = false;
-                    //r->startTimer();
+                    r->startTimer();
                     r->setLifespan(pileJoueur->getLifespan());
                     pickups.push_back(r);
                 }
