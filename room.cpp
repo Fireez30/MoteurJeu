@@ -384,9 +384,9 @@ void Room::affectEnemiesInRange(){
         {
             //std::cout << "Un ennemi collide" << std::endl;
             //std::cout << "Debut collision lampe ennemie" << std::endl;
-            entities[i]->setAffected(true);
+            //entities[i]->setAffected(true);
 
-            std::cout <<"Player pile secondaire nulle ?" << (player->getPileSecondaire() == nullptr) << std::endl;
+            std::cout <<"Player pile secondaire nulle ?" << (player->getPileEnCours() == nullptr) << std::endl;
             std::cout << "apres set affected" << std::endl;
             //if (isUsingSecondLamp){
             //std::cout << "avant affect pile secondaire" << std::endl;
@@ -395,7 +395,15 @@ void Room::affectEnemiesInRange(){
             //}
             //else {
             std::cout << "avant affect " << std::endl;
-            player->getPileEnCours()->Affect(entities[i]);
+            Pile* p =  player->getPileEnCours();
+            std::cout << "bite" << std::endl; //affiché
+            if (p!= nullptr)
+            {
+                 std::cout << "bite 2" << std::endl;
+                p->Affect(entities[i]);
+                std::cout << "bite 3" << std::endl;
+            }
+                p = nullptr;
             std::cout << "apres affect" << std::endl;
             //}
             //std::cout << "avant change speed projectiles" << std::endl;
@@ -404,7 +412,7 @@ void Room::affectEnemiesInRange(){
         }
         else{
             //std::cout << "Chnagement affected" << std::endl;
-            entities[i]->setAffected(false);
+            //entities[i]->setAffected(false);
             //std::cout << "fin Chnagement affected" << std::endl;
         }
 
