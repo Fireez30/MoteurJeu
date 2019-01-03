@@ -167,6 +167,8 @@
         <ValueDefinition xsi:type="IntValueDefinition" Name="index" Default="0" Min="0" Max="100" ShowSlider="false" />
         <ValueDefinition xsi:type="IntValueDefinition" Name="xalttext" Default="4" Min="0" Max="100" ShowSlider="false" />
         <ValueDefinition xsi:type="IntValueDefinition" Name="yalttext" Default="6" Min="0" Max="100" ShowSlider="false" />
+        <ValueDefinition xsi:type="IntValueDefinition" Name="dirx" Default="0" Min="-1" Max="100" ShowSlider="false" />
+        <ValueDefinition xsi:type="IntValueDefinition" Name="diry" Default="0" Min="-1" Max="100" ShowSlider="false" />
       </ValueDefinitions>
       <NodesDefinition Enabled="false" Limit="-1" DrawMode="None" Ghost="false" />
     </EntityDefinition>

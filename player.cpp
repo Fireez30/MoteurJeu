@@ -17,9 +17,9 @@ Player::Player():Movable(3,1,0,6,QVector2D(162,83),QVector2D(0.0,8.0/16.0),200,3
     spriteModif.AddSprite(QVector2D(0.0,8.0/16.0));//basic sprite orientation (facing down)
     spriteModif.AddSprite(QVector2D(0.0,9.0/16.0));//facing left
     orientationRatio = 0.7;
-    principale = new MainPile(QVector2D(0,0),QVector2D(0,0));
+    principale = new MainPile(this,QVector2D(0,0),QVector2D(0,0));
     principale->changeLight();
-    //secondaire = nullptr;
+    secondaire = nullptr;
     movAnim->StartAnimator();
     std::cout << "spriteModif size " << spriteModif.nbOfSprites() << std::endl;
 }
@@ -30,8 +30,8 @@ Player::Player(int h,float x,float y, float sp,QVector2D dir,int animtime,int nb
     spriteModif.AddSprite(QVector2D(0.0,10.0/16.0));//facing right
     spriteModif.AddSprite(QVector2D(0.0,11.0/16.0));//facing up
     orientationRatio = 0.7;
-    principale = new MainPile(QVector2D(0,0),QVector2D(0,0));
-    //secondaire = nullptr;
+    principale = new MainPile(this,QVector2D(0,0),QVector2D(0,0));
+    secondaire = nullptr;
     movAnim->StartAnimator();
     std::cout << "spriteModif size " << spriteModif.nbOfSprites() << std::endl;
 }
@@ -53,7 +53,11 @@ Pile* Player::getPileEnCours(){
 }
 
 void Player::Update(){
-
+    std::cout << "update joueur" << std::endl;
+    if (usePileSecondaire && secondaire != nullptr){
+         std::cout << "update pile secondaire" << std::endl;
+        secondaire->Update();
+    }
 }
 
 void Player::PickKey(){
@@ -135,6 +139,11 @@ void Player::SetPileSecondaire(Pile *s){
     //secondaire->getCollider().~Hitbox();
 }
 
+void Player::RemovePileSecondaire(){
+    usePileSecondaire = false;
+    secondaire = nullptr;
+}
+
 Pile* Player::getPileSecondaire(){
     //std::cout << "recuperation pile secondaire avant" << std::endl;
     if (secondaire != nullptr){
@@ -156,8 +165,9 @@ void Player::setUtilisationPrincipale(bool b){
 }
 
 void Player::setUtilisationSecondaire(bool b){
-    if (secondaire != nullptr)
+    if (secondaire != nullptr){
         usePileSecondaire = b;
+    }
 }
 
 LightSource* Player::getLight(){

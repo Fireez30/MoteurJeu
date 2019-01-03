@@ -2,12 +2,11 @@
 #include "player.h"
 #include <iostream>
 
-Pile::Pile(QVector2D pos,QVector2D text):Interactable2D (pos,text,1),range(1),coneAngle(30),lifespan(60),damage(1),color(1,1,1),ls(pos,QVector3D(0,1,0),0.0005f,0.5f,180,180.0f,QVector3D(1,0,0),1,1.2f){
+Pile::Pile(Player* p,QVector2D pos,QVector2D text):Interactable2D (pos,text,1),range(1),coneAngle(30),lifespan(60*60),damage(1),color(1,1,1),ls(pos,QVector3D(0,1,0),0.0005f,0.5f,180,180.0f,QVector3D(1,0,0),1,1.2f),player(p){
 
 }
 
-Pile::Pile(QVector2D pos,float r, float c, float l, int d,QVector2D text, int id,QVector3D thecolor):Interactable2D (pos,text,3000),range(r),coneAngle(c),lifespan(l),damage(d),idPile(id),color(thecolor),ls(pos,thecolor,0.0005f,0.5f,180,180.0f,QVector3D(1,0,0),1.0f,1.2f){
-
+Pile::Pile(Player* p,QVector2D pos,float r, float c, int l, int d,QVector2D text, int id,QVector3D thecolor):Interactable2D (pos,text,3000),range(r),coneAngle(c),lifespan(l*60),damage(d),idPile(id),color(thecolor),ls(pos,thecolor,0.0005f,0.5f,180,180.0f,QVector3D(1,0,0),1.0f,1.2f),player(p){
 }
 
 float Pile::GetRange(){
@@ -18,18 +17,32 @@ float Pile::GetConeAngle(){
     return coneAngle;
 }
 
-float Pile::GetLifepan(){
-    return lifespan;
+
+void Pile::EndOfTimer(){
+    player->RemovePileSecondaire();
+    std::cout << "timer fini " << std::endl;
+}
+
+void Pile::Update(){
+    std::cout << "Lifespan pile secondaire : " << lifespan << std::endl;
+    if (lifespan > 0.0f){
+        std::cout << "lifespan positif" << std::endl;
+        lifespan--;
+    }
+    else {
+         std::cout << "lifespan negatif" << std::endl;
+        EndOfTimer();
+    }
+    std::cout << "fin update pile" << std::endl;
 }
 
 int Pile::OnTriggerEnter(Interactable2D* other){
     //si memory leak check here
-    std::cout << "CONTACT avec pile" << std::endl;
     Player* p;
     p = dynamic_cast<Player*> (other);
     if(p != nullptr){
         p->SetPileSecondaire(this);
-        startTimer();
+        //startTimer();
         changeLight();
         canCollide = false;
         return -1;
@@ -48,10 +61,10 @@ QVector3D Pile::getColor(){
     return color;
 }
 
-void Pile::setLifespan(float life){
+void Pile::setLifespan(int life){
     lifespan  = life;
 }
-float Pile::getLifespan(){
+int Pile::getLifespan(){
     return lifespan;
 }
 

@@ -1,24 +1,31 @@
 #ifndef PILE_H
 #define PILE_H
 
+class Player;
+
 #include "interactable2d.h"
 #include "movable.h"
 #include "lightsource.h"
+#include "player.h"
+#include <QTimer>
 
-class Pile : public Interactable2D{
+class Pile : public Interactable2D {
+
 
 protected:
     float range;
     float coneAngle;
-    float lifespan;
+    int lifespan;
     int damage;
     int idPile;
     QVector3D color;
     LightSource ls;
+    Player* player;
+
 
 public :
-    Pile(QVector2D pos,QVector2D text);
-    Pile(QVector2D pos,float r, float c, float l, int d,QVector2D text, int id,QVector3D thecolor);
+    Pile(Player* p,QVector2D pos,QVector2D text);
+    Pile(Player* p,QVector2D pos,float r, float c, int l, int d,QVector2D text, int id,QVector3D thecolor);
     virtual void Affect(Movable* m) = 0;
     float GetRange();
     int OnTriggerEnter(Interactable2D* other) override;
@@ -26,11 +33,13 @@ public :
     float GetLifepan();
     int GetDamage();
     int getID();
-    void setLifespan(float life);
-    float getLifespan();
+    void EndOfTimer();
+    void setLifespan(int life);
+    int getLifespan();
     QVector3D getColor();
     LightSource* getLightSource();
     void changeLight();
+    void Update();
 };
 
 #endif // PILE_H
