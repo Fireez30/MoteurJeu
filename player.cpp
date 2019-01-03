@@ -19,7 +19,7 @@ Player::Player():Movable(3,1,0,6,QVector2D(162,83),QVector2D(0.0,8.0/16.0),200,3
     orientationRatio = 0.7;
     principale = new MainPile(this,QVector2D(0,0),QVector2D(0,0));
     principale->changeLight();
-    //secondaire = nullptr;
+    secondaire = nullptr;
     movAnim->StartAnimator();
     std::cout << "spriteModif size " << spriteModif.nbOfSprites() << std::endl;
 }
@@ -31,7 +31,7 @@ Player::Player(int h,float x,float y, float sp,QVector2D dir,int animtime,int nb
     spriteModif.AddSprite(QVector2D(0.0,11.0/16.0));//facing up
     orientationRatio = 0.7;
     principale = new MainPile(this,QVector2D(0,0),QVector2D(0,0));
-    //secondaire = nullptr;
+    secondaire = nullptr;
     movAnim->StartAnimator();
     std::cout << "spriteModif size " << spriteModif.nbOfSprites() << std::endl;
 }

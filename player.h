@@ -15,7 +15,7 @@ protected:
     bool usePilePrincipale;
     bool usePileSecondaire;
     Pile *principale;
-    Pile *secondaire = nullptr;
+    Pile *secondaire;
     float orientationRatio;
     bool holdKey;
     SpriteModifier spriteModif;
