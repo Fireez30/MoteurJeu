@@ -14,7 +14,7 @@ protected:
 
 public :
     Interactable2D(const Interactable2D&) = delete;
-    Interactable2D(QVector2D pos,QVector2D text,float time);
+    Interactable2D(QVector2D pos,QVector2D text,int time);
     void setCollider(Hitbox h);
     Hitbox getCollider();
     virtual int OnTriggerEnter(Interactable2D* other) = 0;//abstract

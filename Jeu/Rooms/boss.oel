@@ -379,7 +379,7 @@
   </Murs>
   <Doors tileset="NewTileset0" exportMode="XMLCoords" />
   <Entite>
-    <Boss_torche id="0" x="192" y="80" xtextcoord="0" ytextcoord="12" index="0" health="10" speed="2,1" directionx="0" directiony="0" animtime="200" nbFrames="2" />
+    <Boss_torche id="0" x="192" y="80" xtextcoord="0" ytextcoord="12" index="0" health="10" speed="2,1" directionx="0" directiony="0" animtime="200" nbFrames="2" damagecd="3" />
     <BossDoor id="1" x="192" y="224" xtextcoord="10" ytextcoord="5" index="0" xalttext="4" yalttext="6" dirx="0" diry="1" />
     <Torche id="2" x="48" y="48" xtextcoord="13" ytextcoord="12" range="0" damage="1" />
     <Torche id="3" x="336" y="48" xtextcoord="13" ytextcoord="12" range="0" damage="1" />

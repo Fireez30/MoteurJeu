@@ -24,7 +24,7 @@ public :
     MovAnimator* movAnim;
 
     Movable();
-    Movable(int health,float x, float y,float sp,QVector2D pos,QVector2D text,int animtime,int nbframes,bool animstatus);
+    Movable(int health,float x, float y,float sp,int damagecooldown,QVector2D pos,QVector2D text,int animtime,int nbframes,bool animstatus);
     QVector2D GetDirection();
     float GetSpeed();
     void ChangeSpeed(float s);
