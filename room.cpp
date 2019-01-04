@@ -41,6 +41,34 @@ bool Room::isThisRoom(int _x, int _y){
     return x == _x && y == _y;
 }
 
+void Room::Turn(int i){
+    float x = entities[i]->GetLastMove().x();
+    float y = entities[i]->GetLastMove().y();
+    QVector2D result = -entities[i]->GetLastMove();
+      // QVector2D result;
+    if (x >= 0){
+        if (y >= 0)
+        {
+            result += QVector2D(0,-1.5);
+        }
+        else {
+            result += QVector2D(1.5,0);
+        }
+    }
+    if (x <= 0 ){
+        if (y >= 0)
+        {
+            result += QVector2D(1.5,0);
+        }
+        else {
+            result += QVector2D(-1.5,0);
+        }
+    }
+    result.normalize();
+    result *= entities[i]->GetSpeed();
+    entities[i]->Move(result);
+}
+
 void Room::UpdateEntities(){
     for (int i = 0; i < entities.size(); i++){
         entities[i]->Update();
@@ -56,6 +84,7 @@ void Room::UpdateEntities(){
         if (CollisionCheck(entities[i]->getCollider())){//si l'entité a collide avec un mur, reset sa position
             //std::cout << "collision ennemi mur" << std::endl;
             entities[i]->ResetMove();
+            Turn(i);
             //entities[i]->Move((entities[i]->GetLastMove()+QVector2D(0,1))*0.0166);
         }
     }
