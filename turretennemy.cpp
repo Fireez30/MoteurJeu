@@ -22,7 +22,6 @@ void TurretEnnemi::startTimer(){
 void TurretEnnemi::timerEvent(QTimerEvent *){
     canShoot = true;
     shoottimer.stop();
-    shoottimer.start(timerTime*1000,this);
 }
 
 void TurretEnnemi::IA(){
@@ -35,6 +34,7 @@ void TurretEnnemi::IA(){
     if (canShoot){
         projectiles.push_back(new Projectile(QVector2D(position.x(),position.y()),QVector2D(4/16.0,13/16.0),0,projectileTravelTime,1,projectileSpeed,QVector2D(shootdir.x(),shootdir.y())));
         canShoot = false;
+        shoottimer.start(timerTime*1000,this);
     }
 }
 

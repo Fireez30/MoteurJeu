@@ -363,7 +363,9 @@ void GameManager::initializeGL()
     //srand(484642185) (salle couloir)
     //srand (14562) seed de base
     //srand(132355) seed salle 4
-    int seed = 132355;
+    // seed = 234613; salle porte gauche
+    // int seed = 628942; salle porte haut
+    int seed = 234613;
     srand(seed);
     std::vector<Rooms>* rooms = new std::vector<Rooms>();
     int maxdist = 6,distSecondaire = 4;
@@ -624,6 +626,7 @@ void GameManager::paintGL()
     }
 
     uiprogram.setUniformValue("texture", 0);
+
     for (unsigned i = 0; i < UI.size(); i++){
         UI[i]->Render(&uiprogram,texture);
     }
