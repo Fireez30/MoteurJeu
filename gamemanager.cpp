@@ -172,9 +172,9 @@ void GameManager::timerEvent(QTimerEvent *)
         player->Move(vector);
 
     }
-    if (player->canCollide){
+    //if (player->canCollide){
         scene[camera->getCurrentRoom()]->TriggerCheck(player);
-    }
+   // }
     if(scene[camera->getCurrentRoom()]->CollisionCheck(player->getCollider()))
     {
         //player->movAnim->StopWalk();
