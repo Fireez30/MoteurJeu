@@ -10,7 +10,7 @@ class TurretEnnemi : public Movable{
 
 public :
     TurretEnnemi(int h,float x, float y, float s,QVector2D pos,QVector2D text);
-    TurretEnnemi(Room* r,Player* p,int h, float x, float y, float s,QVector2D pos,QVector2D text,int animtime,int nbframes,bool animstatus,bool targetplayer,float cooldown,float projspeed,int projtime);
+    TurretEnnemi(Room* r,Player* p,int h, float x, float y, float s,int cd,QVector2D pos,QVector2D text,int animtime,int nbframes,bool animstatus,bool targetplayer,float cooldown,float projspeed,int projtime);
     void IA();
     int OnTriggerEnter(Interactable2D* other) override;
     void timerEvent(QTimerEvent *e) override;

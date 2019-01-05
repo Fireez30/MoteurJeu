@@ -11,7 +11,7 @@
 #include "rangedpile.h"
 #include "mainpile.h"
 
-Player::Player():Movable(3,1,0,6,QVector2D(162,83),QVector2D(0.0,8.0/16.0),200,3,false),usePilePrincipale(true),usePileSecondaire(false),holdKey(false),spriteModif(this),light(QVector2D(0,0),QVector3D(1,1,1),0.0005f,0.5f,180.0f,180.0f,QVector3D(1,0,0),3.5f,3.7f){
+Player::Player():Movable(3,1,0,6,2,QVector2D(162,83),QVector2D(0.0,8.0/16.0),200,3,false),usePilePrincipale(true),usePileSecondaire(false),holdKey(false),spriteModif(this),light(QVector2D(0,0),QVector3D(1,1,1),0.0005f,0.5f,180.0f,180.0f,QVector3D(1,0,0),3.5f,3.7f){
     spriteModif.AddSprite(QVector2D(0.0,11.0/16.0));//facing up
     spriteModif.AddSprite(QVector2D(0.0,10.0/16.0));//facing right
     spriteModif.AddSprite(QVector2D(0.0,8.0/16.0));//basic sprite orientation (facing down)
@@ -24,7 +24,7 @@ Player::Player():Movable(3,1,0,6,QVector2D(162,83),QVector2D(0.0,8.0/16.0),200,3
     std::cout << "spriteModif size " << spriteModif.nbOfSprites() << std::endl;
 }
 
-Player::Player(int h,float x,float y, float sp,QVector2D dir,int animtime,int nbframes,bool animstatus):Movable(h,x,y,sp,dir,QVector2D(0.0,8.0/16.0),animtime,nbframes,animstatus),usePilePrincipale(true),usePileSecondaire(false),holdKey(false),spriteModif(this),light(QVector2D(x,y),QVector3D(1,1,1),0.0005f,0.5f,180.0f,180.0f,QVector3D(1,0,0),3.5f,3.7f){
+Player::Player(int h,float x,float y, float sp,int cd,QVector2D dir,int animtime,int nbframes,bool animstatus):Movable(h,x,y,sp,cd,dir,QVector2D(0.0,8.0/16.0),animtime,nbframes,animstatus),usePilePrincipale(true),usePileSecondaire(false),holdKey(false),spriteModif(this),light(QVector2D(x,y),QVector3D(1,1,1),0.0005f,0.5f,180.0f,180.0f,QVector3D(1,0,0),3.5f,3.7f){
     spriteModif.AddSprite(QVector2D(0.0,8.0/16.0));//basic sprite orientation (facing down)
     spriteModif.AddSprite(QVector2D(0.0,9.0/16.0));//facing left
     spriteModif.AddSprite(QVector2D(0.0,10.0/16.0));//facing right
@@ -59,6 +59,7 @@ void Player::RemovePileSecondaire(){
 }
 
 void Player::Update(){
+    //std::cout << "update joueur" << std::endl;
     if (usePileSecondaire && secondaire != nullptr){
          if(!secondaire->Update())
              RemovePileSecondaire();

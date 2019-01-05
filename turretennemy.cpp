@@ -1,13 +1,13 @@
 #include "turretennemy.h"
 #include <iostream>
 
-TurretEnnemi::TurretEnnemi(int h,float x, float y, float s,QVector2D pos,QVector2D text): Movable(h,x,y,s,pos,text,200,3,false),shootdir(0,0),targetPlayer(false),timerTime(0.5),projectileSpeed(1),projectileTravelTime(1){
+TurretEnnemi::TurretEnnemi(int h,float x, float y, float s,QVector2D pos,QVector2D text): Movable(h,x,y,s,3,pos,text,200,3,false),shootdir(0,0),targetPlayer(false),timerTime(0.5),projectileSpeed(1),projectileTravelTime(1){
     canShoot = true;
     startTimer();
     initTime = timerTime;
 }
 
-TurretEnnemi::TurretEnnemi(Room* r,Player* p,int h, float x, float y, float s,QVector2D pos,QVector2D text,int animtime,int nbframes,bool animstatus,bool targplayer,float cooldown,float projspeed,int projtime): Movable(h,x,y,s,pos,text,animtime,nbframes,animstatus),shootdir(x,y),targetPlayer(targplayer),timerTime(cooldown),projectileSpeed(projspeed),projectileTravelTime(projtime){
+TurretEnnemi::TurretEnnemi(Room* r,Player* p,int h, float x, float y, float s,int cd,QVector2D pos,QVector2D text,int animtime,int nbframes,bool animstatus,bool targplayer,float cooldown,float projspeed,int projtime): Movable(h,x,y,s,cd,pos,text,animtime,nbframes,animstatus),shootdir(x,y),targetPlayer(targplayer),timerTime(cooldown),projectileSpeed(projspeed),projectileTravelTime(projtime){
     this->player = p;
     this->room = r;
     canShoot = true;
@@ -22,7 +22,6 @@ void TurretEnnemi::startTimer(){
 void TurretEnnemi::timerEvent(QTimerEvent *){
     canShoot = true;
     shoottimer.stop();
-    shoottimer.start(timerTime*1000,this);
 }
 
 void TurretEnnemi::IA(){
@@ -35,6 +34,7 @@ void TurretEnnemi::IA(){
     if (canShoot){
         projectiles.push_back(new Projectile(QVector2D(position.x(),position.y()),QVector2D(4/16.0,13/16.0),0,projectileTravelTime,1,projectileSpeed,QVector2D(shootdir.x(),shootdir.y())));
         canShoot = false;
+        shoottimer.start(timerTime*1000,this);
     }
 }
 

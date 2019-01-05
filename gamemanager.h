@@ -16,6 +16,7 @@
 #include "lightsource.h"
 #include "room.h"
 #include "player.h"
+#include "uiobject.h"
 
 class GameManager : public QOpenGLWidget, protected QOpenGLFunctions
 {
@@ -38,6 +39,7 @@ public:
     bool walkUp;
     bool walkLeft;
     bool walkRight;
+    std::vector<UiObject*> UI;
     QVector2D mousePressPosition;
     QVector3D rotationAxis;
     qreal angularSpeed;
@@ -61,6 +63,7 @@ public:
 private:
     QBasicTimer timer;
     QOpenGLShaderProgram program;
+    QOpenGLShaderProgram uiprogram;
     QOpenGLTexture *texture;
     std::vector<Room*> scene;
     std::vector<LightSource*> lights;

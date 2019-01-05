@@ -118,6 +118,7 @@ void SpriteRenderer::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
     // Offset for position
     quintptr offset = 0;
 
+
     text->bind();
 
     // Tell OpenGL programmable pipeline how to locate vertex position data

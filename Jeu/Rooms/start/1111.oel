@@ -380,12 +380,12 @@
     <tile x="24" y="7" tx="4" ty="6" />
   </Doors>
   <Entite>
-    <Ghost id="0" x="304" y="64" xtextcoord="6" ytextcoord="12" index="0" vie="10" directionx="0" directiony="0" vitesse="2,5" animtime="200" nbFrames="3" />
+    <Ghost id="0" x="304" y="64" xtextcoord="6" ytextcoord="12" index="0" vie="10" directionx="0" directiony="0" vitesse="2.5" animtime="200" nbFrames="3" damagecd="3" />
     <BossDoor id="1" x="192" y="0" xtextcoord="10" ytextcoord="5" index="0" xalttext="4" yalttext="6" dirx="0" diry="-1" />
     <RangedPile id="2" x="64" y="64" xtextcoord="13" ytextcoord="14" type="0" range="10" coneangle="40" lifetime="60" damage="1" />
     <LargerPile id="3" x="64" y="176" xtextcoord="13" ytextcoord="13" type="0" range="7" coneangle="90" lifetime="90" damage="1" />
-    <TurretEnnemi id="4" x="304" y="144" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="-1" directiony="0" vitesse="0" animtime="200" nbframes="1" targetplayer="1" shootcooldown="2" projspeed="2" projtime="3" />
-    <TurretEnnemi id="5" x="304" y="192" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="-1" directiony="0" vitesse="0" animtime="200" nbframes="1" targetplayer="0" shootcooldown="2" projspeed="2" projtime="3" />
+    <TurretEnnemi id="4" x="304" y="144" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="-1" directiony="0" vitesse="0" animtime="200" nbframes="1" targetplayer="1" shootcooldown="2" projspeed="2" projtime="3" damagecd="10" />
+    <TurretEnnemi id="5" x="304" y="192" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="-1" directiony="0" vitesse="0" animtime="200" nbframes="1" targetplayer="0" shootcooldown="2" projspeed="2" projtime="3" damagecd="10" />
   </Entite>
   <Décors exportMode="Bitstring">0000000000000000000000000
 0000000000000000000000000

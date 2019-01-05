@@ -32,6 +32,7 @@ GameManager::GameManager(QWidget *parent,int maxfps) :
     et.start();
     scene = std::vector<Room*>();
     lights = std::vector<LightSource*>();
+    UI = std::vector<UiObject*>();
     walkDown = false;
     walkUp = false;
     walkLeft = false;
@@ -49,6 +50,9 @@ GameManager::~GameManager()
     }
    /* for (int i = 0; i < lights.size(); i++){
          delete lights[i];
+    }*/
+    /*for (int i = 0; i < UI.size(); i++){
+        delete UI[i];
     }*/
     delete player;
     doneCurrent();
@@ -107,6 +111,16 @@ void GameManager::keyPressEvent (QKeyEvent * event){
         player->setHealth(9999);
         player->PickKey();
     }
+
+    if(event->key() == Qt::Key_W)
+        camera->moveCamera(QVector3D(0,0,1));
+
+    if(event->key() == Qt::Key_X)
+        camera->moveCamera(QVector3D(0,0,-1));
+
+    if(event->key() == Qt::Key_U)
+        angularSpeed = 0;
+
 }
 
 void GameManager::mousePressEvent(QMouseEvent *e)
@@ -156,9 +170,9 @@ void GameManager::timerEvent(QTimerEvent *)
         player->Move(vector);
 
     }
-    if (player->canCollide){
+    //if (player->canCollide){
         scene[camera->getCurrentRoom()]->TriggerCheck(player);
-    }
+   // }
     if(scene[camera->getCurrentRoom()]->CollisionCheck(player->getCollider()))
     {
         //player->movAnim->StopWalk();
@@ -167,6 +181,39 @@ void GameManager::timerEvent(QTimerEvent *)
     scene[camera->getCurrentRoom()]->affectEnemiesInRange();
     scene[camera->getCurrentRoom()]->UpdateEntities();
     player->Update();
+    if (player->getHealth() == 3){
+        if (!UI[0]->MainTextBound()){
+            UI[0]->BindMainTexture();
+        }
+        if (!UI[1]->MainTextBound()){
+            UI[1]->BindMainTexture();
+        }
+        if (!UI[2]->MainTextBound()){
+            UI[2]->BindMainTexture();
+        }
+    }
+    if (player->getHealth() == 2){
+        if (!UI[0]->MainTextBound()){
+            UI[0]->BindMainTexture();
+        }
+        if (!UI[1]->MainTextBound()){
+            UI[1]->BindMainTexture();
+        }
+        if (!UI[2]->AltTextBound()){
+            UI[2]->BindAltTexture();
+        }
+    }
+    if (player->getHealth() == 1){
+        if (!UI[0]->MainTextBound()){
+            UI[0]->BindMainTexture();
+        }
+        if (!UI[1]->AltTextBound()){
+            UI[1]->BindAltTexture();
+        }
+        if (!UI[2]->AltTextBound()){
+            UI[2]->BindAltTexture();
+        }
+    }
     // !! if player HP is 1 , change shaders to color the scren in red ?
     if (player->isDead()){
         this->close();
@@ -308,10 +355,15 @@ void GameManager::initializeGL()
     lights.push_back(player->getLight());
     lights.push_back(player->getLampeLight());
     camera = new Camera();
+    UI.push_back(new UiObject(10,10,0,QVector2D(0,0),QVector2D(1,0)));//pixel coordinates
+    UI.push_back(new UiObject(50,50,0,QVector2D(0,0),QVector2D(1,0)));//pixel coordinates
+    UI.push_back(new UiObject(70,70,0,QVector2D(0,0),QVector2D(1,0)));//pixel coordinates
     //srand(484642185) (salle couloir)
     //srand (14562) seed de base
     //srand(132355) seed salle 4
-    int seed = 132355;
+    // seed = 234613; salle porte gauche
+    // int seed = 628942; salle porte haut
+    int seed = 234613;
     srand(seed);
     std::vector<Rooms>* rooms = new std::vector<Rooms>();
     int maxdist = 6,distSecondaire = 4;
@@ -394,6 +446,33 @@ void GameManager::initShaders()
         std::cout << "Erreur lors du bind" << std::endl;
         close();
     }
+
+    if (!uiprogram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/uivshader.glsl"))
+    {
+        std::cout << "Erreur lors de la compilation du ui vertex shader" << std::endl;
+        close();
+    }
+
+    // Compile fragment shader
+    if (!uiprogram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/uifshader.glsl"))
+    {
+        std::cout << "Erreur lors de la compilation du ui fragment shader" << std::endl;
+        close();
+    }
+
+    // Link shader pipeline
+    if (!uiprogram.link())
+    {
+        std::cout << "Erreur lors du link" << std::endl;
+        close();
+    }
+
+    // Bind shader pipeline for use
+    if (!uiprogram.bind())
+    {
+        std::cout << "Erreur lors du bind" << std::endl;
+        close();
+    }
 }
 
 void GameManager::initTextures()
@@ -455,7 +534,21 @@ void GameManager::paintGL()
 
 
     texture->bind();
+    if (!uiprogram.isLinked()){
+        uiprogram.link();
+    }
+    if (!uiprogram.bind()){
+        std::cout << "Probleme de bind du program UI" << std::endl;
+    }
 
+    uiprogram.setUniformValue("texture", 0);
+    for (unsigned i = 0; i < UI.size(); i++){
+        UI[i]->Render(&uiprogram,texture);
+    }
+
+    if (!program.bind()){
+        std::cout << "Probleme de bind du program init" << std::endl;
+    }
     // Calculate model view transformation
     QMatrix4x4 matrix;
     QVector3D pos = camera->getPosition();
@@ -521,4 +614,19 @@ void GameManager::paintGL()
     program.setUniformValue("texture", 0);
     player->Render(&program,texture);
     scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
+
+    if (!uiprogram.isLinked()){
+        uiprogram.link();
+    }
+
+    if (!uiprogram.bind()){
+        std::cout << "Probleme de bind du program UI" << std::endl;
+    }
+
+    uiprogram.setUniformValue("texture", 0);
+
+    for (unsigned i = 0; i < UI.size(); i++){
+        UI[i]->Render(&uiprogram,texture);
+    }
+
 }

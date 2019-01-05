@@ -41,11 +41,50 @@ bool Room::isThisRoom(int _x, int _y){
     return x == _x && y == _y;
 }
 
+void Room::Turn(int i){
+    float x = entities[i]->GetLastMove().x();
+    float y = entities[i]->GetLastMove().y();
+    QVector2D result = -entities[i]->GetLastMove();
+      // QVector2D result;
+    if (x >= 0){
+        if (y >= 0)
+        {
+            result += QVector2D(0,-1.5);
+        }
+        else {
+            result += QVector2D(1.5,0);
+        }
+    }
+    if (x <= 0 ){
+        if (y >= 0)
+        {
+            result += QVector2D(1.5,0);
+        }
+        else {
+            result += QVector2D(-1.5,0);
+        }
+    }
+    result.normalize();
+    result *= entities[i]->GetSpeed();
+    entities[i]->Move(result);
+}
+
 void Room::UpdateEntities(){
     for (int i = 0; i < entities.size(); i++){
         entities[i]->Update();
+       // std::cout << "Vie de lentite : " <<i << " : " << entities[i]->getHealth() << std::endl;
+        //std::cout << "Entity " << i << " timer ? " << entities[i]->isTimerActive() << std::endl;
+        if (entities[i]->isDead()){
+            //std::cout << " ENTITE MORTE !!!!!!!!!!!!!" << std::endl;
+            Movable* truc = entities[i];
+            entities.erase(entities.begin()+i);
+            delete truc;
+            break;
+        }
         if (CollisionCheck(entities[i]->getCollider())){//si l'entité a collide avec un mur, reset sa position
             entities[i]->ResetMove();
+            Turn(i);
+            //entities[i]->Move((entities[i]->GetLastMove()+QVector2D(0,1))*0.0166);
         }
     }
     if (boss2 != nullptr){
@@ -140,7 +179,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
             pickups.push_back(r);
         }
         for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Ghost"); e5 != nullptr; e5 = e5->NextSiblingElement("Ghost")){//Liste des Ghosts
-            Ennemi* e =new Ennemi(this,p,e5->IntAttribute("vie"),e5->IntAttribute("directionx"),e5->IntAttribute("directiony"),e5->FloatAttribute("vitesse"),QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),e5->IntAttribute("animtime"),e5->IntAttribute("nbFrames"),false);
+            Ennemi* e =new Ennemi(this,p,e5->IntAttribute("vie"),e5->IntAttribute("directionx"),e5->IntAttribute("directiony"),e5->FloatAttribute("vitesse"),e5->IntAttribute("damagecd"),QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),e5->IntAttribute("animtime"),e5->IntAttribute("nbFrames"),false);
             e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
             entities.push_back(e);
         }//fin for piles, rajouter des fors pour les autres entités
@@ -148,7 +187,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
         for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("TurretEnnemi"); e5 != nullptr; e5 = e5->NextSiblingElement("TurretEnnemi")){//Liste des Ghosts
             int tir = e5->IntAttribute("targetplayer");
             std::cout << "tirate" << e5->DoubleAttribute("shootcooldown") << std::endl;
-            TurretEnnemi* e =new TurretEnnemi(this,p,e5->IntAttribute("vie"),e5->IntAttribute("directionx"),e5->IntAttribute("directiony"),e5->FloatAttribute("vitesse"),QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),e5->IntAttribute("animtime"),e5->IntAttribute("nbFrames"),false,(tir == 1),e5->FloatAttribute("shootcooldown"),e5->FloatAttribute("projspeed"),e5->IntAttribute("projtime"));
+            TurretEnnemi* e =new TurretEnnemi(this,p,e5->IntAttribute("vie"),e5->IntAttribute("directionx"),e5->IntAttribute("directiony"),e5->FloatAttribute("vitesse"),e5->IntAttribute("damagecd"),QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),e5->IntAttribute("animtime"),e5->IntAttribute("nbFrames"),false,(tir == 1),e5->FloatAttribute("shootcooldown"),e5->FloatAttribute("projspeed"),e5->IntAttribute("projtime"));
             e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
             entities.push_back(e);
         }
@@ -174,7 +213,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
         }
 
         for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Boss_torche"); e5 != nullptr; e5 = e5->NextSiblingElement("Boss_torche")){//Liste des Boss_torche
-            Boss_torche* e =new Boss_torche(this,p,e5->IntAttribute("health"),e5->IntAttribute("directionx"),e5->IntAttribute("directiony"),e5->IntAttribute("speed"),QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),e5->IntAttribute("animtime"),e5->IntAttribute("nbFrames"),false);
+            Boss_torche* e =new Boss_torche(this,p,e5->IntAttribute("health"),e5->IntAttribute("directionx"),e5->IntAttribute("directiony"),e5->IntAttribute("speed"),e5->IntAttribute("damagecd"),QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),e5->IntAttribute("animtime"),e5->IntAttribute("nbFrames"),false);
             e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
             entities.push_back(e);
             boss2 = e;

@@ -23,7 +23,7 @@ protected:
 
 public :
     Player();
-    Player(int h,float x,float y, float sp,QVector2D dir,int animtime,int nbframes,bool animstatus);
+    Player(int h,float x,float y, float sp,int cd,QVector2D dir,int animtime,int nbframes,bool animstatus);
     void Input();
     int OnTriggerEnter(Interactable2D* other) override;
     void ChangePile(Pile *p);

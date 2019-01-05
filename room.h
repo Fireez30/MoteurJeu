@@ -41,6 +41,7 @@ public :
     bool isThisRoom(int _x, int _y);
     void setPosition(int _x, int _y);
     void UpdateEntities();
+    void Turn(int index);
     QVector2D getPos();
     bool IsPointInCircle(QVector2D *pt, QVector2D *center, float rayon);
     bool CheckColl(float rayon, float angle, QVector2D point);
