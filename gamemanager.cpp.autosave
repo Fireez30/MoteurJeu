@@ -79,6 +79,7 @@ void GameManager::keyReleaseEvent (QKeyEvent * event){
 void GameManager::keyPressEvent (QKeyEvent * event){
     transX=0;
     transY=0;
+    //player->movAnim->StopWalk();
     if(event->key() == Qt::Key_Q){
         walkLeft = true;
     }
@@ -107,6 +108,16 @@ void GameManager::keyPressEvent (QKeyEvent * event){
         player->setHealth(9999);
         player->PickKey();
     }
+/*
+    if(event->key() == Qt::Key_W)
+        camera->moveCamera(QVector3D(0,0,1));
+
+    if(event->key() == Qt::Key_X)
+        camera->moveCamera(QVector3D(0,0,-1));
+
+    if(event->key() == Qt::Key_U)
+        angularSpeed = 0;
+*/
 }
 
 void GameManager::mousePressEvent(QMouseEvent *e)
@@ -144,6 +155,7 @@ void GameManager::timerEvent(QTimerEvent *)
     if (walkRight)
         transX++;
 
+        scene[camera->getCurrentRoom()]->TriggerCheck(player);
     if (transX == 0 && transY == 0)
     {
         player->movAnim->StopWalk();
@@ -155,14 +167,11 @@ void GameManager::timerEvent(QTimerEvent *)
         vector *= player->GetSpeed();
         player->Move(vector);
 
-    }
-    if (player->canCollide){
-        scene[camera->getCurrentRoom()]->TriggerCheck(player);
-    }
-    if(scene[camera->getCurrentRoom()]->CollisionCheck(player->getCollider()))
-    {
-        //player->movAnim->StopWalk();
-        player->ResetMove();
+        if(scene[camera->getCurrentRoom()]->CollisionCheck(player->getCollider()))
+        {
+            //player->movAnim->StopWalk();
+            player->ResetMove();
+        }
     }
     scene[camera->getCurrentRoom()]->affectEnemiesInRange();
     scene[camera->getCurrentRoom()]->UpdateEntities();

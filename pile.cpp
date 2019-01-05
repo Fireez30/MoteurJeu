@@ -17,23 +17,12 @@ float Pile::GetConeAngle(){
     return coneAngle;
 }
 
-
-void Pile::EndOfTimer(){
-    player->RemovePileSecondaire();
-    std::cout << "timer fini " << std::endl;
-}
-
-void Pile::Update(){
-    std::cout << "Lifespan pile secondaire : " << lifespan << std::endl;
-    if (lifespan > 0.0f){
-        std::cout << "lifespan positif" << std::endl;
+bool Pile::Update(){
+    if (lifespan > 0){
         lifespan--;
+        return true;
     }
-    else {
-         std::cout << "lifespan negatif" << std::endl;
-        EndOfTimer();
-    }
-    std::cout << "fin update pile" << std::endl;
+    return false;
 }
 
 int Pile::OnTriggerEnter(Interactable2D* other){
@@ -41,12 +30,14 @@ int Pile::OnTriggerEnter(Interactable2D* other){
     Player* p;
     p = dynamic_cast<Player*> (other);
     if(p != nullptr){
+        std::cout<< "Pile -> joueur collision" << std::endl;
         p->SetPileSecondaire(this);
         //startTimer();
         changeLight();
         canCollide = false;
         return -1;
     }
+    return 0;
 }
 
 int Pile::GetDamage(){

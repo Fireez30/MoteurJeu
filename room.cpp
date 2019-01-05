@@ -45,9 +45,7 @@ void Room::UpdateEntities(){
     for (int i = 0; i < entities.size(); i++){
         entities[i]->Update();
         if (CollisionCheck(entities[i]->getCollider())){//si l'entité a collide avec un mur, reset sa position
-            //std::cout << "collision ennemi mur" << std::endl;
             entities[i]->ResetMove();
-            //entities[i]->Move((entities[i]->GetLastMove()+QVector2D(0,1))*0.0166);
         }
     }
     if (boss2 != nullptr){
@@ -74,7 +72,6 @@ void Room::setPlayer(Player* _p){
 void Room::CreateGeometry(){
     if (boss != nullptr && player->getHoldKey()){
         boss->Unlock();
-        //std::cout << "unlocked " << std::endl;
     }
 
     for (int i = 0; i < tiles.size(); i++){
@@ -95,7 +92,6 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
     tinyxml2::XMLDocument doc;
     std::string s = path+"\\"+r->at(index).path;
     doc.LoadFile(s.c_str());
-    //+r[index].path).data()
 
     tinyxml2::XMLElement* doc2 = doc.FirstChildElement("level");//Structure XML : récupérer la racine
 
@@ -129,7 +125,6 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
         d->setCollider(Hitbox(QVector2D(d->position.x(),d->position.y()),1,1));//porte ont un collider spécial
         pickups.push_back(d);
     }//Fin construction doors !
-    //Fin construction doors !
 
     tinyxml2::XMLElement* d4 = doc2->FirstChildElement("Entite");
     if (d4){//si la salle que l'on lit contient une entité
@@ -144,18 +139,10 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
             r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
             pickups.push_back(r);
         }
-        //for (int i = 0; i < interacts.size(); i++){
-        //    std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
-        //}
-        //fin for piles, rajouter des fors pour les autres entités
-
         for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Ghost"); e5 != nullptr; e5 = e5->NextSiblingElement("Ghost")){//Liste des Ghosts
             Ennemi* e =new Ennemi(this,p,e5->IntAttribute("vie"),e5->IntAttribute("directionx"),e5->IntAttribute("directiony"),e5->FloatAttribute("vitesse"),QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),e5->IntAttribute("animtime"),e5->IntAttribute("nbFrames"),false);
             e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
             entities.push_back(e);
-            //for (int i = 0; i < interacts.size(); i++){
-            //    std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
-            //}
         }//fin for piles, rajouter des fors pour les autres entités
 
         for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("TurretEnnemi"); e5 != nullptr; e5 = e5->NextSiblingElement("TurretEnnemi")){//Liste des Ghosts
@@ -164,9 +151,6 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
             TurretEnnemi* e =new TurretEnnemi(this,p,e5->IntAttribute("vie"),e5->IntAttribute("directionx"),e5->IntAttribute("directiony"),e5->FloatAttribute("vitesse"),QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),e5->IntAttribute("animtime"),e5->IntAttribute("nbFrames"),false,(tir == 1),e5->FloatAttribute("shootcooldown"),e5->FloatAttribute("projspeed"),e5->IntAttribute("projtime"));
             e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
             entities.push_back(e);
-            //for (int i = 0; i < interacts.size(); i++){
-            //    std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
-            //}
         }
 
         for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Key"); e5 != nullptr; e5 = e5->NextSiblingElement("Key")){//Liste des Key
@@ -174,11 +158,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
             Key* e =new Key(p,QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),false, QVector2D(e5->IntAttribute("xatltext")/16.0,e5->IntAttribute("yalttext")/16.0));
             e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
             pickups.push_back(e);
-            //std::cout << "clé cree lol " << std::endl;
-            //for (int i = 0; i < interacts.size(); i++){
-            //    std::cout << "interact at : " << i << " xcord = " << interacts[i]->GetPosition().x() << " ycord = " << interacts[i]->GetPosition().y() <<  std::endl;
-            //}
-        }//si clé lol
+        }//si clé
 
         for (tinyxml2::XMLElement* e3 = d4->FirstChildElement("BossDoor"); e3 != nullptr; e3 = e3->NextSiblingElement("BossDoor")){//y
             float x = (float)e3->IntAttribute("x"), y = (float)(-1*e3->IntAttribute("y"));
@@ -187,7 +167,6 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
             int diry = e3->IntAttribute("diry");
             dir.setX(dirx);
             dir.setY(diry);
-            //std::cout << "Door direction x " << dirx << " y " << diry << std::endl;
             Door* d = new Door(QVector2D(x/16.0+xRoom,y/16.0+yRoom),QVector2D(e3->IntAttribute("xtextcoord")/16.0,e3->IntAttribute("ytextcoord")/16.0),QVector2D(e3->IntAttribute("xalttext")/16.0,e3->IntAttribute("yalttext")/16.0),!player->getHoldKey(),dir,p,c);
             d->setCollider(Hitbox(QVector2D(d->position.x(),d->position.y()),1,1));//porte ont un collider spécial
             pickups.push_back(d);
@@ -213,7 +192,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
 
 void Room::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
     if(lights->size() > 2)
-        lights->erase(lights->begin()+2,lights->begin()+lights->size()-1);
+        lights->erase(lights->begin()+1,lights->begin()+lights->size()-1);
     for (int i = 0; i < pickups.size(); i++){
         pickups[i]->Render(program,text);//contient piles + portes
         if(dynamic_cast<Pile*>(pickups[i])!=nullptr)
@@ -231,11 +210,9 @@ void Room::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
 bool Room::CollisionCheck(Hitbox h){//collisions des murs unqiuements
     for (int i = 0; i < collisions.size();i++){
         if (collisions[i].TestCollision(h)){
-            //std::cout << "collisionChecktrue" << std::endl;
             return true;
         }
     }
-    // std::cout << "collisionCheck false" << std::endl;
     return false;
 }
 bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
@@ -244,18 +221,16 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
     for(int i=0;i<pickups.size();i++){
         if(pickups[i]->canCollide && pickups[i]->getCollider().TestCollision(other->getCollider())){
             triggerCount++;
-            //std::cout << "triggercheck " << std::endl;
             Pile* pile = dynamic_cast<Pile*> (pickups[i]);
             Player* p= dynamic_cast<Player*> (other);
             if(pile != nullptr && p != nullptr){
-                std::cout << "triggercheck if pile" << std::endl;
+                std::cout<< "Colision pile" << std::endl;
                 int idPile = -1;
                 Pile * pileJoueur = p->getPileSecondaire() ;
-                if(pileJoueur!= nullptr)
+                if(pileJoueur!= nullptr){
                     idPile = pileJoueur->getID();
-                std::cout << idPile << std::endl;
+                }
                 if(idPile==0){
-                    std::cout << "drop" << std::endl;
                     RangedPile *r = new RangedPile(p,QVector2D(pile->position.x(),pile->position.y()),pileJoueur->renderer.GetTextCoords());
                     r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
                     r->renderer.CreateGeometry();
@@ -265,7 +240,6 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
                     pickups.push_back(r);
                 }
                 else if(idPile==1){
-                    std::cout << "drop" << std::endl;
                     LargerPile *r = new LargerPile(p,QVector2D(pile->position.x(),pile->position.y()),pileJoueur->renderer.GetTextCoords());
                     r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
                     r->renderer.CreateGeometry();
@@ -276,7 +250,6 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
                 }
             }//fin traitement des piles
             if (pickups[i]->OnTriggerEnter(other) == -1){
-                std::cout << "suprresion" << std::endl;
                 Interactable2D* truc = pickups[i];
                 pickups.erase(pickups.begin()+i);
                 delete truc;
@@ -284,12 +257,9 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
             flag = true;
         }
     }
-    //std::cout << "Nb triggers = " << triggerCount << std::endl;
-    //std::cout << "Nb interactable " << pickups.size() << std::endl;
     for (int i = 0; i <  entities.size(); i++){
         for (unsigned j = 0; j < entities[i]->getProjectiles().size(); j++){
             if (entities[i]->getProjectiles()[j]->getCollider().TestCollision(other->getCollider())){
-                //std::cout << "Collision projectile ! " << std::endl;
                 entities[i]->getProjectiles()[j]->OnTriggerEnter(other);
                 flag = true;
             }
@@ -356,8 +326,6 @@ bool Room::CheckColl(float rayon, float angle, QVector2D point)
 {
     // Position du joueur in world
     QVector2D center = QVector2D(player->GetPosition().x(),player->GetPosition().y());
-    //std::cout << "Joueur : " << center.x() << "/" <<center.y() << std::endl;
-    //std::cout << "Entité : " << point.x() << "/" <<point.y() << std::endl;
     if( !IsPointInCircle(&point, &center, rayon) )
         return false;
     else
@@ -367,23 +335,16 @@ bool Room::CheckColl(float rayon, float angle, QVector2D point)
         vectDirect.normalize();
         vectDirect.setX( -vectDirect.x()*100 );
         vectDirect.setY( vectDirect.y()*100 );
-        //std::cout<<"vectDirect = "<<vectDirect.x()<<" "<<vectDirect.y()<<std::endl;
-        // Vecteur qui va du joueur -> ennemi
+       // Vecteur qui va du joueur -> ennemi
         QVector2D center_ennemi = QVector2D(point.x() - center.x() , point.y() - center.y());
-        // std::cout<<"center_ennemi = "<<center_ennemi.x()<<" "<<center_ennemi.y()<<std::endl;
         float produitScalaire = (vectDirect.x() * center_ennemi.x()) + (vectDirect.y() * center_ennemi.y());
         float produitNorme = vectDirect.length() * center_ennemi.length();
         float cosTeta = produitScalaire / produitNorme;
         float angleRadian = acos(cosTeta);
         float angleDegree = angleRadian*(180/3.14159265358979323846); // radian to degree
-        //std::cout<<"Radian = "<<angleRadian<<std::endl;
-
-        //std::cout<<"Degree = "<<angleDegree<<std::endl;
-       // std::cout<< "Angle : " << angle<<std::endl;
         if ( angleDegree <= angle ) {
             return !wallOnTheVector(center_ennemi,center, point);                                 //vérifier ca que si l'ennemi est dans le cone (economie de temps)
         }
-
         return false;
     }
 }

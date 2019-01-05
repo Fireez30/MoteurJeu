@@ -14,6 +14,6 @@ void LargerPile::Affect(Movable *m){
     Boss_torche* bt = dynamic_cast<Boss_torche*> (m);
     if(bt == nullptr){
         m->ChangeSpeed(m->GetSpeed()*0.01f);
-        //std::cout << "Pile principale affect " << std::endl;
+        std::cout << "larger affect " << std::endl;
     }
 }

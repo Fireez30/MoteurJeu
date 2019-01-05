@@ -52,11 +52,16 @@ Pile* Player::getPileEnCours(){
     return principale;
 }
 
+void Player::RemovePileSecondaire(){
+    usePileSecondaire = false;
+    if(secondaire!=nullptr)
+        secondaire = nullptr;
+}
+
 void Player::Update(){
-    std::cout << "update joueur" << std::endl;
     if (usePileSecondaire && secondaire != nullptr){
-         std::cout << "update pile secondaire" << std::endl;
-        secondaire->Update();
+         if(!secondaire->Update())
+             RemovePileSecondaire();
     }
 }
 
@@ -137,11 +142,6 @@ float Player::getAngle(){
 void Player::SetPileSecondaire(Pile *s){
     secondaire = s;
     //secondaire->getCollider().~Hitbox();
-}
-
-void Player::RemovePileSecondaire(){
-    usePileSecondaire = false;
-    secondaire = nullptr;
 }
 
 Pile* Player::getPileSecondaire(){

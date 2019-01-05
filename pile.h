@@ -39,7 +39,7 @@ public :
     QVector3D getColor();
     LightSource* getLightSource();
     void changeLight();
-    void Update();
+    bool Update();
 };
 
 #endif // PILE_H
