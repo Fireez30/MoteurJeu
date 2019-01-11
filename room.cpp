@@ -23,15 +23,15 @@ Room::Room(std::vector<LightSource*>* l):lights(l){
 Room::~Room(){
     tiles.clear();
     collisions.clear();
-    for (int i = 0; i < pickups.size();i++){
+    for (unsigned i = 0; i < pickups.size();i++){
         delete pickups[i];
     }
     pickups.clear();
 
-    for (int i = 0; i < entities.size(); i++){
+    for (unsigned i = 0; i < entities.size(); i++){
         delete entities[i];
     }
-    for (int i = lights->size(); i < 1; i--){
+    for (unsigned i = lights->size(); i < 1; i--){
         delete lights->at(i);
     }
     entities.clear();
@@ -74,17 +74,17 @@ void Room::UpdateEntities(){
         entities[i]->Update();
        // std::cout << "Vie de lentite : " <<i << " : " << entities[i]->getHealth() << std::endl;
         //std::cout << "Entity " << i << " timer ? " << entities[i]->isTimerActive() << std::endl;
-        if (entities[i]->isDead()){
-            //std::cout << " ENTITE MORTE !!!!!!!!!!!!!" << std::endl;
-            Movable* truc = entities[i];
-            entities.erase(entities.begin()+i);
-            delete truc;
-            break;
-        }
         if (CollisionCheck(entities[i]->getCollider())){//si l'entité a collide avec un mur, reset sa position
             entities[i]->ResetMove();
             Turn(i);
             //entities[i]->Move((entities[i]->GetLastMove()+QVector2D(0,1))*0.0166);
+        }
+        if (entities[i]->isDead()){
+            std::cout << " ENTITE MORTE !!!!!!!!!!!!!" << std::endl;
+            //Movable* truc = entities[i];
+            entities.erase(entities.begin()+i);
+            //delete truc;
+            std::cout << "APRES DELETE" << std::endl;
         }
     }
     if (boss2 != nullptr){
@@ -186,7 +186,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
 
         for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("TurretEnnemi"); e5 != nullptr; e5 = e5->NextSiblingElement("TurretEnnemi")){//Liste des Ghosts
             int tir = e5->IntAttribute("targetplayer");
-            std::cout << "tirate" << e5->DoubleAttribute("shootcooldown") << std::endl;
+            //std::cout << "tirate" << e5->DoubleAttribute("shootcooldown") << std::endl;
             TurretEnnemi* e =new TurretEnnemi(this,p,e5->IntAttribute("vie"),e5->IntAttribute("directionx"),e5->IntAttribute("directiony"),e5->FloatAttribute("vitesse"),e5->IntAttribute("damagecd"),QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),e5->IntAttribute("animtime"),e5->IntAttribute("nbFrames"),false,(tir == 1),e5->FloatAttribute("shootcooldown"),e5->FloatAttribute("projspeed"),e5->IntAttribute("projtime"));
             e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
             entities.push_back(e);

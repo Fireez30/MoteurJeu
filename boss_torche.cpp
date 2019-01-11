@@ -20,16 +20,6 @@ void Boss_torche::startTimer(){
 
 }
 
-void Boss_torche::timerEvent(QTimerEvent *){
-    //std::cout << "timer ia " << std::endl;
-
-    //ennemitoplayer = QVector3D(player->position.x() - position.x(), player->position.y() - position.y(), 0);
-    //ennemitoplayer.normalize();
-    //ennemitoplayer *= speed;
-    //timer.stop();
-    //timer.start(1000,this);
-}
-
 void Boss_torche::IA(){
      ennemitoplayer = QVector2D(player->position.x() - position.x(), player->position.y() - position.y());
      ennemitoplayer.normalize();
@@ -59,6 +49,10 @@ void Boss_torche::Update(){
             delete truc;
         }
     }
+}
+
+QVector2D Boss_torche::GetRoomPos(){
+    return room->getPos();
 }
 
 int Boss_torche::OnTriggerEnter(Interactable2D* other){

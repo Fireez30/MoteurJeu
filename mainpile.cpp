@@ -12,7 +12,7 @@ MainPile::MainPile(Player* p,QVector2D pos,float r, float c, int l, int d,QVecto
 
 void MainPile::Affect(Movable* m){
     Boss_torche* bt = dynamic_cast<Boss_torche*> (m);
-    if(bt == nullptr){
+    if(! (bt != nullptr)){
         m->Damage(5);
         m->ChangeSpeed(m->GetSpeed()*0.01f);
     }

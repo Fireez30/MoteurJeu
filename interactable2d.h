@@ -8,7 +8,7 @@
 #include "hitbox.h"
 #include "base2d.h"
 
-class Interactable2D : public Base2D , public QOpenGLWidget, protected QOpenGLFunctions {
+class Interactable2D : public Base2D , public QOpenGLWidget {
 
      //sQ_OBJECT
 

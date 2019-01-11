@@ -19,13 +19,6 @@ void Ennemi::startTimer(){
 
 }
 
-void Ennemi::timerEvent(QTimerEvent *){
-    //    ennemitoplayer = QVector3D(player->position.x() - position.x(), player->position.y() - position.y(), 0);
-    //    ennemitoplayer.normalize();
-    //    ennemitoplayer *= speed;
-    //    timer.stop();
-    //    timer.start(1000,this);
-}
 
 void Ennemi::IA(){
     ennemitoplayer = QVector2D(player->position.x() - position.x(), player->position.y() - position.y());

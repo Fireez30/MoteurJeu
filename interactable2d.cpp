@@ -15,7 +15,7 @@ Hitbox Interactable2D::getCollider(){
 
 void Interactable2D::startTimer(){
     timer.start(timeCollide,this);
-    std::cout << "Timer collision débute ! temps = " << timeCollide << "\n";
+    std::cout << "Timer collision débute ! temps = " << timeCollide << std::endl;
 }
 
 bool Interactable2D::isTimerActive(){
@@ -23,6 +23,6 @@ bool Interactable2D::isTimerActive(){
 }
 void Interactable2D::timerEvent(QTimerEvent *){
     canCollide = true;
-    std::cout << "Timer collision termine\n";
+    std::cout << "Timer collision termine" << std::endl;
     timer.stop();
 }
