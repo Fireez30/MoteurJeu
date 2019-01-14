@@ -43,11 +43,11 @@ void Boss_torche::Update(){
     speed = initSpeed;
     if (health < maxHealth/2)
     {
-        speed *= 5;
+        speed *= 3;
     }
     IA();
-    //std::cout<<"vie BOSS = "<<getHealth()<<std::endl;
-    std::cout<<"position BOSS = "<<GetPosition().x()<<" "<<GetPosition().y()<<std::endl;
+    std::cout<<"vie BOSS = "<<getHealth()<<std::endl;
+    //std::cout<<"position BOSS = "<<GetPosition().x()<<" "<<GetPosition().y()<<std::endl;
     for (unsigned i = 0; i < projectiles.size(); i++){
         if (projectiles[i]->Update() == -1){
             Projectile* truc = projectiles[i];

@@ -38,15 +38,15 @@ int Torche::OnTriggerEnter(Interactable2D* other){
         }
         */
         QVector2D roomPos = bt->GetRoomPos();
-        int nx = rand() % 23 + 1;// 1 -> 23
-        int ny = rand() % 13 + 1;// 1 -> 13
+        int nx = rand() % 22 + 1;// 1 -> 23
+        int ny = rand() % 12 + 1;// 1 -> 13
         bt->SetPosition(QVector2D(roomPos.x()*25 + nx,roomPos.y()*15 - ny));
         while (room->CollisionCheck(bt->getCollider())){
-            nx = rand() % 23 + 1;// 1 -> 23
-            ny = rand() % 13 + 1;// 1 -> 13
+            nx = rand() % 22 + 1;// 1 -> 23
+            ny = rand() % 12 + 1;// 1 -> 13
             bt->SetPosition(QVector2D(roomPos.x()*25 + nx,roomPos.y()*15 - ny));
         }
-        bt->ResetMove();//pas super correct
+        // bt->ResetMove();//pas super correct
         return 0;
     }
     return 1;
