@@ -18,6 +18,7 @@ float Pile::GetConeAngle(){
 }
 
 bool Pile::Update(){
+    std::cout << "LifeSpan :" << lifespan << std::endl;
     if (lifespan > 0){
         lifespan--;
         return true;

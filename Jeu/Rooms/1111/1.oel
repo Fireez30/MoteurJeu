@@ -381,8 +381,8 @@
     <tile x="24" y="7" tx="4" ty="6" />
   </Doors>
   <Entite>
-    <TurretEnnemi id="0" x="160" y="80" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="0" directiony="0" vitesse="0" animtime="200" nbframes="3" targetplayer="1" shootcooldown="0.8" projspeed="1" projtime="3" />
-    <TurretEnnemi id="2" x="224" y="144" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="0" directiony="0" vitesse="0" animtime="200" nbframes="3" targetplayer="1" shootcooldown="0.8" projspeed="1" projtime="3" />
+    <TurretEnnemi id="0" x="160" y="80" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="0" directiony="0" vitesse="0" animtime="200" nbframes="3" targetplayer="1" shootcooldown="1" projspeed="1" projtime="3" damagecd="10" />
+    <TurretEnnemi id="2" x="224" y="144" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="0" directiony="0" vitesse="0" animtime="200" nbframes="3" targetplayer="1" shootcooldown="1" projspeed="1" projtime="3" damagecd="10" />
   </Entite>
   <Décors exportMode="Bitstring">0000000000000000000000000
 0000000000000000000000000
