@@ -32,7 +32,6 @@ int Pile::OnTriggerEnter(Interactable2D* other){
     if(p != nullptr){
         std::cout<< "Pile -> joueur collision" << std::endl;
         p->SetPileSecondaire(this);
-        changeLight();
         canCollide = false;
         return -1;
     }

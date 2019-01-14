@@ -1,5 +1,4 @@
-﻿#include "player.h"
-#include <QMouseEvent>
+﻿#include <QMouseEvent>
 #include <GL/gl.h>
 #include <QKeyEvent>
 #include <QPainter>
@@ -8,7 +7,10 @@
 #include <iostream>
 #include <QVector3D>
 #include <QTime>
+
+#include "player.h"
 #include "rangedpile.h"
+#include "largerpile.h"
 #include "mainpile.h"
 
 Player::Player():Movable(3,1,0,6,2,QVector2D(162,83),QVector2D(0.0,8.0/16.0),200,3,false),usePilePrincipale(true),usePileSecondaire(false),holdKey(false),spriteModif(this),light(QVector2D(0,0),QVector3D(1,1,1),0.0005f,0.5f,180.0f,180.0f,QVector3D(1,0,0),3.5f,3.7f){
@@ -141,8 +143,18 @@ float Player::getAngle(){
 }
 
 void Player::SetPileSecondaire(Pile *s){
-    secondaire = s;
-    //secondaire->getCollider().~Hitbox();
+    if(dynamic_cast<RangedPile*>(s)){
+        Pile * p = new RangedPile(this, QVector2D(GetPosition().x(),GetPosition().y()),s->GetRange(),s->GetConeAngle(),s->getLifespan(),s->GetDamage(),s->renderer.GetTextCoords());
+        p->canCollide = false;
+        p->changeLight();
+        secondaire = p;
+    }
+    else if(dynamic_cast<LargerPile*>(s)){
+        Pile * p = new LargerPile(this, QVector2D(GetPosition().x(),GetPosition().y()),s->GetRange(),s->GetConeAngle(),s->getLifespan(),s->GetDamage(),s->renderer.GetTextCoords());
+        p->canCollide = false;
+        p->changeLight();
+        secondaire = p;
+    }
 }
 
 Pile* Player::getPileSecondaire(){

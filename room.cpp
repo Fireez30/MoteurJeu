@@ -396,6 +396,7 @@ void Room::affectEnemiesInRange(){
         {
             entities[i]->setAffected(true);
             player->getPileEnCours()->Affect(entities[i]);
+
         }
         else{
             entities[i]->setAffected(false);
