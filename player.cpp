@@ -144,13 +144,13 @@ float Player::getAngle(){
 
 void Player::SetPileSecondaire(Pile *s){
     if(dynamic_cast<RangedPile*>(s)){
-        Pile * p = new RangedPile(this, QVector2D(GetPosition().x(),GetPosition().y()),s->GetRange(),s->GetConeAngle(),s->getLifespan(),s->GetDamage(),s->renderer.GetTextCoords());
+        Pile * p = new RangedPile(this, QVector2D(GetPosition().x(),GetPosition().y()),s->GetRange(),s->GetConeAngle(),s->getLifespan()/60,s->GetDamage(),s->renderer.GetTextCoords());
         p->canCollide = false;
         p->changeLight();
         secondaire = p;
     }
     else if(dynamic_cast<LargerPile*>(s)){
-        Pile * p = new LargerPile(this, QVector2D(GetPosition().x(),GetPosition().y()),s->GetRange(),s->GetConeAngle(),s->getLifespan(),s->GetDamage(),s->renderer.GetTextCoords());
+        Pile * p = new LargerPile(this, QVector2D(GetPosition().x(),GetPosition().y()),s->GetRange(),s->GetConeAngle(),s->getLifespan()/60,s->GetDamage(),s->renderer.GetTextCoords());
         p->canCollide = false;
         p->changeLight();
         secondaire = p;
