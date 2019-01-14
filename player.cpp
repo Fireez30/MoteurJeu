@@ -7,7 +7,7 @@
 #include <iostream>
 #include <QVector3D>
 #include <QTime>
-
+#include <QtMultimedia/QMediaPlayer>
 #include "player.h"
 #include "rangedpile.h"
 #include "largerpile.h"
@@ -23,6 +23,9 @@ Player::Player():Movable(3,1,0,6,2,QVector2D(162,83),QVector2D(0.0,8.0/16.0),200
     principale->changeLight();
     secondaire = nullptr;
     movAnim->StartAnimator();
+    splayer = new QMediaPlayer;
+    splayer->setMedia(QUrl::fromLocalFile("damage.wav"));
+    splayer->setVolume(50);
     std::cout << "spriteModif size " << spriteModif.nbOfSprites() << std::endl;
 }
 
@@ -35,6 +38,9 @@ Player::Player(int h,float x,float y, float sp,int cd,QVector2D dir,int animtime
     principale = new MainPile(this,QVector2D(0,0),QVector2D(0,0));
     secondaire = nullptr;
     movAnim->StartAnimator();
+    splayer = new QMediaPlayer;
+    splayer->setMedia(QUrl::fromLocalFile("damage.wav"));
+    splayer->setVolume(50);
     std::cout << "spriteModif size " << spriteModif.nbOfSprites() << std::endl;
 }
 
@@ -197,4 +203,8 @@ void Player::updateLights(){
     principale->getLightSource()->position = QVector2D(position.x(),position.y());
     if(secondaire != nullptr)
         secondaire->getLightSource()->position = QVector2D(position.x(),position.y());
+}
+
+void Player::PlayDamageSound(){
+    splayer->play();
 }

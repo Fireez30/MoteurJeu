@@ -159,6 +159,7 @@ void GameManager::timerEvent(QTimerEvent *)
     if (transX == 0 && transY == 0)
     {
         player->movAnim->StopWalk();
+        scene[camera->getCurrentRoom()]->TriggerCheck(player);
     }
     else{
         player->movAnim->Walk();

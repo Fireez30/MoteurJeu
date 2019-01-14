@@ -47,6 +47,8 @@ int Projectile::Update(){
 int Projectile::OnTriggerEnter(Interactable2D* other){
     Player* player = dynamic_cast<Player*> (other);
     if(player != nullptr){
+        if (player->canCollide)
+            player->PlayDamageSound();
         player->Damage(1);
         alive = false;
     }

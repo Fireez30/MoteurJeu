@@ -10,7 +10,7 @@ protected:
     bool picked;
     QVector2D altText;
     Player* player;
-
+    QMediaPlayer *splayer;
 public :
     Key(const Key&k);
     Key(Player* p,QVector2D pos,QVector2D text);

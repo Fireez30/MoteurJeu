@@ -7,6 +7,7 @@ class Pile;
 #include "pile.h"
 #include "spritemodifier.h"
 #include "lightsource.h";
+#include <QtMultimedia/QMediaPlayer>
 
 class Player : public Movable
 {
@@ -18,6 +19,7 @@ protected:
     Pile *secondaire;
     float orientationRatio;
     bool holdKey;
+    QMediaPlayer *splayer;
     SpriteModifier spriteModif;
     LightSource light;
 
@@ -47,6 +49,7 @@ public :
     LightSource* getLight();
     LightSource* getLampeLight();
     void updateLights();
+    void PlayDamageSound();
 };
 
 #endif // PLAYER_H
