@@ -108,7 +108,7 @@ void GameManager::keyPressEvent (QKeyEvent * event){
         player->setHealth(9999);
         player->PickKey();
     }
-/*
+
     if(event->key() == Qt::Key_W)
         camera->moveCamera(QVector3D(0,0,1));
 
@@ -117,7 +117,7 @@ void GameManager::keyPressEvent (QKeyEvent * event){
 
     if(event->key() == Qt::Key_U)
         angularSpeed = 0;
-*/
+
 }
 
 void GameManager::mousePressEvent(QMouseEvent *e)

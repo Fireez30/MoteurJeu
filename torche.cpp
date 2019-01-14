@@ -20,8 +20,8 @@ int Torche::OnTriggerEnter(Interactable2D* other){
     Boss_torche* bt;
     bt = dynamic_cast<Boss_torche*> (other);
     if(bt != nullptr){
-        startTimer();
-        canCollide = false;
+        //startTimer();
+        //canCollide = false;
         bt->Damage(this->GetDamage());
         /*
         if (bt->position.x() <= 161) //a gauche
@@ -40,13 +40,13 @@ int Torche::OnTriggerEnter(Interactable2D* other){
         QVector2D roomPos = bt->GetRoomPos();
         int nx = rand() % 23 + 1;// 1 -> 23
         int ny = rand() % 13 + 1;// 1 -> 13
-        bt->SetPosition(QVector2D(roomPos.x() + nx,roomPos.y() + ny));
+        bt->SetPosition(QVector2D(roomPos.x()*25 + nx,roomPos.y()*15 - ny));
         while (room->CollisionCheck(bt->getCollider())){
             nx = rand() % 23 + 1;// 1 -> 23
             ny = rand() % 13 + 1;// 1 -> 13
-            bt->SetPosition(QVector2D(roomPos.x() + nx,roomPos.y() + ny));
+            bt->SetPosition(QVector2D(roomPos.x()*25 + nx,roomPos.y()*15 - ny));
         }
-
+        bt->ResetMove();//pas super correct
         return 0;
     }
     return 1;

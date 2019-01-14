@@ -18,6 +18,7 @@ public :
 
 private :
     Player* player;
+    int maxHealth;
     Room* room;
     QVector2D dir;
     void startTimer();
