@@ -49,6 +49,7 @@
     <tile x="20" y="11" tx="9" ty="0" />
     <tile x="20" y="12" tx="9" ty="0" />
     <tile x="20" y="13" tx="9" ty="0" />
+    <tile x="21" y="6" tx="9" ty="0" />
     <tile x="21" y="7" tx="9" ty="0" />
     <tile x="21" y="8" tx="9" ty="0" />
     <tile x="21" y="9" tx="9" ty="0" />
@@ -235,8 +236,9 @@
     <tile x="10" y="8" tx="8" ty="0" />
     <tile x="10" y="9" tx="8" ty="0" />
     <tile x="10" y="10" tx="8" ty="0" />
-    <tile x="10" y="11" tx="8" ty="0" />
-    <tile x="10" y="13" tx="8" ty="0" />
+    <tile x="10" y="11" tx="9" ty="0" />
+    <tile x="10" y="12" tx="9" ty="0" />
+    <tile x="10" y="13" tx="9" ty="0" />
     <tile x="10" y="14" tx="8" ty="0" />
     <tile x="11" y="0" tx="8" ty="0" />
     <tile x="11" y="1" tx="8" ty="0" />
@@ -345,7 +347,6 @@
     <tile x="21" y="3" tx="8" ty="0" />
     <tile x="21" y="4" tx="8" ty="0" />
     <tile x="21" y="5" tx="8" ty="0" />
-    <tile x="21" y="6" tx="8" ty="0" />
     <tile x="21" y="14" tx="8" ty="0" />
     <tile x="22" y="0" tx="8" ty="0" />
     <tile x="22" y="1" tx="8" ty="0" />
@@ -381,8 +382,8 @@
     <tile x="24" y="7" tx="4" ty="6" />
   </Doors>
   <Entite>
-    <TurretEnnemi id="0" x="160" y="192" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="1" directiony="0" vitesse="0" animtime="200" nbframes="3" targetplayer="0" shootcooldown="0.8" projspeed="1" projtime="3" damagecd="10" />
-    <TurretEnnemi id="1" x="352" y="96" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="0" directiony="-1" vitesse="0" animtime="200" nbframes="3" targetplayer="0" shootcooldown="0.8" projspeed="1" projtime="3" damagecd="10" />
+    <TurretEnnemi id="0" x="160" y="176" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="1" directiony="0" vitesse="0" animtime="200" nbframes="3" targetplayer="0" shootcooldown="0.8" projspeed="1" projtime="3" damagecd="10" />
+    <TurretEnnemi id="1" x="336" y="96" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="0" directiony="-1" vitesse="0" animtime="200" nbframes="3" targetplayer="0" shootcooldown="0.8" projspeed="1" projtime="3" damagecd="10" />
   </Entite>
   <Décors exportMode="Bitstring">0000000000000000000000000
 0000000000000000000000000
