@@ -8,13 +8,15 @@ void UiObject::BindAltTexture(){
     useMainText = false;
     useAltText = true;
     renderer.SetXSpriteCoord(AltTexture.x());
-    renderer.SetXSpriteCoord(AltTexture.y());
+    renderer.SetYSpriteCoord(AltTexture.y());
+    renderer.CreateGeometry();
 }
 void UiObject::BindMainTexture(){
     useMainText = true;
     useAltText = false;
     renderer.SetXSpriteCoord(MainTexture.x());
-    renderer.SetXSpriteCoord(MainTexture.y());
+    renderer.SetYSpriteCoord(MainTexture.y());
+    renderer.CreateGeometry();
 }
 
 bool UiObject::MainTextBound(){
