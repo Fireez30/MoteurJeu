@@ -39,7 +39,6 @@ void TurretEnnemi::IA(){
 }
 
 void TurretEnnemi::Update(){
-    IA();
     if (affected)
     {
         timerTime = initTime * 5;
@@ -47,7 +46,8 @@ void TurretEnnemi::Update(){
     else {
         timerTime = initTime;
     }
-
+    std::cout  << " ENNEMY TIMER COOLDOWN ! " << timerTime << std::endl;
+    IA();
     for (unsigned i = 0; i < projectiles.size(); i++){
         if (projectiles[i]->Update() == -1){
             Projectile* truc = projectiles[i];
