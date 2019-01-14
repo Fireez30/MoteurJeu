@@ -1,7 +1,7 @@
 #include "uiobject.h"
 
 UiObject::UiObject(int x, int y, int z,QVector2D base, QVector2D alt):Base2D(x,y,z,base),AltTexture(alt),useMainText(true),useAltText(true),MainTexture(base){
-
+    renderer.CreateGeometry();
 }
 
 void UiObject::BindAltTexture(){

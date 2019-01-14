@@ -11,7 +11,7 @@
 #include <QString>
 #include <time.h>
 #include <QGuiApplication>
-
+#include "uiobject.h"
 
 bool start = true;
 int initial_time = time (NULL);
@@ -32,6 +32,7 @@ GameManager::GameManager(QWidget *parent,int maxfps) :
     et.start();
     scene = std::vector<Room*>();
     lights = std::vector<LightSource*>();
+    UI = std::vector<UiObject*>();
     walkDown = false;
     walkUp = false;
     walkLeft = false;
@@ -108,7 +109,7 @@ void GameManager::keyPressEvent (QKeyEvent * event){
         player->setHealth(9999);
         player->PickKey();
     }
-
+/*
     if(event->key() == Qt::Key_W)
         camera->moveCamera(QVector3D(0,0,1));
 
@@ -117,6 +118,7 @@ void GameManager::keyPressEvent (QKeyEvent * event){
 
     if(event->key() == Qt::Key_U)
         angularSpeed = 0;
+*/
 
 }
 
@@ -182,7 +184,41 @@ void GameManager::timerEvent(QTimerEvent *)
         this->close();
         //
     }
+    if (player->getHealth() == 1){
+        if (!UI[0]->MainTextBound()){
+            UI[0]->BindMainTexture();
+        }
+        if (UI[1]->MainTextBound()){
+            UI[1]->BindAltTexture();
+        }
+        if (UI[2]->MainTextBound()){
+            UI[2]->BindAltTexture();
+        }
+    }
 
+    if (player->getHealth() == 1){
+        if (!UI[0]->MainTextBound()){
+            UI[0]->BindMainTexture();
+        }
+        if (!UI[1]->MainTextBound()){
+            UI[1]->BindMainTexture();
+        }
+        if (UI[2]->MainTextBound()){
+            UI[2]->BindAltTexture();
+        }
+    }
+
+    if (player->getHealth() == 3){
+        if (!UI[0]->MainTextBound()){
+            UI[0]->BindMainTexture();
+        }
+        if (!UI[1]->MainTextBound()){
+            UI[1]->BindMainTexture();
+        }
+        if (!UI[2]->MainTextBound()){
+            UI[2]->BindMainTexture();
+        }
+    }
     update();
 }
 
@@ -373,6 +409,9 @@ void GameManager::initializeGL()
     camera->setRooms(scene);
     camera->setCurrentRoom(x,y);
     timer.start(1000/max_fps, this);
+    UI.push_back(new UiObject(200,200,-2,QVector2D(0,0), QVector2D(1,0)));
+    UI.push_back(new UiObject(300,200,-2,QVector2D(0,0), QVector2D(1,0)));
+    UI.push_back(new UiObject(400,200,-2,QVector2D(0,0), QVector2D(1,0)));
 }
 
 void GameManager::initShaders()
@@ -400,6 +439,34 @@ void GameManager::initShaders()
 
     // Bind shader pipeline for use
     if (!program.bind())
+    {
+        std::cout << "Erreur lors du bind" << std::endl;
+        close();
+    }
+
+    // Compile vertex shader
+    if (!uiprogram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/uivshader.glsl"))
+    {
+        std::cout << "Erreur lors de la compilation du vertex shader" << std::endl;
+        close();
+    }
+
+    // Compile fragment shader
+    if (!uiprogram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/uifshader.glsl"))
+    {
+        std::cout << "Erreur lors de la compilation du fragment shader" << std::endl;
+        close();
+    }
+
+    // Link shader pipeline
+    if (!uiprogram.link())
+    {
+        std::cout << "Erreur lors du link" << std::endl;
+        close();
+    }
+
+    // Bind shader pipeline for use
+    if (!uiprogram.bind())
     {
         std::cout << "Erreur lors du bind" << std::endl;
         close();
@@ -466,6 +533,8 @@ void GameManager::paintGL()
 
     texture->bind();
 
+
+    program.bind();
     // Calculate model view transformation
     QMatrix4x4 matrix;
     QVector3D pos = camera->getPosition();
@@ -531,4 +600,11 @@ void GameManager::paintGL()
     program.setUniformValue("texture", 0);
     player->Render(&program,texture);
     scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
+
+    uiprogram.bind();
+    uiprogram.setUniformValue("texture", 0);
+    for (int i = 0; i < UI.size(); i++){
+        UI[i]->Render(&uiprogram,texture);
+    }
+
 }
