@@ -106,7 +106,7 @@ void GameManager::keyPressEvent (QKeyEvent * event){
     }
 
     if (event->key() == Qt::Key_K){
-        player->setHealth(9999);
+        player->setHealth(999);
         player->PickKey();
     }
 /*

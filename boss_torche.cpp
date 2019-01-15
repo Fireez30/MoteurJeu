@@ -58,8 +58,10 @@ QVector2D Boss_torche::GetRoomPos(){
 }
 
 int Boss_torche::OnTriggerEnter(Interactable2D* other){
-    Player* player = dynamic_cast<Player*> (other);
-    if(player != nullptr){
+    Player* player2 = dynamic_cast<Player*> (other);
+    if(player2 != nullptr){
+        if (player->canCollide)
+            player->PlayDamageSound();
         player->Damage(1);
         QVector3D pos_ennemi = this->position;
         QVector3D pos_player = other->position;
