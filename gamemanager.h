@@ -27,7 +27,7 @@ public:
     QTime m_time;
     int m_frameCount;
     int max_fps;
-    int shader = 1;
+    int shader = 0;
     float x = -137;//move this to a camera
     float y = -82;
     float z = -25.0;

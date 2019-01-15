@@ -26,6 +26,7 @@ protected:
     std::vector<LightSource*>* lights;
     Player* player;
     Door* boss;
+    Camera* camera;
     Movable* boss2;
 
 public :

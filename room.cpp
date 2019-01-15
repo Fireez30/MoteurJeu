@@ -85,8 +85,14 @@ void Room::UpdateEntities(){
     }
     if (boss2 != nullptr){
         TriggerCheck(boss2);
+        camera->ui->at(4)->renderer.setWidth(boss2->getHealthRatio() * 10);
+        camera->ui->at(5)->renderer.setWidth(1.0f);
+        std::cout << "Boss ratio: " << boss2->getHealthRatio() << std::endl;
     }
-
+    else if (camera != nullptr){
+        camera->ui->at(4)->renderer.setWidth(0);
+        camera->ui->at(5)->renderer.setWidth(0);
+    }
 }
 
 QVector2D Room::getPos(){
@@ -125,6 +131,7 @@ void Room::CreateGeometry(){
 
 void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p, Camera* c){
     tinyxml2::XMLDocument doc;
+    camera = c;
     std::string s = path+"\\"+r->at(index).path;
     doc.LoadFile(s.c_str());
 

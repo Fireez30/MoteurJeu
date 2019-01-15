@@ -416,7 +416,10 @@ void GameManager::initializeGL()
     UI.push_back(new UiObject(162-10,83+7,0,QVector2D(0.0/16.0,0), QVector2D(1.0/16.0,0)));
     UI.push_back(new UiObject(162-11,83+7,0,QVector2D(0.0/16.0,0), QVector2D(1.0/16.0,0)));
     UI.push_back(new UiObject(162+5,83+7,0,QVector2D(13.0/16.0,5.0/16.0), QVector2D(13.0/16.0,5.0/16.0)));
+    UI.push_back(new UiObject(162-5,83-7,0,QVector2D(13.0/16.0,5.0/16.0), QVector2D(13.0/16.0,5.0/16.0)));//boss life bar
+    UI.push_back(new UiObject(162-6,83-7,0,QVector2D(0.0/16.0,12.0/16.0), QVector2D(0.0/16.0,12.0/16.0)));//boss icon
     UI[3]->renderer.setWidth(7.0f);
+    UI[4]->renderer.setWidth(10.0f);
 }
 
 void GameManager::initShaders()

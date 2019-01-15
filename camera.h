@@ -20,12 +20,13 @@ public :
     void setCurrentRoom(QVector3D trans);
     void setCurrentRoom(int x, int y);
     void setRooms(std::vector<Room*> r);
+    std::vector<UiObject*>* ui;
 
 private :
     QVector3D position;
     int indexRoom;
     std::vector<Room*> scene;
-    std::vector<UiObject*>* ui;
+
 };
 
 #endif // CAMERA_H

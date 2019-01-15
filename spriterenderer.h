@@ -48,6 +48,7 @@ public :
     void SetPosition(QVector3D pos);
     float GetXCoord();
     float GetYCoord();
+    float getWidth();
     void SetXSpriteCoord(float x);
     void SetYSpriteCoord(float y);
     void CreateGeometry();

@@ -16,6 +16,7 @@ protected :
     QVector2D initPos;
     QVector2D lastMove;
     int health;
+    int maxHealth;
     bool dead;
     std::vector<Projectile*> projectiles;
     bool affected;
@@ -27,6 +28,7 @@ public :
     Movable(int health,float x, float y,float sp,int damagecooldown,QVector2D pos,QVector2D text,int animtime,int nbframes,bool animstatus);
     QVector2D GetDirection();
     float GetSpeed();
+    float getHealthRatio();
     void ChangeSpeed(float s);
     void ChangeDirection(QVector2D dir);
     void Move(QVector2D dir);

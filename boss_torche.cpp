@@ -5,7 +5,6 @@
 Boss_torche::Boss_torche(int h,float x, float y, float s,QVector2D pos,QVector2D text): Movable(h,x,y,s,3,pos,text,200,3,false),ennemitoplayer(0,0){
     movAnim->StartAnimator();
     movAnim->Walk();
-    maxHealth = health;
 }
 
 Boss_torche::Boss_torche(Room* r,Player* p,int h, float x, float y, float s,int cd,QVector2D pos,QVector2D text,int animtime,int nbframes,bool animstatus): Movable(h,x,y,s,cd,pos,text,animtime,nbframes,animstatus),ennemitoplayer(0,0){
@@ -14,7 +13,6 @@ Boss_torche::Boss_torche(Room* r,Player* p,int h, float x, float y, float s,int 
     //startTimer();
     movAnim->StartAnimator();
     movAnim->Walk();
-    maxHealth = health;
 }
 
 void Boss_torche::startTimer(){

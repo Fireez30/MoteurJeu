@@ -6,6 +6,7 @@ Movable::Movable():Interactable2D(QVector2D(0,0),QVector2D(0,0),2*1000),speed(1)
     initSpeed = speed;
     projectiles =  std::vector<Projectile*>();
     affected = false;
+    maxHealth = health;
 }
 
 Movable::Movable(int h,float x, float y,float sp,int damagecooldown,QVector2D pos,QVector2D text,int animtime,int nbframes,bool animstatus):Interactable2D(pos,text,damagecooldown),speed(sp),direction(x,y),initPos(pos),health(h),dead(false),lastMove(0,0){
@@ -13,10 +14,16 @@ Movable::Movable(int h,float x, float y,float sp,int damagecooldown,QVector2D po
     initSpeed = speed;
     projectiles =  std::vector<Projectile*>();
     affected = false;
+    maxHealth = health;
 }
 
 QVector2D Movable::GetDirection(){
     return direction;
+}
+
+
+float Movable::getHealthRatio(){
+    return (float)health/(float)maxHealth;
 }
 
 float Movable::GetSpeed(){

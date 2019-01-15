@@ -29,6 +29,11 @@ SpriteRenderer::~SpriteRenderer(){
     //delete texture;
 }
 
+float SpriteRenderer::getWidth()
+{
+    return width;
+}
+
 void SpriteRenderer::SetPosition(QVector3D pos){
     position = pos;
 }
