@@ -16,7 +16,6 @@ QVector3D Base2D::GetPosition(){
 }
 
 void Base2D::DisplayCoords(){
-    std::cout<< "Base2D at x : " << position.x() << " and y : " << position.y() << std::endl;
 }
 
 void Base2D::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){

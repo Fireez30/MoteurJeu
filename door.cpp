@@ -23,7 +23,6 @@ void Door::Lock(){
 }
 
 int Door::OnTriggerEnter(Interactable2D* other){
-    std::cout << "Trigger enter porte" << std::endl;
 	//Si memory leak, regarder ici
     if (!locked){
         if(dynamic_cast<Player*> (other)!=NULL){
@@ -34,7 +33,6 @@ int Door::OnTriggerEnter(Interactable2D* other){
         }
     }
     else{
-        //std::cout << "RECULE" << std::endl;
         player->ResetMove();
     }
 

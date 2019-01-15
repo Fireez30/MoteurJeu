@@ -18,7 +18,6 @@ float Pile::GetConeAngle(){
 }
 
 bool Pile::Update(){
-    std::cout << "LifeSpan :" << lifespan << std::endl;
     if (lifespan > 0){
         lifespan--;
         return true;
@@ -31,7 +30,6 @@ int Pile::OnTriggerEnter(Interactable2D* other){
     Player* p;
     p = dynamic_cast<Player*> (other);
     if(p != nullptr){
-        std::cout<< "Pile -> joueur collision" << std::endl;
         p->SetPileSecondaire(this);
         canCollide = false;
         return -1;

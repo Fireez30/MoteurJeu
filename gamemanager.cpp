@@ -403,7 +403,6 @@ void GameManager::initializeGL()
         r->setPlayer(player);
         r->ReadFile(rooms,i, path, player, camera);
         scene.push_back(r);
-        //std::cout << "Salle " << rooms->at(i).path << " at x : " << rooms->at(i).x << " and y : " << rooms->at(i).y<< std::endl;
     }
     player->renderer.CreateGeometry();
     camera->setRooms(scene);
@@ -478,7 +477,6 @@ void GameManager::initTextures()
     QImage img;
     std::string s = qApp->applicationDirPath().toUtf8().constData();
     s += "/sprites.png";
-    std::cout << s << std::endl;
 
     img.load(s.data());
     texture = new QOpenGLTexture(img); //chargement de la sprite sheet ici
@@ -524,7 +522,6 @@ void GameManager::paintGL()
         last_fps = frame_count/ (final_time - initial_time);
         frame_count = 0;
         initial_time = final_time;
-        //        std::cout << "Fps : " << last_fps << std::endl;
     }
 
     // Clear color and depth buffer
@@ -547,14 +544,12 @@ void GameManager::paintGL()
     program.bind();
     QVector2D size = QVector2D(this->width(),this->height());
     player->ChangeOrientation(this->mapFromGlobal(QCursor::pos()),matrix,projection,size);
-    //std::cout << "Player life : " << player->getHealth() << std::endl;
 
     // Set modelview-projection matrix
     program.setUniformValue("mvp_matrix", projection * matrix);
 
 
     QRect vp = QRect(0,0,size.x(),size.y());
-    //program.setUniformValue("playerpos",QVector4D(screenpos.x()+24,720-(screenpos.y()+24),0,0));
     program.setUniformValue("test",shader);
     int nbLights = lights.size();
     program.setUniformValue("numLights", nbLights);
@@ -593,12 +588,6 @@ void GameManager::paintGL()
         var = "].maxDist";
         s = sBase + var;
         program.setUniformValue(s.data(),lights[i]->maxDist*48);
-        /*std::cout << "i : " << i << std::endl;
-        std::cout << "couleur : " << lights[i]->color.x() << "/" << lights[i]->color.y() << "/" << lights[i]->color.z() << std::endl;
-        std::cout << "angle : " << lights[i]->coneAngle << std::endl;
-        std::cout << "max angle : " << lights[i]->maxAngle << std::endl;
-        std::cout << "distance : " << lights[i]->dist << std::endl;
-        std::cout << "distance max : " << lights[i]->maxDist << std::endl;*/
     }
     // Use texture unit 0 which contains sprite sheet
     program.setUniformValue("texture", 0);

@@ -80,11 +80,7 @@ void Room::UpdateEntities(){
             //entities[i]->Move((entities[i]->GetLastMove()+QVector2D(0,1))*0.0166);
         }
         if (entities[i]->isDead()){
-            std::cout << " ENTITE MORTE !!!!!!!!!!!!!" << std::endl;
-            //Movable* truc = entities[i];
             entities.erase(entities.begin()+i);
-            //delete truc;
-            std::cout << "APRES DELETE" << std::endl;
         }
     }
     if (boss2 != nullptr){
@@ -263,14 +259,10 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
             Pile* pile = dynamic_cast<Pile*> (pickups[i]);
             Player* p= dynamic_cast<Player*> (other);
             if(pile != nullptr && p != nullptr){
-                std::cout<< "Colision pile" << std::endl;
                 int idPile = -1;
                 Pile * pileJoueur = p->getPileSecondaire() ;
-                if(pileJoueur!= nullptr){
-                    idPile = pileJoueur->getID();
-                }
-                if(idPile==0){
-                    RangedPile *r = new RangedPile(p, QVector2D(pile->position.x(),pile->position.y()),pile->GetRange(),pile->GetConeAngle(),pile->getLifespan()/60,pile->GetDamage(),pile->renderer.GetTextCoords());
+                if(pileJoueur!= nullptr && dynamic_cast<RangedPile*>(pileJoueur)){
+                    RangedPile *r = new RangedPile(p, QVector2D(pile->position.x(),pile->position.y()),pileJoueur->GetRange(),pileJoueur->GetConeAngle(),pileJoueur->getLifespan()/60,pileJoueur->GetDamage(),pileJoueur->renderer.GetTextCoords());
                     r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
                     r->renderer.CreateGeometry();
                     r->canCollide = false;
@@ -278,8 +270,8 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
                     r->setLifespan(pileJoueur->getLifespan());
                     pickups.push_back(r);
                 }
-                else if(idPile==1){
-                    Pile * r = new LargerPile(p, QVector2D(pile->position.x(),pile->position.y()),pile->GetRange(),pile->GetConeAngle(),pile->getLifespan()/60,pile->GetDamage(),pile->renderer.GetTextCoords());
+                else if(pileJoueur!= nullptr && dynamic_cast<LargerPile*>(pileJoueur)){
+                    Pile * r = new LargerPile(p, QVector2D(pile->position.x(),pile->position.y()),pileJoueur->GetRange(),pileJoueur->GetConeAngle(),pileJoueur->getLifespan()/60,pileJoueur->GetDamage(),pileJoueur->renderer.GetTextCoords());
                     r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
                     r->renderer.CreateGeometry();
                     r->canCollide = false;

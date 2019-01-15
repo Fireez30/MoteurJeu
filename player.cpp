@@ -41,7 +41,6 @@ Player::Player(int h,float x,float y, float sp,int cd,QVector2D dir,int animtime
     splayer = new QMediaPlayer;
     splayer->setMedia(QUrl::fromLocalFile("damage.wav"));
     splayer->setVolume(50);
-    std::cout << "spriteModif size " << spriteModif.nbOfSprites() << std::endl;
 }
 
 void Player::Input(){

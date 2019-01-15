@@ -12,7 +12,6 @@ void Camera::moveCamera(QVector3D trans){
         u->position -=trans;
         u->renderer.SetPosition(u->position);
         u->renderer.CreateGeometry();
-        std::cout << "Nouvelle pos : " << u->position.x() << " / " << u->position.y() << std::endl;
     }
 }
 

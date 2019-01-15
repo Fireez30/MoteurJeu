@@ -47,6 +47,4 @@ void MovAnimator::timerEvent(QTimerEvent *){
         Object->renderer.CreateGeometry();
         moveAnimTimer.start(moveAnimTime,this);
     }
-  //  std::cout << "Walking = " << walking << std::endl;
-  //  std::cout << "(movanimator) Renderer: " << Object->renderer.spriteCoords.x() << " " << Object->renderer.spriteCoords.y() << std::endl;
 }

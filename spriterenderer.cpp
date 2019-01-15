@@ -107,14 +107,10 @@ void SpriteRenderer::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
     //qDebug() << "SpriteRender - Render";
     // Tell OpenGL which VBOs to use
     if (arrayBuf.bind() == false){
-        std::cout << "AHHH!\n";
-        std::cout << "AHHH!\n";
-        std::cout << "AHHH!\n";
+        std::cout << "Sprite renderer : arrayBind bug" << std::endl;
     };
     if (indexBuf.bind() == false){
-        std::cout << "EHHH!\n";
-        std::cout << "EHHH!\n";
-        std::cout << "EHHH!\n";
+        std::cout << "Sprite renderer : indexBind bug" << std::endl;
     };
     // Offset for position
     quintptr offset = 0;
