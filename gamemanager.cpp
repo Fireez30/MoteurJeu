@@ -179,6 +179,10 @@ void GameManager::timerEvent(QTimerEvent *)
     scene[camera->getCurrentRoom()]->affectEnemiesInRange();
     scene[camera->getCurrentRoom()]->UpdateEntities();
     player->Update();
+    if(player->getPileSecondaire()==nullptr)
+        UI[3]->renderer.setWidth(0);
+    else
+        UI[3]->renderer.setWidth(player->getPileSecondaire()->getRatioLife()*7);
     // !! if player HP is 1 , change shaders to color the scren in red ?
     if (player->isDead()){
         this->close();
@@ -408,9 +412,11 @@ void GameManager::initializeGL()
     camera->setRooms(scene);
     camera->setCurrentRoom(x,y);
     timer.start(1000/max_fps, this);
+    UI.push_back(new UiObject(162-9,83+7,0,QVector2D(0.0/16.0,0), QVector2D(1.0/16.0,0)));
     UI.push_back(new UiObject(162-10,83+7,0,QVector2D(0.0/16.0,0), QVector2D(1.0/16.0,0)));
     UI.push_back(new UiObject(162-11,83+7,0,QVector2D(0.0/16.0,0), QVector2D(1.0/16.0,0)));
-    UI.push_back(new UiObject(162-12,83+7,0,QVector2D(0.0/16.0,0), QVector2D(1.0/16.0,0)));
+    UI.push_back(new UiObject(162+5,83+7,0,QVector2D(13.0/16.0,5.0/16.0), QVector2D(13.0/16.0,5.0/16.0)));
+    UI[3]->renderer.setWidth(7.0f);
 }
 
 void GameManager::initShaders()

@@ -165,12 +165,12 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
     if (d4){//si la salle que l'on lit contient une entité
 
         for (tinyxml2::XMLElement* e4 = d4->FirstChildElement("RangedPile"); e4 != nullptr; e4 = e4->NextSiblingElement("RangedPile")){//Liste des piles
-            RangedPile *r = new RangedPile(p,QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),e4->FloatAttribute("range"),e4->FloatAttribute("coneangle"),e4->IntAttribute("lifetime"),e4->IntAttribute("damage"),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0));
+            RangedPile *r = new RangedPile(p,QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),e4->FloatAttribute("range"),e4->FloatAttribute("coneangle"),e4->IntAttribute("lifetime"),e4->IntAttribute("lifetime"),e4->IntAttribute("damage"),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0));
             r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
             pickups.push_back(r);
         }
         for (tinyxml2::XMLElement* e4 = d4->FirstChildElement("LargerPile"); e4 != nullptr; e4 = e4->NextSiblingElement("LargerPile")){//Liste des piles
-            LargerPile *r = new LargerPile(p,QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),e4->FloatAttribute("range"),e4->FloatAttribute("coneangle"),e4->IntAttribute("lifetime"),e4->IntAttribute("damage"),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0));
+            LargerPile *r = new LargerPile(p,QVector2D(e4->IntAttribute("x")/16.0+xRoom,(-1*e4->IntAttribute("y")/16.0)+yRoom),e4->FloatAttribute("range"),e4->FloatAttribute("coneangle"),e4->IntAttribute("lifetime"),e4->IntAttribute("lifetime"),e4->IntAttribute("damage"),QVector2D(e4->IntAttribute("xtextcoord")/16.0,e4->IntAttribute("ytextcoord")/16.0));
             r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
             pickups.push_back(r);
         }
@@ -262,7 +262,7 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
                 int idPile = -1;
                 Pile * pileJoueur = p->getPileSecondaire() ;
                 if(pileJoueur!= nullptr && dynamic_cast<RangedPile*>(pileJoueur)){
-                    RangedPile *r = new RangedPile(p, QVector2D(pile->position.x(),pile->position.y()),pileJoueur->GetRange(),pileJoueur->GetConeAngle(),pileJoueur->getLifespan()/60,pileJoueur->GetDamage(),pileJoueur->renderer.GetTextCoords());
+                    RangedPile *r = new RangedPile(p, QVector2D(pile->position.x(),pile->position.y()),pileJoueur->GetRange(),pileJoueur->GetConeAngle(),pileJoueur->getLifespan()/60,pileJoueur->getMaxLifespan()/60,pileJoueur->GetDamage(),pileJoueur->renderer.GetTextCoords());
                     r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
                     r->renderer.CreateGeometry();
                     r->canCollide = false;
@@ -271,7 +271,7 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
                     pickups.push_back(r);
                 }
                 else if(pileJoueur!= nullptr && dynamic_cast<LargerPile*>(pileJoueur)){
-                    Pile * r = new LargerPile(p, QVector2D(pile->position.x(),pile->position.y()),pileJoueur->GetRange(),pileJoueur->GetConeAngle(),pileJoueur->getLifespan()/60,pileJoueur->GetDamage(),pileJoueur->renderer.GetTextCoords());
+                    Pile * r = new LargerPile(p, QVector2D(pile->position.x(),pile->position.y()),pileJoueur->GetRange(),pileJoueur->GetConeAngle(),pileJoueur->getLifespan()/60,pileJoueur->getMaxLifespan()/60,pileJoueur->GetDamage(),pileJoueur->renderer.GetTextCoords());
                     r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
                     r->renderer.CreateGeometry();
                     r->canCollide = false;

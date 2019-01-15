@@ -25,6 +25,7 @@ protected :
     QVector3D position;
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
+    float width;
     //QOpenGLTexture *texture;
 
     float time;
@@ -51,6 +52,7 @@ public :
     void SetYSpriteCoord(float y);
     void CreateGeometry();
     void Render(QOpenGLShaderProgram *program,QOpenGLTexture *text);
+    void setWidth(float f);
 };
 
 #endif // SPRITERENDERER_H

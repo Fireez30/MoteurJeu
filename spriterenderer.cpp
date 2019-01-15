@@ -2,7 +2,7 @@
 #include <iostream>
 #include <QDebug>
 
-SpriteRenderer::SpriteRenderer(QVector3D pos):spritePath("sprites.png"),timer(),spriteCoords(0,0),indexBuf(QOpenGLBuffer::IndexBuffer),time(100),position(pos){
+SpriteRenderer::SpriteRenderer(QVector3D pos):spritePath("sprites.png"),timer(),spriteCoords(0,0),indexBuf(QOpenGLBuffer::IndexBuffer),time(100),position(pos),width(1){
     initializeOpenGLFunctions();
     arrayBuf.create();
     indexBuf.create();
@@ -10,7 +10,7 @@ SpriteRenderer::SpriteRenderer(QVector3D pos):spritePath("sprites.png"),timer(),
     initText=spriteCoords;
 }
 
-SpriteRenderer::SpriteRenderer(std::string p,QVector2D coords,float t,QVector3D pos):spritePath(p),timer(),spriteCoords(coords),indexBuf(QOpenGLBuffer::IndexBuffer),time(t),position(pos){
+SpriteRenderer::SpriteRenderer(std::string p,QVector2D coords,float t,QVector3D pos):spritePath(p),timer(),spriteCoords(coords),indexBuf(QOpenGLBuffer::IndexBuffer),time(t),position(pos),width(1){
     initializeOpenGLFunctions();
     arrayBuf.create();
     indexBuf.create();
@@ -85,9 +85,9 @@ void SpriteRenderer::CreateGeometry(){
     //compute a VertexData array
     VertexData v2[4] ={
         {position,QVector2D(spriteCoords.x(),spriteCoords.y()+1.0/16.0)},
-        {QVector3D(position.x()+1,position.y(),0),QVector2D(spriteCoords.x()+1.0/16.0,spriteCoords.y()+1.0/16.0)},
+        {QVector3D(position.x()+width,position.y(),0),QVector2D(spriteCoords.x()+1.0/16.0,spriteCoords.y()+1.0/16.0)},
         {QVector3D(position.x(),position.y()+1,0),spriteCoords },
-        {QVector3D(position.x()+1,position.y()+1,0),QVector2D(spriteCoords.x()+1.0/16.0,spriteCoords.y())}
+        {QVector3D(position.x()+width,position.y()+1,0),QVector2D(spriteCoords.x()+1.0/16.0,spriteCoords.y())}
     };
     //compute indices
     GLushort indices[6] = {//2 triangles
@@ -133,4 +133,9 @@ void SpriteRenderer::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
 
     // Draw cube geometry using indices from VBO 1
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+}
+
+void SpriteRenderer::setWidth(float f){
+    width = f;
+    this->CreateGeometry();
 }

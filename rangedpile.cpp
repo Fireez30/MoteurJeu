@@ -2,11 +2,11 @@
 #include "boss_torche.h"
 #include <iostream>
 
-RangedPile::RangedPile(Player* p,QVector2D pos,QVector2D text):Pile(p,pos,6.25,50,60,1,text,0,QVector3D(3,0,0)){
+RangedPile::RangedPile(Player* p,QVector2D pos,QVector2D text):Pile(p,pos,6.25,50,60,60,1,text,0,QVector3D(3,0,0)){
 
 }
 
-RangedPile::RangedPile(Player* p,QVector2D pos,float r, float c, int l, int d,QVector2D text):Pile(p,pos,r,c,l,d,text,0,QVector3D(3,0,0)){
+RangedPile::RangedPile(Player* p,QVector2D pos,float r, float c, int l,int maxL, int d,QVector2D text):Pile(p,pos,r,c,l,maxL,d,text,0,QVector3D(3,0,0)){
 
 }
 
