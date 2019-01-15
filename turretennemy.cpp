@@ -39,7 +39,7 @@ void TurretEnnemi::IA(){
 }
 
 void TurretEnnemi::Update(){
-    if (affected)
+    if (affected && !player->getHoldKey())
     {
         timerTime = initTime * 5;
     }
