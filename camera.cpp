@@ -3,9 +3,17 @@
 #include "camera.h"
 
 Camera::Camera():position(-162.5,-83.5,-7.5){}
+Camera::Camera(std::vector<UiObject*>* u):position(-162.5,-83.5,-7.5),ui(u){}
 
 void Camera::moveCamera(QVector3D trans){
     position+=trans;
+    for(int i=0;i<ui->size();i++){
+        UiObject* u = ui->at(i);
+        u->position -=trans;
+        u->renderer.SetPosition(u->position);
+        u->renderer.CreateGeometry();
+        std::cout << "Nouvelle pos : " << u->position.x() << " / " << u->position.y() << std::endl;
+    }
 }
 
 QVector3D Camera::getPosition(){return position;}

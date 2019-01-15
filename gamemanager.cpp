@@ -196,7 +196,7 @@ void GameManager::timerEvent(QTimerEvent *)
         }
     }
 
-    if (player->getHealth() == 1){
+    else if (player->getHealth() == 2){
         if (!UI[0]->MainTextBound()){
             UI[0]->BindMainTexture();
         }
@@ -353,7 +353,7 @@ void GameManager::initializeGL()
     player = new Player();
     lights.push_back(player->getLight());
     lights.push_back(player->getLampeLight());
-    camera = new Camera();
+    camera = new Camera(&UI);
     //srand(484642185) (salle couloir)
     //srand (14562) seed de base
     //srand(132355) seed salle 4
@@ -409,9 +409,9 @@ void GameManager::initializeGL()
     camera->setRooms(scene);
     camera->setCurrentRoom(x,y);
     timer.start(1000/max_fps, this);
-    UI.push_back(new UiObject(200,200,-2,QVector2D(0,0), QVector2D(1,0)));
-    UI.push_back(new UiObject(300,200,-2,QVector2D(0,0), QVector2D(1,0)));
-    UI.push_back(new UiObject(400,200,-2,QVector2D(0,0), QVector2D(1,0)));
+    UI.push_back(new UiObject(162-10,83+7,0,QVector2D(0.0/16.0,0), QVector2D(1.0/16.0,0)));
+    UI.push_back(new UiObject(162-11,83+7,0,QVector2D(0.0/16.0,0), QVector2D(1.0/16.0,0)));
+    UI.push_back(new UiObject(162-12,83+7,0,QVector2D(0.0/16.0,0), QVector2D(1.0/16.0,0)));
 }
 
 void GameManager::initShaders()
@@ -533,20 +533,25 @@ void GameManager::paintGL()
 
     texture->bind();
 
-
-    program.bind();
     // Calculate model view transformation
     QMatrix4x4 matrix;
     QVector3D pos = camera->getPosition();
     matrix.translate(pos.x(), pos.y(), pos.z());
     matrix.rotate(rotation);
+    uiprogram.bind();
+    uiprogram.setUniformValue("mvp_matrix", projection * matrix);
 
+    for (int i = 0; i < UI.size(); i++){
+        UI[i]->Render(&uiprogram,texture);
+    }
+    program.bind();
     QVector2D size = QVector2D(this->width(),this->height());
     player->ChangeOrientation(this->mapFromGlobal(QCursor::pos()),matrix,projection,size);
     //std::cout << "Player life : " << player->getHealth() << std::endl;
 
     // Set modelview-projection matrix
     program.setUniformValue("mvp_matrix", projection * matrix);
+
 
     QRect vp = QRect(0,0,size.x(),size.y());
     //program.setUniformValue("playerpos",QVector4D(screenpos.x()+24,720-(screenpos.y()+24),0,0));
@@ -595,16 +600,8 @@ void GameManager::paintGL()
         std::cout << "distance : " << lights[i]->dist << std::endl;
         std::cout << "distance max : " << lights[i]->maxDist << std::endl;*/
     }
-    //std::cout << "Pile secondaire null ?  " <<  (player->getPileSecondaire() == nullptr) << std::endl;
     // Use texture unit 0 which contains sprite sheet
     program.setUniformValue("texture", 0);
     player->Render(&program,texture);
     scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
-
-    uiprogram.bind();
-    uiprogram.setUniformValue("texture", 0);
-    for (int i = 0; i < UI.size(); i++){
-        UI[i]->Render(&uiprogram,texture);
-    }
-
 }

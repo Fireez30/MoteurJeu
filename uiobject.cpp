@@ -1,6 +1,6 @@
 #include "uiobject.h"
 
-UiObject::UiObject(int x, int y, int z,QVector2D base, QVector2D alt):Base2D(x,y,z,base),AltTexture(alt),useMainText(true),useAltText(true),MainTexture(base){
+UiObject::UiObject(int x, int y, int z,QVector2D base, QVector2D alt):Base2D(x,y,z,base),posFromCam(x,y),AltTexture(alt),useMainText(true),useAltText(false),MainTexture(base){
     renderer.CreateGeometry();
 }
 

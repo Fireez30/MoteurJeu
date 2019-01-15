@@ -84,7 +84,8 @@ void SpriteRenderer::CreateGeometry(){
     //initTextures();
     //compute a VertexData array
     VertexData v2[4] ={
-        {position,QVector2D(spriteCoords.x(),spriteCoords.y()+1.0/16.0)},{QVector3D(position.x()+1,position.y(),0),QVector2D(spriteCoords.x()+1.0/16.0,spriteCoords.y()+1.0/16.0)},
+        {position,QVector2D(spriteCoords.x(),spriteCoords.y()+1.0/16.0)},
+        {QVector3D(position.x()+1,position.y(),0),QVector2D(spriteCoords.x()+1.0/16.0,spriteCoords.y()+1.0/16.0)},
         {QVector3D(position.x(),position.y()+1,0),spriteCoords },
         {QVector3D(position.x()+1,position.y()+1,0),QVector2D(spriteCoords.x()+1.0/16.0,spriteCoords.y())}
     };

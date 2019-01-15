@@ -270,7 +270,7 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
                     idPile = pileJoueur->getID();
                 }
                 if(idPile==0){
-                    RangedPile *r = new RangedPile(p,QVector2D(pile->position.x(),pile->position.y()),pileJoueur->renderer.GetTextCoords());
+                    RangedPile *r = new RangedPile(p, QVector2D(pile->position.x(),pile->position.y()),pile->GetRange(),pile->GetConeAngle(),pile->getLifespan()/60,pile->GetDamage(),pile->renderer.GetTextCoords());
                     r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
                     r->renderer.CreateGeometry();
                     r->canCollide = false;
@@ -279,7 +279,7 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
                     pickups.push_back(r);
                 }
                 else if(idPile==1){
-                    LargerPile *r = new LargerPile(p,QVector2D(pile->position.x(),pile->position.y()),pileJoueur->renderer.GetTextCoords());
+                    Pile * r = new LargerPile(p, QVector2D(pile->position.x(),pile->position.y()),pile->GetRange(),pile->GetConeAngle(),pile->getLifespan()/60,pile->GetDamage(),pile->renderer.GetTextCoords());
                     r->setCollider(Hitbox(QVector2D(r->position.x(),r->position.y()),1,1));
                     r->renderer.CreateGeometry();
                     r->canCollide = false;

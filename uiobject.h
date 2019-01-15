@@ -11,6 +11,7 @@ protected:
     bool useMainText;
     bool useAltText;
 public:
+    QVector2D posFromCam;
     UiObject(const UiObject&) = delete;
     UiObject(int x, int y, int z,QVector2D base, QVector2D alt);
     void BindAltTexture();

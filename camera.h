@@ -7,11 +7,13 @@
 class Room;
 
 #include "room.h"
+#include "uiobject.h"
 
 class Camera{
 
 public :
     Camera();
+    Camera(std::vector<UiObject*>* u);
     void moveCamera(QVector3D trans);
     QVector3D getPosition();
     int getCurrentRoom();
@@ -23,6 +25,7 @@ private :
     QVector3D position;
     int indexRoom;
     std::vector<Room*> scene;
+    std::vector<UiObject*>* ui;
 };
 
 #endif // CAMERA_H
