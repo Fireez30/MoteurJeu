@@ -17,21 +17,21 @@ Ghost::Ghost(Room* r,Player* p,QVector2D pos): Ennemi(pos, QVector2D(0,0), QVect
 void Ghost::startShootTimer(){
     shoottimer.start(timerTime*1000,this);
 }
-
+/*
 void Ghost::timerEvent(QTimerEvent *){
     canShoot = true;
     shoottimer.stop();
 }
-
+*/
 void Ghost::IA(){
     direction = QVector2D(player->position.x() - position.x(), player->position.y() - position.y());
     direction.normalize();
     direction *= speed;
     this->Move(direction);//collision checvk a faire
     if (player->getHoldKey()){
-        if (projectiles.size() == 0 && canShoot){
-            canShoot = false;
-            startTimer();
+        if (projectiles.size() == 0 /*&& canShoot*/){
+            //canShoot = false;
+            //startShootTimer();
             projectiles.push_back(new Projectile(QVector2D(position.x(),position.y()),QVector2D(4/16.0,13/16.0),0,1,1,1,QVector2D(direction.x(),direction.y())));
         }
     }

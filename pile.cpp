@@ -6,7 +6,7 @@ Pile::Pile(QVector2D pos,QVector2D text):Interactable2D (pos,text,1),range(1),co
 
 }
 
-Pile::Pile(QVector2D pos,float r, float c, int l, int maxL, int d,QVector2D text, int id,QVector3D thecolor):Interactable2D (pos,text,3),range(r),coneAngle(c),lifespan(l*60),damage(d),idPile(id),color(thecolor),ls(pos,thecolor,0.0005f,0.5f,180,180.0f,QVector3D(1,0,0),1.0f,1.2f),maxLife(maxL*60){
+Pile::Pile(QVector2D pos,float r, float c, int l, int maxL, int d,QVector2D text, int id,QVector3D thecolor):Interactable2D (pos,text,3),range(r),coneAngle(c),lifespan(l),damage(d),idPile(id),color(thecolor),ls(pos,thecolor,0.0005f,0.5f,180,180.0f,QVector3D(1,0,0),1.0f,1.2f),maxLife(maxL){
 }
 
 float Pile::GetRange(){

@@ -2,7 +2,7 @@
 #include "boss_torche.h"
 #include <iostream>
 
-LargerPile::LargerPile(QVector2D pos):Pile(pos,7,90,90,90,1,QVector2D(13.0/16.0,13.0/16.0),1,QVector3D(1,3,1)){
+LargerPile::LargerPile(QVector2D pos):Pile(pos,7,90,60000,60000,1,QVector2D(13.0/16.0,13.0/16.0),1,QVector3D(1,3,1)){
 
 }
 

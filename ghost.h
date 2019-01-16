@@ -13,7 +13,7 @@ public :
     Ghost(Room* r,Player* p, QVector2D pos);
     void IA() override;
     int OnTriggerEnter(Interactable2D* other) override;
-    void timerEvent(QTimerEvent *e) override;
+   // void timerEvent(QTimerEvent *e) override;
     void Update() override;
 
 private :
