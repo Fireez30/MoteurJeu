@@ -96,6 +96,7 @@ void Movable::Damage(int d){
         }
         canCollide = false;
         startTimer();
+        std::cout << "Vie : " << health << std::endl;
     }
     else{
     }

@@ -2,11 +2,11 @@
 #include "player.h"
 #include <iostream>
 
-Pile::Pile(Player* p,QVector2D pos,QVector2D text):Interactable2D (pos,text,1),range(1),coneAngle(30),lifespan(60*60),damage(1),color(1,1,1),ls(pos,QVector3D(0,1,0),0.0005f,0.5f,180,180.0f,QVector3D(1,0,0),1,1.2f),player(p),maxLife(lifespan){
+Pile::Pile(QVector2D pos,QVector2D text):Interactable2D (pos,text,1),range(1),coneAngle(30),lifespan(60*60),damage(1),color(1,1,1),ls(pos,QVector3D(0,1,0),0.0005f,0.5f,180,180.0f,QVector3D(1,0,0),1,1.2f),maxLife(lifespan){
 
 }
 
-Pile::Pile(Player* p,QVector2D pos,float r, float c, int l, int maxL, int d,QVector2D text, int id,QVector3D thecolor):Interactable2D (pos,text,3),range(r),coneAngle(c),lifespan(l*60),damage(d),idPile(id),color(thecolor),ls(pos,thecolor,0.0005f,0.5f,180,180.0f,QVector3D(1,0,0),1.0f,1.2f),player(p),maxLife(maxL*60){
+Pile::Pile(QVector2D pos,float r, float c, int l, int maxL, int d,QVector2D text, int id,QVector3D thecolor):Interactable2D (pos,text,3),range(r),coneAngle(c),lifespan(l*60),damage(d),idPile(id),color(thecolor),ls(pos,thecolor,0.0005f,0.5f,180,180.0f,QVector3D(1,0,0),1.0f,1.2f),maxLife(maxL*60){
 }
 
 float Pile::GetRange(){

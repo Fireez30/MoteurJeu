@@ -9,8 +9,8 @@ class LargerPile : public Pile{
 
 public :
 
-   LargerPile(Player* p,QVector2D pos,QVector2D text);
-   LargerPile(Player* p,QVector2D pos,float r,float c, int l,int maxL,int d,QVector2D text);
+   LargerPile(QVector2D pos);
+   LargerPile(QVector2D pos,float r,float c, int l,int maxL,int d,QVector2D text);
    void Affect(Movable* m) override;
 };
 

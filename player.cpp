@@ -19,7 +19,7 @@ Player::Player():Movable(3,1,0,6,2,QVector2D(162,83),QVector2D(0.0,8.0/16.0),200
     spriteModif.AddSprite(QVector2D(0.0,8.0/16.0));//basic sprite orientation (facing down)
     spriteModif.AddSprite(QVector2D(0.0,9.0/16.0));//facing left
     orientationRatio = 0.7;
-    principale = new MainPile(this,QVector2D(0,0),QVector2D(0,0));
+    principale = new MainPile(QVector2D(0,0),QVector2D(0,0));
     principale->changeLight();
     secondaire = nullptr;
     movAnim->StartAnimator();
@@ -35,7 +35,7 @@ Player::Player(int h,float x,float y, float sp,int cd,QVector2D dir,int animtime
     spriteModif.AddSprite(QVector2D(0.0,10.0/16.0));//facing right
     spriteModif.AddSprite(QVector2D(0.0,11.0/16.0));//facing up
     orientationRatio = 0.7;
-    principale = new MainPile(this,QVector2D(0,0),QVector2D(0,0));
+    principale = new MainPile(QVector2D(0,0),QVector2D(0,0));
     secondaire = nullptr;
     movAnim->StartAnimator();
     splayer = new QMediaPlayer;
@@ -149,13 +149,13 @@ float Player::getAngle(){
 
 void Player::SetPileSecondaire(Pile *s){
     if(dynamic_cast<RangedPile*>(s)){
-        Pile * p = new RangedPile(this, QVector2D(GetPosition().x(),GetPosition().y()),s->GetRange(),s->GetConeAngle(),s->getLifespan()/60,s->getMaxLifespan()/60,s->GetDamage(),s->renderer.GetTextCoords());
+        Pile * p = new RangedPile(QVector2D(GetPosition().x(),GetPosition().y()),s->GetRange(),s->GetConeAngle(),s->getLifespan()/60,s->getMaxLifespan()/60,s->GetDamage(),s->renderer.GetTextCoords());
         p->canCollide = false;
         p->changeLight();
         secondaire = p;
     }
     else if(dynamic_cast<LargerPile*>(s)){
-        Pile * p = new LargerPile(this, QVector2D(GetPosition().x(),GetPosition().y()),s->GetRange(),s->GetConeAngle(),s->getLifespan()/60,s->getMaxLifespan()/60,s->GetDamage(),s->renderer.GetTextCoords());
+        Pile * p = new LargerPile(QVector2D(GetPosition().x(),GetPosition().y()),s->GetRange(),s->GetConeAngle(),s->getLifespan()/60,s->getMaxLifespan()/60,s->GetDamage(),s->renderer.GetTextCoords());
         p->canCollide = false;
         p->changeLight();
         secondaire = p;
