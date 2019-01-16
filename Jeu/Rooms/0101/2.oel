@@ -381,9 +381,9 @@
     <tile x="24" y="7" tx="4" ty="6" />
   </Doors>
   <Entite>
-    <TurretEnnemi id="0" x="288" y="48" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="0" directiony="-1" vitesse="0" animtime="200" nbframes="3" targetplayer="0" shootcooldown="0.6" projspeed="1" projtime="4" />
-    <TurretEnnemi id="1" x="96" y="176" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="0" directiony="1" vitesse="0" animtime="200" nbframes="3" targetplayer="0" shootcooldown="0.6" projspeed="1" projtime="4" />
-    <LargerPile id="2" x="352" y="208" xtextcoord="13" ytextcoord="13" type="0" range="7" coneangle="90" lifetime="90" damage="1" />
+    <TurretEnnemi id="0" x="288" y="48" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="0" directiony="-1" vitesse="0" animtime="200" nbframes="3" targetplayer="0" shootcooldown="0.6" projspeed="1" projtime="4" damagecd="10" />
+    <TurretEnnemi id="1" x="96" y="176" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="0" directiony="1" vitesse="0" animtime="200" nbframes="3" targetplayer="0" shootcooldown="0.6" projspeed="1" projtime="4" damagecd="10" />
+    <LargerPile id="2" x="352" y="208" type="0" />
   </Entite>
   <Décors exportMode="Bitstring">0000000000000000000000000
 0000000000000000000000000

@@ -377,7 +377,7 @@ void GameManager::initializeGL()
         for(int i2=0;i2<maxdist*2;i2++)
             minMap[i][i2]=0;
     }
-    rooms->push_back({"start",x,y});//stockage initial
+    rooms->push_back({"start.oel",x,y});//stockage initial
     minMap[x][y] = 2;
     rooms->push_back({"boss.oel",x,y+1});//A CHANGER TO BOSS.OEL
     minMap[x][y+1] = 3;
