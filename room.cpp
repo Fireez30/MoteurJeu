@@ -1,7 +1,7 @@
 #include "room.h"
 #include <iostream>
 #include "rangedpile.h"
-#include "ennemi.h"
+#include "ghost.h"
 #include <math.h>
 #include "largerpile.h"
 #include "key.h"
@@ -182,7 +182,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
             pickups.push_back(r);
         }
         for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Ghost"); e5 != nullptr; e5 = e5->NextSiblingElement("Ghost")){//Liste des Ghosts
-            Ennemi* e =new Ennemi(this,p,e5->IntAttribute("vie"),e5->IntAttribute("directionx"),e5->IntAttribute("directiony"),e5->FloatAttribute("vitesse"),e5->IntAttribute("damagecd"),QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),e5->IntAttribute("animtime"),e5->IntAttribute("nbFrames"),false);
+            Ghost* e =new Ghost(this,p,e5->IntAttribute("vie"),e5->IntAttribute("directionx"),e5->IntAttribute("directiony"),e5->FloatAttribute("vitesse"),e5->IntAttribute("damagecd"),QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom),QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),e5->IntAttribute("animtime"),e5->IntAttribute("nbFrames"),false);
             e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()),1,1));
             entities.push_back(e);
         }//fin for piles, rajouter des fors pour les autres entités

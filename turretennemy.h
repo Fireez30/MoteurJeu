@@ -1,17 +1,17 @@
 #ifndef TURRETENNEMY_H
 #define TURRETENNEMY_H
 
-#include "movable.h"
+#include "ennemi.h"
 #include "player.h"
 #include "room.h"
 #include "projectile.h"
 
-class TurretEnnemi : public Movable{
+class TurretEnnemi : public Ennemi{
 
 public :
     TurretEnnemi(int h,float x, float y, float s,QVector2D pos,QVector2D text);
     TurretEnnemi(Room* r,Player* p,int h, float x, float y, float s,int cd,QVector2D pos,QVector2D text,int animtime,int nbframes,bool animstatus,bool targetplayer,float cooldown,float projspeed,int projtime);
-    void IA();
+    void IA() override;
     int OnTriggerEnter(Interactable2D* other) override;
     void timerEvent(QTimerEvent *e) override;
     void Update() override;
