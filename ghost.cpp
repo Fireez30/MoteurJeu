@@ -1,12 +1,12 @@
 #include "ghost.h"
 #include <iostream>
 
-Ghost::Ghost(int h,float x, float y, float s,QVector2D pos,QVector2D text): Ennemi(pos,QVector2D(0,0),text,0,0,0,0,0,true){
+Ghost::Ghost(int h,float x, float y, float s,QVector2D pos,QVector2D text): Ennemi(pos,QVector2D(0,0),text,0,0,0,0,0,true),canShoot(true),timerTime(){
     movAnim->StartAnimator();
     movAnim->Walk();
 }
 
-Ghost::Ghost(Room* r,Player* p,QVector2D pos): Ennemi(pos, QVector2D(0,0), QVector2D(6.0/16.0,12.0/16.0),10, 2.5, 1, 200,3,true){
+Ghost::Ghost(Room* r,Player* p,QVector2D pos): Ennemi(pos, QVector2D(0,0), QVector2D(6.0/16.0,12.0/16.0),10, 2.5, 1, 200,3,true),canShoot(true){
     this->player = p;
     this->room = r;
     //startTimer();
@@ -14,11 +14,14 @@ Ghost::Ghost(Room* r,Player* p,QVector2D pos): Ennemi(pos, QVector2D(0,0), QVect
     movAnim->Walk();
 }
 
-void Ghost::startTimer(){
-    timer.start(1000,this);
-
+void Ghost::startShootTimer(){
+    shoottimer.start(timerTime*1000,this);
 }
 
+void Ghost::timerEvent(QTimerEvent *){
+    canShoot = true;
+    shoottimer.stop();
+}
 
 void Ghost::IA(){
     direction = QVector2D(player->position.x() - position.x(), player->position.y() - position.y());
@@ -26,7 +29,9 @@ void Ghost::IA(){
     direction *= speed;
     this->Move(direction);//collision checvk a faire
     if (player->getHoldKey()){
-        if (projectiles.size() == 0){
+        if (projectiles.size() == 0 && canShoot){
+            canShoot = false;
+            startTimer();
             projectiles.push_back(new Projectile(QVector2D(position.x(),position.y()),QVector2D(4/16.0,13/16.0),0,1,1,1,QVector2D(direction.x(),direction.y())));
         }
     }
