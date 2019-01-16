@@ -165,8 +165,9 @@ void GameManager::timerEvent(QTimerEvent *)
     }
     else{
         player->movAnim->Walk();
-        QVector2D vector(transX,0);
+        QVector2D vector(transX,transY);
         vector.normalize();
+        vector.setY(0);
         vector *= player->GetSpeed();
         player->Move(vector);
         scene[camera->getCurrentRoom()]->TriggerCheck(player);
@@ -176,8 +177,9 @@ void GameManager::timerEvent(QTimerEvent *)
             player->ResetMove();
         }
         player->movAnim->Walk();
-        vector = QVector2D(0,transY);
+        vector = QVector2D(transX,transY);
         vector.normalize();
+        vector.setX(0);
         vector *= player->GetSpeed();
         player->Move(vector);
         scene[camera->getCurrentRoom()]->TriggerCheck(player);
