@@ -382,7 +382,7 @@
   </Doors>
   <Entite>
     <Ghost id="0" x="320" y="80" />
-    <TurretEnnemi id="1" x="320" y="176" directionx="0" directiony="0" targetplayer="0" />
+    <TurretEnnemi id="1" x="320" y="176" directionx="0" directiony="0" targetplayer="1" />
     <RangedPile id="2" x="64" y="48" type="0" />
     <LargerPile id="3" x="64" y="176" type="0" />
   </Entite>
