@@ -49,19 +49,19 @@ void Room::Turn(int i){
     if (x >= 0){
         if (y >= 0)
         {
-            result += QVector2D(1.5,-1.5); //result += QVector2D(0,-1.5);
+            result += QVector2D(1,-1); //result += QVector2D(0,-1.5);
         }
         else {
-            result += QVector2D(1.5,1.5); //result += QVector2D(1.5,0);
+            result += QVector2D(1,1); //result += QVector2D(1.5,0);
         }
     }
     else if (x < 0 ){
         if (y >= 0)
         {
-            result += QVector2D(-1.5,-1.5); //result += QVector2D(1.5,0);
+            result += QVector2D(-1,-1); //result += QVector2D(1.5,0);
         }
         else {
-            result += QVector2D(-1.5,1.5); //result += QVector2D(-1.5,0);
+            result += QVector2D(-1,1); //result += QVector2D(-1.5,0);
         }
     }
     result.normalize();

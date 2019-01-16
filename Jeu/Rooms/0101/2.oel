@@ -46,6 +46,7 @@
     <tile x="4" y="13" tx="9" ty="0" />
     <tile x="5" y="1" tx="9" ty="0" />
     <tile x="5" y="2" tx="9" ty="0" />
+    <tile x="5" y="3" tx="9" ty="0" />
     <tile x="5" y="4" tx="9" ty="0" />
     <tile x="5" y="5" tx="9" ty="0" />
     <tile x="5" y="6" tx="9" ty="0" />
@@ -53,6 +54,7 @@
     <tile x="5" y="8" tx="9" ty="0" />
     <tile x="5" y="9" tx="9" ty="0" />
     <tile x="5" y="10" tx="9" ty="0" />
+    <tile x="5" y="11" tx="9" ty="0" />
     <tile x="5" y="12" tx="9" ty="0" />
     <tile x="5" y="13" tx="9" ty="0" />
     <tile x="6" y="1" tx="9" ty="0" />
@@ -210,6 +212,7 @@
     <tile x="18" y="13" tx="9" ty="0" />
     <tile x="19" y="1" tx="9" ty="0" />
     <tile x="19" y="2" tx="9" ty="0" />
+    <tile x="19" y="3" tx="9" ty="0" />
     <tile x="19" y="4" tx="9" ty="0" />
     <tile x="19" y="5" tx="9" ty="0" />
     <tile x="19" y="6" tx="9" ty="0" />
@@ -217,6 +220,7 @@
     <tile x="19" y="8" tx="9" ty="0" />
     <tile x="19" y="9" tx="9" ty="0" />
     <tile x="19" y="10" tx="9" ty="0" />
+    <tile x="19" y="11" tx="9" ty="0" />
     <tile x="19" y="12" tx="9" ty="0" />
     <tile x="19" y="13" tx="9" ty="0" />
     <tile x="20" y="1" tx="9" ty="0" />
@@ -296,8 +300,6 @@
     <tile x="4" y="11" tx="8" ty="0" />
     <tile x="4" y="14" tx="10" ty="0" />
     <tile x="5" y="0" tx="10" ty="0" />
-    <tile x="5" y="3" tx="8" ty="0" />
-    <tile x="5" y="11" tx="8" ty="0" />
     <tile x="5" y="14" tx="10" ty="0" />
     <tile x="6" y="0" tx="10" ty="0" />
     <tile x="6" y="14" tx="10" ty="0" />
@@ -342,8 +344,6 @@
     <tile x="18" y="0" tx="10" ty="0" />
     <tile x="18" y="14" tx="10" ty="0" />
     <tile x="19" y="0" tx="10" ty="0" />
-    <tile x="19" y="3" tx="8" ty="0" />
-    <tile x="19" y="11" tx="8" ty="0" />
     <tile x="19" y="14" tx="10" ty="0" />
     <tile x="20" y="0" tx="10" ty="0" />
     <tile x="20" y="3" tx="8" ty="0" />
@@ -381,8 +381,8 @@
     <tile x="24" y="7" tx="4" ty="6" />
   </Doors>
   <Entite>
-    <TurretEnnemi id="0" x="288" y="48" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="0" directiony="-1" vitesse="0" animtime="200" nbframes="3" targetplayer="0" shootcooldown="0.6" projspeed="1" projtime="4" damagecd="10" />
-    <TurretEnnemi id="1" x="96" y="176" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="0" directiony="1" vitesse="0" animtime="200" nbframes="3" targetplayer="0" shootcooldown="0.6" projspeed="1" projtime="4" damagecd="10" />
+    <TurretEnnemi id="0" x="288" y="48" directionx="0" directiony="-1" targetplayer="0" />
+    <TurretEnnemi id="1" x="96" y="176" directionx="0" directiony="1" targetplayer="0" />
     <LargerPile id="2" x="352" y="208" type="0" />
   </Entite>
   <Décors exportMode="Bitstring">0000000000000000000000000
