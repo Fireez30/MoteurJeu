@@ -225,7 +225,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
         for (tinyxml2::XMLElement* e5 = d4->FirstChildElement("Torche"); e5 != nullptr; e5 = e5->NextSiblingElement("Torche")){//Liste des Torches
             int trange = e5->IntAttribute("range");
             Torche* e =new Torche(QVector2D(e5->IntAttribute("x")/16.0+xRoom,(-1*e5->IntAttribute("y")/16.0)+yRoom), trange, e5->IntAttribute("damage"), QVector2D(e5->IntAttribute("xtextcoord")/16.0,e5->IntAttribute("ytextcoord")/16.0),this);
-            e->setCollider(Hitbox(QVector2D(e->position.x(),e->position.y()-trange/2),trange,trange));
+            e->setCollider(Hitbox(QVector2D(e->position.x()-trange/2,e->position.y()-trange/2),trange,trange));
             pickups.push_back(e);
         }//si clé lol
     }
