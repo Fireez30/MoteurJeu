@@ -239,6 +239,8 @@ void Room::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
         pickups[i]->Render(program,text);//contient piles + portes
         if(dynamic_cast<Pile*>(pickups[i])!=nullptr)
             lights->push_back(dynamic_cast<Pile*>(pickups[i])->getLightSource());
+        if (dynamic_cast<Torche*>(pickups[i])!=nullptr)
+            lights->push_back(dynamic_cast<Torche*>(pickups[i])->getLightSource());
     }
     for (int i = 0; i < entities.size(); i++){
         entities[i]->Render(program,text);//contient entités

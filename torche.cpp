@@ -3,11 +3,11 @@
 #include <iostream>
 #include <time.h>
 
-Torche::Torche(QVector2D pos,QVector2D text):Interactable2D (pos,text,1),range(4),damage(1){
+Torche::Torche(QVector2D pos,QVector2D text):Interactable2D (pos,text,1),range(4),damage(1),ls(pos,QVector3D(1,1,0.2),0.0005f,0.5f,180,180.0f,QVector3D(1,0,0),1.0f,1.2f){
 
 }
 
-Torche::Torche(QVector2D pos,float r, int d, QVector2D text, Room* ro):Interactable2D (pos,text,3000),range(r),damage(d){
+Torche::Torche(QVector2D pos,float r, int d, QVector2D text, Room* ro):Interactable2D (pos,text,3000),range(r),damage(d),ls(pos,QVector3D(1,1,0.2),0.0005f,0.5f,180,180.0f,QVector3D(1,0,0),1.0f,1.2f){
     this->room = ro;
 }
 
@@ -50,6 +50,10 @@ int Torche::OnTriggerEnter(Interactable2D* other){
         return 0;
     }
     return 1;
+}
+
+LightSource* Torche::getLightSource(){
+    return &ls;
 }
 
 int Torche::GetDamage(){
