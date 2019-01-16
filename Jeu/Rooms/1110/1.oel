@@ -382,7 +382,7 @@
   </Doors>
   <Entite>
     <Ghost id="0" x="32" y="32" xtextcoord="6" ytextcoord="12" index="0" vie="10" directionx="0" directiony="0" vitesse="2,5" animtime="200" nbFrames="3" damagecd="3" />
-    <RangedPile id="1" x="32" y="192" xtextcoord="13" ytextcoord="14" type="0" range="10" coneangle="50" lifetime="60" damage="1" />
+    <RangedPile id="1" x="32" y="192" type="0" />
   </Entite>
   <Décors exportMode="Bitstring">0000000000000000000000000
 0000000000000000000000000

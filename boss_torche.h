@@ -1,16 +1,16 @@
 #ifndef BOSS_TORCHE_H
 #define BOSS_TORCHE_H
 
-#include "movable.h"
+#include "ennemi.h"
 #include "player.h"
 #include "room.h"
 #include "projectile.h"
 
-class Boss_torche : public Movable{
+class Boss_torche : public Ennemi{
 
 public :
     Boss_torche(int h,float x, float y, float s,QVector2D pos,QVector2D text);
-    Boss_torche(Room* r,Player* p,int h, float x, float y, float s,int cd,QVector2D pos,QVector2D text,int animtime,int nbframes,bool animstatus);
+    Boss_torche(Room* r,Player* p,QVector2D pos);
     void IA();
     int OnTriggerEnter(Interactable2D* other) override;
     void Update() override;
@@ -22,7 +22,6 @@ private :
     QVector2D dir;
     void startTimer();
     QBasicTimer timer;
-    QVector2D ennemitoplayer;
 };
 
 

@@ -383,7 +383,7 @@
   <Entite>
     <Ghost id="0" x="128" y="16" xtextcoord="6" ytextcoord="12" index="0" vie="10" directionx="0" directiony="0" vitesse="2,5" animtime="200" nbFrames="3" damagecd="3" />
     <Ghost id="1" x="256" y="16" xtextcoord="6" ytextcoord="12" index="0" vie="10" directionx="0" directiony="0" vitesse="2,5" animtime="200" nbFrames="3" damagecd="3" />
-    <LargerPile id="2" x="192" y="16" xtextcoord="13" ytextcoord="13" type="0" range="7" coneangle="90" lifetime="90" damage="1" />
+    <LargerPile id="2" x="192" y="16" type="0" />
   </Entite>
   <Décors exportMode="Bitstring">0000000000000000000000000
 0000000000000000000000000

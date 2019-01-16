@@ -20,12 +20,11 @@ protected:
     int idPile;
     QVector3D color;
     LightSource ls;
-    Player* player;
 
 
 public :
-    Pile(Player* p,QVector2D pos,QVector2D text);
-    Pile(Player* p,QVector2D pos,float r, float c, int l, int maxL, int d,QVector2D text, int id,QVector3D thecolor);
+    Pile(QVector2D pos,QVector2D text);
+    Pile(QVector2D pos,float r, float c, int l, int maxL, int d,QVector2D text, int id,QVector3D thecolor);
     virtual void Affect(Movable* m) = 0;
     float GetRange();
     int OnTriggerEnter(Interactable2D* other) override;

@@ -1,13 +1,12 @@
-#include "boss_torche.h"
+#include "ghost.h"
 #include <iostream>
 
-
-Boss_torche::Boss_torche(int h,float x, float y, float s,QVector2D pos,QVector2D text): Ennemi(pos,QVector2D(0,0),text,0,0,0,0,0,true){
+Ghost::Ghost(int h,float x, float y, float s,QVector2D pos,QVector2D text): Ennemi(pos,QVector2D(0,0),text,0,0,0,0,0,true){
     movAnim->StartAnimator();
     movAnim->Walk();
 }
 
-Boss_torche::Boss_torche(Room* r,Player* p,QVector2D pos): Ennemi(pos,QVector2D(0,0),QVector2D(0.0/16.0,12.0/16.0),10,2.1,3,200,3,true){
+Ghost::Ghost(Room* r,Player* p,QVector2D pos): Ennemi(pos, QVector2D(0,0), QVector2D(6.0/16.0,12.0/16.0),10, 2.5, 1, 200,3,true){
     this->player = p;
     this->room = r;
     //startTimer();
@@ -15,35 +14,34 @@ Boss_torche::Boss_torche(Room* r,Player* p,QVector2D pos): Ennemi(pos,QVector2D(
     movAnim->Walk();
 }
 
-void Boss_torche::startTimer(){
+void Ghost::startTimer(){
     timer.start(1000,this);
 
 }
 
-void Boss_torche::IA(){
-     direction = QVector2D(player->position.x() - position.x(), player->position.y() - position.y());
-     direction.normalize();
-     direction *= speed;
-     if( !affected ){
-        this->Move(direction);//collision check a faire
-     }
-     else {
-        this->Move(-direction);//collision check a faire
-        if (room->CollisionCheck(this->getCollider())){//si la collision amene le joueur dans le mur, la reset
-            this->ResetMove();
+
+void Ghost::IA(){
+    direction = QVector2D(player->position.x() - position.x(), player->position.y() - position.y());
+    direction.normalize();
+    direction *= speed;
+    this->Move(direction);//collision checvk a faire
+    if (player->getHoldKey()){
+        if (projectiles.size() == 0){
+            projectiles.push_back(new Projectile(QVector2D(position.x(),position.y()),QVector2D(4/16.0,13/16.0),0,1,1,1,QVector2D(direction.x(),direction.y())));
         }
-     }
-     affected = false;
+    }
 }
 
-
-void Boss_torche::Update(){
-    speed = initSpeed;
-    if (health < maxHealth/2)
-    {
-        speed *= 3;
-    }
+void Ghost::Update(){
     IA();
+    speed = initSpeed;
+
+    if (affected)
+    {
+        for (unsigned i = 0; i < projectiles.size(); i++){
+            projectiles[i]->changeSpeed(0.5);
+        }
+    }
     for (unsigned i = 0; i < projectiles.size(); i++){
         if (projectiles[i]->Update() == -1){
             Projectile* truc = projectiles[i];
@@ -53,13 +51,9 @@ void Boss_torche::Update(){
     }
 }
 
-QVector2D Boss_torche::GetRoomPos(){
-    return room->getPos();
-}
-
-int Boss_torche::OnTriggerEnter(Interactable2D* other){
-    Player* player2 = dynamic_cast<Player*> (other);
-    if(player2 != nullptr){
+int Ghost::OnTriggerEnter(Interactable2D* other){
+    Player* player = dynamic_cast<Player*> (other);
+    if(player != nullptr){
         if (player->canCollide)
             player->PlayDamageSound();
         player->Damage(1);
@@ -77,4 +71,3 @@ int Boss_torche::OnTriggerEnter(Interactable2D* other){
 
     return 1;
 }
-

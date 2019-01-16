@@ -381,7 +381,7 @@
     <tile x="12" y="0" tx="4" ty="6" />
   </Doors>
   <Entite>
-    <RangedPile id="0" x="368" y="32" xtextcoord="13" ytextcoord="14" type="0" range="10" coneangle="50" lifetime="60" damage="1" />
+    <RangedPile id="0" x="368" y="32" type="0" />
   </Entite>
   <Décors exportMode="Bitstring">0000000000000000000000000
 0000000000000000000000000

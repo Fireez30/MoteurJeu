@@ -381,8 +381,8 @@
     <tile x="12" y="14" tx="4" ty="6" />
   </Doors>
   <Entite>
-    <RangedPile id="0" x="16" y="16" xtextcoord="13" ytextcoord="14" type="0" range="10" coneangle="50" lifetime="60" damage="1" />
-    <LargerPile id="1" x="368" y="16" xtextcoord="13" ytextcoord="13" type="0" range="7" coneangle="90" lifetime="90" damage="1" />
+    <RangedPile id="0" x="16" y="16" type="0" />
+    <LargerPile id="1" x="368" y="16" type="0" />
     <TurretEnnemi id="2" x="16" y="208" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="1" directiony="0" vitesse="0" animtime="200" nbframes="3" targetplayer="1" shootcooldown="2" projspeed="1" projtime="3" damagecd="10" />
     <TurretEnnemi id="3" x="368" y="208" xtextcoord="6" ytextcoord="8" index="0" vie="1000" directionx="-1" directiony="0" vitesse="0" animtime="200" nbframes="3" targetplayer="1" shootcooldown="2" projspeed="1" projtime="3" damagecd="10" />
     <Ghost id="4" x="192" y="64" xtextcoord="6" ytextcoord="12" index="0" vie="10" directionx="0" directiony="0" vitesse="2.5" animtime="200" nbFrames="3" damagecd="3" />
