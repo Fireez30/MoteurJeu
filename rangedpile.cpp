@@ -2,7 +2,7 @@
 #include "boss_torche.h"
 #include <iostream>
 
-RangedPile::RangedPile(QVector2D pos):Pile(pos,10,40,60,60,1,QVector2D(13.0/16.0,14.0/16.0),0,QVector3D(3,0,0)){
+RangedPile::RangedPile(QVector2D pos):Pile(pos,10,40,60,60,1,QVector2D(13.0/16.0,14.0/16.0),0,QVector3D(3,1,1)){
 
 }
 

@@ -2,12 +2,12 @@
 #include <iostream>
 
 
-Boss_torche::Boss_torche(int h,float x, float y, float s,QVector2D pos,QVector2D text): Movable(h,x,y,s,3,pos,text,200,3,false),ennemitoplayer(0,0){
+Boss_torche::Boss_torche(int h,float x, float y, float s,QVector2D pos,QVector2D text): Ennemi(pos,QVector2D(0,0),text,0,0,0,0,0,true){
     movAnim->StartAnimator();
     movAnim->Walk();
 }
 
-Boss_torche::Boss_torche(Room* r,Player* p,int h, float x, float y, float s,int cd,QVector2D pos,QVector2D text,int animtime,int nbframes,bool animstatus): Movable(h,x,y,s,cd,pos,text,animtime,nbframes,animstatus),ennemitoplayer(0,0){
+Boss_torche::Boss_torche(Room* r,Player* p,QVector2D pos): Ennemi(pos,QVector2D(0,0),QVector2D(0.0/16.0,12.0/16.0),10,2.1,3,200,3,true){
     this->player = p;
     this->room = r;
     //startTimer();
@@ -21,14 +21,14 @@ void Boss_torche::startTimer(){
 }
 
 void Boss_torche::IA(){
-     ennemitoplayer = QVector2D(player->position.x() - position.x(), player->position.y() - position.y());
-     ennemitoplayer.normalize();
-     ennemitoplayer *= speed;
+     direction = QVector2D(player->position.x() - position.x(), player->position.y() - position.y());
+     direction.normalize();
+     direction *= speed;
      if( !affected ){
-        this->Move(ennemitoplayer);//collision check a faire
+        this->Move(direction);//collision check a faire
      }
      else {
-        this->Move(-ennemitoplayer);//collision check a faire
+        this->Move(-direction);//collision check a faire
         if (room->CollisionCheck(this->getCollider())){//si la collision amene le joueur dans le mur, la reset
             this->ResetMove();
         }

@@ -1,13 +1,13 @@
 #include "turretennemy.h"
 #include <iostream>
 
-TurretEnnemi::TurretEnnemi(int h,float x, float y, float s,QVector2D pos,QVector2D text): Movable(h,x,y,s,3,pos,text,200,3,false),shootdir(0,0),targetPlayer(false),timerTime(0.5),projectileSpeed(1),projectileTravelTime(1){
+TurretEnnemi::TurretEnnemi(int h,float x, float y, float s,QVector2D pos,QVector2D text): Ennemi(pos,QVector2D(0,0),text,0,0,0,0,0,false),targetPlayer(false),timerTime(0.5),projectileSpeed(1),projectileTravelTime(1){
     canShoot = true;
     startTimer();
     initTime = timerTime;
 }
 
-TurretEnnemi::TurretEnnemi(Room* r,Player* p,int h, float x, float y, float s,int cd,QVector2D pos,QVector2D text,int animtime,int nbframes,bool animstatus,bool targplayer,float cooldown,float projspeed,int projtime): Movable(h,x,y,s,cd,pos,text,animtime,nbframes,animstatus),shootdir(x,y),targetPlayer(targplayer),timerTime(cooldown),projectileSpeed(projspeed),projectileTravelTime(projtime){
+TurretEnnemi::TurretEnnemi(Room* r,Player* p,QVector2D pos,QVector2D dir,bool targplayer): Ennemi(pos, dir,QVector2D(6.0/16.0,8.0/16.0),1000,0,100,200,0,false),targetPlayer(targplayer),timerTime(2),projectileSpeed(1),projectileTravelTime(2){
     this->player = p;
     this->room = r;
     canShoot = true;
@@ -28,11 +28,11 @@ void TurretEnnemi::IA(){
     //std::cout << "taille projectiles " << projectiles.size() << std::endl;
     if (targetPlayer){
         //std::cout << "je tire vers l'ennemi peut etre" << std::endl;
-        shootdir = QVector2D(player->position.x() - position.x(), player->position.y() - position.y());
-        shootdir.normalize();
+        direction = QVector2D(player->position.x() - position.x(), player->position.y() - position.y());
+        direction.normalize();
     }
     if (canShoot){
-        projectiles.push_back(new Projectile(QVector2D(position.x(),position.y()),QVector2D(4/16.0,13/16.0),0,projectileTravelTime,1,projectileSpeed,QVector2D(shootdir.x(),shootdir.y())));
+        projectiles.push_back(new Projectile(QVector2D(position.x(),position.y()),QVector2D(4/16.0,13/16.0),0,projectileTravelTime,1,projectileSpeed,QVector2D(direction.x(),direction.y())));
         canShoot = false;
         shoottimer.start(timerTime*1000,this);
     }
