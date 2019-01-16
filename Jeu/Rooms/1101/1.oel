@@ -136,7 +136,6 @@
     <tile x="11" y="4" tx="9" ty="0" />
     <tile x="11" y="5" tx="9" ty="0" />
     <tile x="11" y="6" tx="9" ty="0" />
-    <tile x="11" y="7" tx="9" ty="0" />
     <tile x="11" y="8" tx="9" ty="0" />
     <tile x="11" y="9" tx="9" ty="0" />
     <tile x="11" y="10" tx="9" ty="0" />
@@ -148,9 +147,7 @@
     <tile x="12" y="3" tx="9" ty="0" />
     <tile x="12" y="4" tx="9" ty="0" />
     <tile x="12" y="5" tx="9" ty="0" />
-    <tile x="12" y="6" tx="9" ty="0" />
     <tile x="12" y="7" tx="9" ty="0" />
-    <tile x="12" y="8" tx="9" ty="0" />
     <tile x="12" y="9" tx="9" ty="0" />
     <tile x="12" y="10" tx="9" ty="0" />
     <tile x="12" y="11" tx="9" ty="0" />
@@ -162,7 +159,6 @@
     <tile x="13" y="4" tx="9" ty="0" />
     <tile x="13" y="5" tx="9" ty="0" />
     <tile x="13" y="6" tx="9" ty="0" />
-    <tile x="13" y="7" tx="9" ty="0" />
     <tile x="13" y="8" tx="9" ty="0" />
     <tile x="13" y="9" tx="9" ty="0" />
     <tile x="13" y="10" tx="9" ty="0" />
@@ -384,7 +380,9 @@
     <tile x="12" y="0" tx="4" ty="6" />
     <tile x="24" y="7" tx="4" ty="6" />
   </Doors>
-  <Entite />
+  <Entite>
+    <TurretEnnemi id="0" x="192" y="112" directionx="0" directiony="0" targetplayer="1" />
+  </Entite>
   <Décors exportMode="Bitstring">0000000000000000000000000
 0000000000000000000000000
 0000000000000000000000000

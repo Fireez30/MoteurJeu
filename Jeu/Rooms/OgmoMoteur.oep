@@ -130,18 +130,7 @@
       <ImageDefinition DrawMode="Rectangle" ImagePath="..\sprites.png" Tiled="true">
         <RectColor A="255" R="0" G="128" B="255" />
       </ImageDefinition>
-      <ValueDefinitions>
-        <ValueDefinition xsi:type="IntValueDefinition" Name="xtextcoord" Default="6" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="ytextcoord" Default="12" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="index" Default="0" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="vie" Default="10" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="directionx" Default="0" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="directiony" Default="0" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="FloatValueDefinition" Name="vitesse" Default="2.5" Min="0" Max="100" Round="0.1" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="animtime" Default="200" Min="0" Max="10000" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="nbFrames" Default="3" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="damagecd" Default="3" Min="0" Max="100" ShowSlider="true" />
-      </ValueDefinitions>
+      <ValueDefinitions />
       <NodesDefinition Enabled="false" Limit="-1" DrawMode="None" Ghost="false" />
     </EntityDefinition>
     <EntityDefinition Name="BossDoor" Limit="-1" ResizableX="false" ResizableY="false" Rotatable="false" RotateIncrement="15">
@@ -199,18 +188,7 @@
       <ImageDefinition DrawMode="Rectangle" ImagePath="" Tiled="false">
         <RectColor A="255" R="255" G="0" B="0" />
       </ImageDefinition>
-      <ValueDefinitions>
-        <ValueDefinition xsi:type="IntValueDefinition" Name="xtextcoord" Default="0" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="ytextcoord" Default="12" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="index" Default="0" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="health" Default="10" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="FloatValueDefinition" Name="speed" Default="2.1" Min="0" Max="100" Round="0.1" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="directionx" Default="0" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="directiony" Default="0" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="animtime" Default="200" Min="0" Max="1000" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="nbFrames" Default="3" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="damagecd" Default="3" Min="0" Max="100" ShowSlider="false" />
-      </ValueDefinitions>
+      <ValueDefinitions />
       <NodesDefinition Enabled="false" Limit="-1" DrawMode="None" Ghost="false" />
     </EntityDefinition>
     <EntityDefinition Name="LargerPile" Limit="-1" ResizableX="false" ResizableY="false" Rotatable="false" RotateIncrement="15">
@@ -260,23 +238,12 @@
         <Y>0</Y>
       </Origin>
       <ImageDefinition DrawMode="Rectangle" ImagePath="" Tiled="false">
-        <RectColor A="255" R="255" G="0" B="0" />
+        <RectColor A="255" R="0" G="128" B="0" />
       </ImageDefinition>
       <ValueDefinitions>
-        <ValueDefinition xsi:type="IntValueDefinition" Name="xtextcoord" Default="6" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="ytextcoord" Default="8" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="index" Default="0" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="vie" Default="1000" Min="0" Max="1000" ShowSlider="false" />
         <ValueDefinition xsi:type="IntValueDefinition" Name="directionx" Default="0" Min="-100" Max="100" ShowSlider="false" />
         <ValueDefinition xsi:type="IntValueDefinition" Name="directiony" Default="0" Min="-100" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="FloatValueDefinition" Name="vitesse" Default="0" Min="0" Max="100" Round="0.1" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="animtime" Default="200" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="nbframes" Default="3" Min="0" Max="100" ShowSlider="false" />
         <ValueDefinition xsi:type="IntValueDefinition" Name="targetplayer" Default="0" Min="0" Max="1" ShowSlider="false" />
-        <ValueDefinition xsi:type="FloatValueDefinition" Name="shootcooldown" Default="0" Min="0" Max="100" Round="0.1" />
-        <ValueDefinition xsi:type="FloatValueDefinition" Name="projspeed" Default="1" Min="0" Max="100" Round="0.1" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="projtime" Default="3" Min="0" Max="100" ShowSlider="false" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="damagecd" Default="10" Min="0" Max="100" ShowSlider="false" />
       </ValueDefinitions>
       <NodesDefinition Enabled="false" Limit="-1" DrawMode="None" Ghost="false" />
     </EntityDefinition>
