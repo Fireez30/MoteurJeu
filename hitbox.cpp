@@ -8,6 +8,7 @@ Hitbox::Hitbox(QVector2D p,float h, float w):leftCorner(p), width(w), height(h){
 
 }
 
+//test la collision entre 2 hitbox carrées
 bool Hitbox::TestCollision(Hitbox other){
     return !(other.getXMin() >= getXMax() ||
            other.getXMax() <= getXMin() ||

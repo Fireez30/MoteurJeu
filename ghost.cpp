@@ -24,14 +24,14 @@ void Ghost::timerEvent(QTimerEvent *){
 }
 */
 void Ghost::IA(){
+    //se déplacer vers le joueur
     direction = QVector2D(player->position.x() - position.x(), player->position.y() - position.y());
     direction.normalize();
     direction *= speed;
-    this->Move(direction);//collision checvk a faire
+    this->Move(direction);
+    //si le joueur a la clé sur lui, capacité de tirer 1 projectile a la fois
     if (player->getHoldKey()){
-        if (projectiles.size() == 0 /*&& canShoot*/){
-            //canShoot = false;
-            //startShootTimer();
+        if (projectiles.size() == 0){
             projectiles.push_back(new Projectile(QVector2D(position.x(),position.y()),QVector2D(4/16.0,13/16.0),0,1,1,1,QVector2D(direction.x(),direction.y())));
         }
     }
@@ -41,12 +41,13 @@ void Ghost::Update(){
     IA();
     speed = initSpeed;
 
-    if (affected)
+    if (affected)//ralentir les projectiles si le joueur éclaire
     {
         for (unsigned i = 0; i < projectiles.size(); i++){
             projectiles[i]->changeSpeed(0.5);
         }
     }
+    //gestion de la destruction des projectiles
     for (unsigned i = 0; i < projectiles.size(); i++){
         if (projectiles[i]->Update() == -1){
             Projectile* truc = projectiles[i];
@@ -56,18 +57,20 @@ void Ghost::Update(){
     }
 }
 
+//gestion collision avec autre entité
 int Ghost::OnTriggerEnter(Interactable2D* other){
     Player* player = dynamic_cast<Player*> (other);
     if(player != nullptr){
         if (player->canCollide)
             player->PlayDamageSound();
         player->Damage(1);
+        //repousser joueur
         QVector3D pos_ennemi = this->position;
         QVector3D pos_player = other->position;
         QVector3D ennemi_to_player = QVector3D(pos_player.x() - pos_ennemi.x(), pos_player.y() - pos_ennemi.y(), 0);
         ennemi_to_player.normalize();
         QVector2D dirJoueur = QVector2D(ennemi_to_player.x()*0.8, ennemi_to_player.y()*0.8);
-        player->Move(dirJoueur);//collision checvk a faire
+        player->Move(dirJoueur);
         if (room->CollisionCheck(player->getCollider())){//si la collision amene le joueur dans le mur, la reset
             player->ResetMove();
         }

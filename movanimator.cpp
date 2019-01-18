@@ -12,6 +12,7 @@ MovAnimator::MovAnimator(Movable* obj,int walkTime,int frames,bool walk) : Objec
     moveAnimTimer.start(moveAnimTime,this);
 }
 
+//lance l'animation de marche si pas en cours
 void MovAnimator::Walk(){
     walking = true;
     if (!moveAnimTimer.isActive()){
@@ -36,11 +37,12 @@ void MovAnimator::StartAnimator(){
     started = true;
 }
 
+//changement frames de l'animation
 void MovAnimator::timerEvent(QTimerEvent *){
     Object->renderer.spriteCoords = Object->renderer.initText;
     moveAnimTimer.stop();
 
-    if (walking){//if still working, change sprite and restart
+    if (walking){//si en train de marcher, changer frame sur la spritesheet et restart timer
         movAnimStatus++;
         movAnimStatus = movAnimStatus %nbFrames;
         Object->renderer.spriteCoords.setX(Object->renderer.spriteCoords.x()+(movAnimStatus/16.0));

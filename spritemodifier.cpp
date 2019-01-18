@@ -4,6 +4,9 @@
 SpriteModifier::SpriteModifier(Interactable2D* obj):Object(obj){
 
 }
+
+//contient une liste de sprites
+//passer a une machine a état (std::map avec string) quand on a le temps
 void SpriteModifier::AddSprite(QVector2D spr){
     for (unsigned i = 0; i < sprites.size(); i++){
         if (sprites[i] == spr){
@@ -14,12 +17,12 @@ void SpriteModifier::AddSprite(QVector2D spr){
     sprites.push_back(spr);
 }
 
+//change le sprite de l'objet auquel il est rattaché
 void SpriteModifier::ChangeSprite(int index){
-    //Object->renderer.spriteCoords = sprites[index];
     Object->renderer.SetYSpriteCoord(sprites[index].y());
     Object->renderer.CreateGeometry();
-   // std::cout << "(changesprite) Renderer: " << Object->renderer.spriteCoords.x() << " " << Object->renderer.spriteCoords.y() << std::endl;
 }
+
 
 int SpriteModifier::nbOfSprites(){
     return sprites.size();

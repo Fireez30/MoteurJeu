@@ -18,6 +18,7 @@ QVector3D Base2D::GetPosition(){
 void Base2D::DisplayCoords(){
 }
 
+//appelle le rendu du sprite renderer
 void Base2D::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
     renderer.Render(program,text);
 }

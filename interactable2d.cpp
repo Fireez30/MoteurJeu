@@ -13,6 +13,7 @@ Hitbox Interactable2D::getCollider(){
     return collider;
 }
 
+//timer de frames d'invulnérabilité (empechant les collisions)
 void Interactable2D::startTimer(){
     timer.start(timeCollide,this);
     //std::cout << "Timer collision débute ! temps = " << timeCollide << std::endl;
@@ -21,6 +22,8 @@ void Interactable2D::startTimer(){
 bool Interactable2D::isTimerActive(){
     return timer.isActive();
 }
+
+//fin du timer, on peut collide a nouveau
 void Interactable2D::timerEvent(QTimerEvent *){
     canCollide = true;
     //std::cout << "Timer collision termine" << std::endl;

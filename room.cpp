@@ -37,11 +37,12 @@ Room::~Room(){
     entities.clear();
 }
 
+//permet de tester si on est la room a la positin x y
 bool Room::isThisRoom(int _x, int _y){
     return x == _x && y == _y;
 }
 
-void Room::Turn(int i){
+void Room::Turn(int i){//permet l'évitement d'obstacle de l'entité i
     float x = entities[i]->GetLastMove().x();
     float y = entities[i]->GetLastMove().y();
     QVector2D result = -entities[i]->GetLastMove();
@@ -68,26 +69,25 @@ void Room::Turn(int i){
     result *= entities[i]->GetSpeed();
     entities[i]->Move(result);
 }
-
+//met a jour les entités
 void Room::UpdateEntities(){
     for (int i = 0; i < entities.size(); i++){
         entities[i]->Update();
-       // std::cout << "Vie de lentite : " <<i << " : " << entities[i]->getHealth() << std::endl;
-        //std::cout << "Entity " << i << " timer ? " << entities[i]->isTimerActive() << std::endl;
+        //tester la collision avec les murs
         if (CollisionCheck(entities[i]->getCollider())){//si l'entité a collide avec un mur, reset sa position
             entities[i]->ResetMove();
             Turn(i);
-            //entities[i]->Move((entities[i]->GetLastMove()+QVector2D(0,1))*0.0166);
         }
+        //permet de retirer les entités mortes
         if (entities[i]->isDead()){
             entities.erase(entities.begin()+i);
         }
     }
+    //si j'ai un boss dans la salle, l'update et aussi update l'UI
     if (boss2 != nullptr){
         TriggerCheck(boss2);
         camera->ui->at(4)->renderer.setWidth(boss2->getHealthRatio() * 10);
         camera->ui->at(5)->renderer.setWidth(1.0f);
-        std::cout << "Boss ratio: " << boss2->getHealthRatio() << std::endl;
     }
     else if (camera != nullptr){
         camera->ui->at(4)->renderer.setWidth(0);
@@ -110,9 +110,10 @@ void Room::setPlayer(Player* _p){
     player = _p;
 }
 
+//permet de créer la "géométrie" de tout le contenu de la salle
 void Room::CreateGeometry(){
     if (boss != nullptr && player->getHoldKey()){
-        boss->Unlock();
+        boss->Unlock();//si le joueur a la clé et que je possède la porte du boss, débloqué
     }
 
     for (int i = 0; i < tiles.size(); i++){
@@ -129,6 +130,7 @@ void Room::CreateGeometry(){
     }
 }
 
+//parsing du fichier XML de la salle, création de tout.
 void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p, Camera* c){
     tinyxml2::XMLDocument doc;
     camera = c;
@@ -232,6 +234,7 @@ void Room::ReadFile(std::vector<Rooms>* r,int index, std::string path, Player* p
     doc.Clear();//vider le doc
 }
 
+//appel le rendu de toute la salle, ainsi que bind les lightsource pour les shaders
 void Room::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
     if(lights->size() > 2)
         lights->erase(lights->begin()+1,lights->begin()+lights->size()-1);
@@ -251,6 +254,7 @@ void Room::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
     }
 }
 
+//permet de tester la collision entre un objet (via sa hitbox) et les murs de la salle
 bool Room::CollisionCheck(Hitbox h){//collisions des murs unqiuements
     for (int i = 0; i < collisions.size();i++){
         if (collisions[i].TestCollision(h)){
@@ -259,6 +263,8 @@ bool Room::CollisionCheck(Hitbox h){//collisions des murs unqiuements
     }
     return false;
 }
+
+//détecte et applique les collisions entre le paramètre et les entités de la salle
 bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
     bool flag = false;
     int triggerCount = 0;
@@ -318,6 +324,7 @@ bool Room::TriggerCheck(Interactable2D* other){//collisions portes et entités
 }
 
 
+//détecte si un point est dans un cercle de centre et rayon et paramètres (utile pour la lampe)
 bool Room::IsPointInCircle(QVector2D *pt, QVector2D *center, float rayon)
 {
     float distPlayerToEnnemi = sqrt( pow(pt->x() - center->x(),2) + pow(pt->y() - center->y(),2) );
@@ -327,6 +334,8 @@ bool Room::IsPointInCircle(QVector2D *pt, QVector2D *center, float rayon)
         return false;
 }
 
+
+//permet de détecter la collision entre le faisceau de la lampe et un mur devant l'entité qu'elle pourrait affecter
 bool Room::wallOnTheVector(QVector2D vect, QVector2D player,QVector2D ennemi){
     for (unsigned i = 0; i < collisions.size(); i++){
         QVector2D p_to_wall = QVector2D(collisions[i].getCorner().x() - player.x() , collisions[i].getCorner().y() - player.y());
@@ -362,6 +371,7 @@ bool Room::wallOnTheVector(QVector2D vect, QVector2D player,QVector2D ennemi){
     return false;
 }
 
+//vérifie si une entité est dans le cone de la lampe
 bool Room::CheckColl(float rayon, float angle, QVector2D point)
 {
     // Position du joueur in world
@@ -389,6 +399,8 @@ bool Room::CheckColl(float rayon, float angle, QVector2D point)
     }
 }
 
+
+//parcourt les entités pour affecter celles dans le cone de la lampe
 void Room::affectEnemiesInRange(){
     float rayon = player->getRange();
     float angle = player->getAngle();

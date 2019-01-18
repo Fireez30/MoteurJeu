@@ -15,20 +15,24 @@ Boss_torche::Boss_torche(Room* r,Player* p,QVector2D pos): Ennemi(pos,QVector2D(
     movAnim->Walk();
 }
 
+
 void Boss_torche::startTimer(){
     timer.start(1000,this);
 
 }
 
+//IA
 void Boss_torche::IA(){
      direction = QVector2D(player->position.x() - position.x(), player->position.y() - position.y());
      direction.normalize();
      direction *= speed;
+     //si il n'est pas affecté par la lampe, focus le joueur
      if( !affected ){
-        this->Move(direction);//collision check a faire
+        this->Move(direction);
      }
+     //sinon fuit
      else {
-        this->Move(-direction);//collision check a faire
+        this->Move(-direction);
         if (room->CollisionCheck(this->getCollider())){//si la collision amene le joueur dans le mur, la reset
             this->ResetMove();
         }
@@ -36,14 +40,16 @@ void Boss_torche::IA(){
      affected = false;
 }
 
-
+//appelée a chaque tick
 void Boss_torche::Update(){
     speed = initSpeed;
+    //"phase" 2
     if (health < maxHealth/2)
     {
         speed *= 3;
     }
     IA();
+    //gestion de la destruction des projectiles
     for (unsigned i = 0; i < projectiles.size(); i++){
         if (projectiles[i]->Update() == -1){
             Projectile* truc = projectiles[i];
@@ -53,16 +59,19 @@ void Boss_torche::Update(){
     }
 }
 
+//nécessaire pour la téléportation du boss
 QVector2D Boss_torche::GetRoomPos(){
     return room->getPos();
 }
 
+//appellé lorsqu'une entité collide avec le boss
 int Boss_torche::OnTriggerEnter(Interactable2D* other){
     Player* player2 = dynamic_cast<Player*> (other);
     if(player2 != nullptr){
         if (player->canCollide)
             player->PlayDamageSound();
         player->Damage(1);
+        //repousser le joueur on trigger
         QVector3D pos_ennemi = this->position;
         QVector3D pos_player = other->position;
         QVector3D ennemi_to_player = QVector3D(pos_player.x() - pos_ennemi.x(), pos_player.y() - pos_ennemi.y(), 0);

@@ -15,38 +15,23 @@ float Torche::GetRange(){
     return range;
 }
 
+//collision boss - torche boss
 int Torche::OnTriggerEnter(Interactable2D* other){
     srand(time(NULL));
     Boss_torche* bt;
     bt = dynamic_cast<Boss_torche*> (other);
     if(bt != nullptr){
-        //startTimer();
-        //canCollide = false;
-        bt->Damage(this->GetDamage());
-        /*
-        if (bt->position.x() <= 161) //a gauche
-        {
-            bt->position = QVector3D(170, 98, 0);
-        }
-        else // à droite
-        {
-            bt->position = QVector3D(152, 98, 0);
-        }
-
-        if (room->CollisionCheck(bt->getCollider())){//si la collision amene le joueur dans le mur, la reset
-            bt->ResetMove();
-        }
-        */
+        bt->Damage(this->GetDamage());//faire des dégats
+        //déterminer la nouvelle position
         QVector2D roomPos = bt->GetRoomPos();
         int nx = rand() % 22 + 1;// 1 -> 23
         int ny = rand() % 12 + 1;// 1 -> 13
         bt->SetPosition(QVector2D(roomPos.x()*25 + nx,roomPos.y()*15 - ny));
-        while (room->CollisionCheck(bt->getCollider())){
+        while (room->CollisionCheck(bt->getCollider())){//tant que la position actuelle est pas bonne, en chercher une nouvelle
             nx = rand() % 22 + 1;// 1 -> 23
             ny = rand() % 12 + 1;// 1 -> 13
             bt->SetPosition(QVector2D(roomPos.x()*25 + nx,roomPos.y()*15 - ny));
         }
-        // bt->ResetMove();//pas super correct
         return 0;
     }
     return 1;

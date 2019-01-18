@@ -16,15 +16,18 @@ Projectile::Projectile(QVector2D pos,QVector2D text,int collidetime,int lifetime
     timer.start(lifespan*1000,this);
 }
 
+//timer durée de vie de la pile
 void Projectile::timerEvent(QTimerEvent *e){
     alive = false;
     timer.stop();
 }
 
+//permet de réduire la vitesse des projectiles
 void Projectile::changeSpeed(float factor){
     speed = initspeed * factor;
 }
 
+//permet de supprimer un projectile ayant atteint sa portée, sinon de le bouger dans sa direction
 int Projectile::Update(){
     //std::cout << "projectile update" << std::endl;
     if (!alive){
@@ -43,7 +46,7 @@ int Projectile::Update(){
 
 }
 
-
+//lorsqu'on trigger avec un joueur, se détruire en lui faisant des dégats
 int Projectile::OnTriggerEnter(Interactable2D* other){
     Player* player = dynamic_cast<Player*> (other);
     if(player != nullptr){

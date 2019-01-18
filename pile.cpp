@@ -17,6 +17,7 @@ float Pile::GetConeAngle(){
     return coneAngle;
 }
 
+//update du timer de vie de la pile
 bool Pile::Update(){
     if (lifespan > 0){
         lifespan--;
@@ -25,8 +26,8 @@ bool Pile::Update(){
     return false;
 }
 
+//on pickup par le joueur
 int Pile::OnTriggerEnter(Interactable2D* other){
-    //si memory leak check here
     Player* p;
     p = dynamic_cast<Player*> (other);
     if(p != nullptr){
@@ -45,6 +46,7 @@ int Pile::getID(){
     return idPile;
 }
 
+//pour affichage
 QVector3D Pile::getColor(){
     return color;
 }
@@ -56,14 +58,17 @@ int Pile::getLifespan(){
     return lifespan;
 }
 
+//retourne la light pour les shaders
 LightSource* Pile::getLightSource(){
     return &ls;
 }
 
+//met a jour la lightsource pour s'adapter a la lampe (cone)
 void Pile::changeLight(){
     ls = LightSource(QVector2D(position.x(),position.y()),color, 0.005f,0.5f,coneAngle-5.0f,coneAngle,QVector3D(1,0,0),range-1.0f,range);
 }
 
+//ratio pour affichage du timer sur l'UI
 float Pile::getRatioLife(){
     return (float)lifespan/(float)maxLife;
 }

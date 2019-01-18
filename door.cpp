@@ -22,12 +22,12 @@ void Door::Lock(){
     locked = true;
 }
 
+//gestion du changement de salle du joueur
 int Door::OnTriggerEnter(Interactable2D* other){
-	//Si memory leak, regarder ici
     if (!locked){
         if(dynamic_cast<Player*> (other)!=NULL){
-            camera->moveCamera(QVector3D(dir.x()*25,dir.y()*15,0));
-            camera->setCurrentRoom(dir);
+            camera->moveCamera(QVector3D(dir.x()*25,dir.y()*15,0));//déplace la caméra
+            camera->setCurrentRoom(dir);//change la salle chargée
             QVector2D dirJoueur = QVector2D(dir.x()*-3,dir.y()*-3);
             player->changeRoom(dirJoueur);
         }

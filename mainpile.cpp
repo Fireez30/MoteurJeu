@@ -10,6 +10,7 @@ MainPile::MainPile(QVector2D pos,float r, float c, int l, int d,QVector2D text):
 
 }
 
+//la pile de base ne fait que ralentir
 void MainPile::Affect(Movable* m){
     Boss_torche* bt = dynamic_cast<Boss_torche*> (m);
     if(! (bt != nullptr)){

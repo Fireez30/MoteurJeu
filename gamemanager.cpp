@@ -61,6 +61,7 @@ Player* GameManager::getPlayer(){return player;}
 // USER INPUTS
 //
 
+//lorsqu'une touche est relachée, ne sert plus pour le calcul du déplacement
 void GameManager::keyReleaseEvent (QKeyEvent * event){
 
     if (event->key() == Qt::Key_Q){
@@ -80,7 +81,7 @@ void GameManager::keyReleaseEvent (QKeyEvent * event){
 void GameManager::keyPressEvent (QKeyEvent * event){
     transX=0;
     transY=0;
-    //player->movAnim->StopWalk();
+    //permet de stocker les inputs pour du multi input
     if(event->key() == Qt::Key_Q){
         walkLeft = true;
     }
@@ -100,11 +101,13 @@ void GameManager::keyPressEvent (QKeyEvent * event){
         walkDown = true;
     }
 
+    //shaders ON / OFF
     if (event->key() == Qt::Key_T){
         shader++;
         shader = shader % 2;
     }
 
+    //Debug only , mode triche pour pas mourrir
     if (event->key() == Qt::Key_K){
         player->setHealth(999);
         player->PickKey();
@@ -124,6 +127,7 @@ void GameManager::keyPressEvent (QKeyEvent * event){
 
 void GameManager::mousePressEvent(QMouseEvent *e)
 {
+    //utilise la pile secondaire si on en a une
     if (e->button() == Qt::RightButton){
         player->setUtilisationSecondaire(true);
     }
@@ -131,6 +135,7 @@ void GameManager::mousePressEvent(QMouseEvent *e)
 
 void GameManager::mouseReleaseEvent(QMouseEvent *e)
 {
+    //n'utilise plus la pile secondaire
     if (e->button() == Qt::RightButton){
         player->setUtilisationSecondaire(false);
     }
@@ -146,6 +151,7 @@ void GameManager::mouseMoveEvent(QMouseEvent *e){
 
 void GameManager::timerEvent(QTimerEvent *)
 {
+    //détermine le vecteur du mouvement selon l'état des touches
     transX = 0;
     transY = 0;
     if (walkUp)
@@ -160,20 +166,19 @@ void GameManager::timerEvent(QTimerEvent *)
 
     if (transX == 0 && transY == 0)
     {
-        player->movAnim->StopWalk();
-        scene[camera->getCurrentRoom()]->TriggerCheck(player);
+        player->movAnim->StopWalk();//arreter l'animation de marche si elle tourne
+        scene[camera->getCurrentRoom()]->TriggerCheck(player); //détecter collisions du joueur / entités
     }
     else{
-        player->movAnim->Walk();
+        player->movAnim->Walk();//sinon on lance l'animation si pas en cours
         QVector2D vector(transX,transY);
         vector.normalize();
         vector.setY(0);
         vector *= player->GetSpeed();
-        player->Move(vector);
-        scene[camera->getCurrentRoom()]->TriggerCheck(player);
-        if(scene[camera->getCurrentRoom()]->CollisionCheck(player->getCollider()))
+        player->Move(vector);//mouvement en Y dabord (mouvement décomposé)
+        scene[camera->getCurrentRoom()]->TriggerCheck(player);//détecter collisions du joueur / entités
+        if(scene[camera->getCurrentRoom()]->CollisionCheck(player->getCollider()))//si le joueur collide avec un mur, reset
         {
-            //player->movAnim->StopWalk();
             player->ResetMove();
         }
         player->movAnim->Walk();
@@ -181,30 +186,31 @@ void GameManager::timerEvent(QTimerEvent *)
         vector.normalize();
         vector.setX(0);
         vector *= player->GetSpeed();
-        player->Move(vector);
+        player->Move(vector);//mouvement en x ensuite
         scene[camera->getCurrentRoom()]->TriggerCheck(player);
         if(scene[camera->getCurrentRoom()]->CollisionCheck(player->getCollider()))
         {
-            //player->movAnim->StopWalk();
             player->ResetMove();
         }
     }
-    scene[camera->getCurrentRoom()]->affectEnemiesInRange();
-    scene[camera->getCurrentRoom()]->UpdateEntities();
-    player->Update();
-    if(player->getPileSecondaire()==nullptr){
+    scene[camera->getCurrentRoom()]->affectEnemiesInRange();//vérifie quelles entités sont dans le cone de la lampe et les affecte
+    scene[camera->getCurrentRoom()]->UpdateEntities();//met a jour les entités
+    player->Update();//update du joueur
+    if(player->getPileSecondaire()==nullptr){//cacher l'UI si on a pas de pile secondaire
         UI[3]->renderer.setWidth(0);
         UI[6]->renderer.setWidth(0);
     }
-    else{
+    else{//si on a une pile secondaire afficher l'UI
         UI[3]->renderer.setWidth(player->getPileSecondaire()->getRatioLife()*7);
         UI[6]->renderer.setWidth(1);
     }
-    // !! if player HP is 1 , change shaders to color the scren in red ?
+    // détection de la mort du joueur : fermer le jeu
+    //rajouter un écran de fin ou quelque chose
     if (player->isDead()){
         this->close();
-        //
     }
+
+    //Update l'UI selon la vie du joueur
     if (player->getHealth() == 1){
         if (!UI[0]->MainTextBound()){
             UI[0]->BindMainTexture();
@@ -240,7 +246,7 @@ void GameManager::timerEvent(QTimerEvent *)
             UI[2]->BindMainTexture();
         }
     }
-    update();
+    update(); //update opengl et appel a paintgl
 }
 
 //
@@ -361,9 +367,8 @@ void GameManager::initializeGL()
 
     glClearColor(0,0,0, 1);
 
-    // glOrtho(-17.0,17.0,-17.0,17.0,3.0,7.0);
-    initShaders();
-    initTextures();
+    initShaders(); //init les 2 shaders  : normal et UI
+    initTextures();//bind la texture qui contient la spritesheet
 
     // Enable depth buffer
     glEnable(GL_DEPTH_TEST);
@@ -372,14 +377,14 @@ void GameManager::initializeGL()
     glEnable(GL_CULL_FACE);
     // Use QBasicTimer because its faster than QTimer
     player = new Player();
-    lights.push_back(player->getLight());
-    lights.push_back(player->getLampeLight());
+    lights.push_back(player->getLight());//halo lumineux autour du joueur
+    lights.push_back(player->getLampeLight());//cone de la lampe du joueur
     camera = new Camera(&UI);
-    //srand(484642185) (salle couloir)
-    //srand (14562) seed de base
-    //srand(132355) seed salle 4
-    int seed = 132355;
+    srand(time(NULL));
+    int seed = rand() %1000000;
     srand(seed);
+
+    //génération du niveau seedé
     std::vector<Rooms>* rooms = new std::vector<Rooms>();
     int maxdist = 6,distSecondaire = 4;
     int x = maxdist;//x in tile-coordinates (used for generation)
@@ -418,6 +423,7 @@ void GameManager::initializeGL()
 
     attributeRoom(minMap, rooms,path);
 
+    //création et construction des salles
     for (int i = 0; i < rooms->size();i++){
         Room* r = new Room(&lights);
         r->setPosition(rooms->at(i).x,rooms->at(i).y);
@@ -425,14 +431,18 @@ void GameManager::initializeGL()
         r->ReadFile(rooms,i, path, player, camera);
         scene.push_back(r);
     }
+    //création de la "géométrie" du joueur
     player->renderer.CreateGeometry();
+    //placement caméra
     camera->setRooms(scene);
     camera->setCurrentRoom(x,y);
+    //début timer tickrate joueur
     timer.start(1000/max_fps, this);
-    UI.push_back(new UiObject(162-11,83+7,0,QVector2D(0.0/16.0,0), QVector2D(1.0/16.0,0)));
-    UI.push_back(new UiObject(162-10,83+7,0,QVector2D(0.0/16.0,0), QVector2D(1.0/16.0,0)));
-    UI.push_back(new UiObject(162-9,83+7,0,QVector2D(0.0/16.0,0), QVector2D(1.0/16.0,0)));
-    UI.push_back(new UiObject(162+5,83+7,0,QVector2D(13.0/16.0,5.0/16.0), QVector2D(13.0/16.0,5.0/16.0)));
+    //UI basique
+    UI.push_back(new UiObject(162-11,83+7,0,QVector2D(0.0/16.0,0), QVector2D(1.0/16.0,0)));//coeur 1
+    UI.push_back(new UiObject(162-10,83+7,0,QVector2D(0.0/16.0,0), QVector2D(1.0/16.0,0)));//coeur 2
+    UI.push_back(new UiObject(162-9,83+7,0,QVector2D(0.0/16.0,0), QVector2D(1.0/16.0,0)));//coeur 3
+    UI.push_back(new UiObject(162+5,83+7,0,QVector2D(13.0/16.0,5.0/16.0), QVector2D(13.0/16.0,5.0/16.0)));//barre lampe
     UI.push_back(new UiObject(162-5,83-7,0,QVector2D(13.0/16.0,5.0/16.0), QVector2D(13.0/16.0,5.0/16.0)));//boss life bar
     UI.push_back(new UiObject(162-6,83-7,0,QVector2D(0.0/16.0,12.0/16.0), QVector2D(0.0/16.0,12.0/16.0)));//boss icon
     UI.push_back(new UiObject(162+4,83+7,0,QVector2D(12.0/16.0,7.0/16.0), QVector2D(12.0/16.0,7.0/16.0)));//icone lampe
@@ -442,6 +452,7 @@ void GameManager::initializeGL()
 
 void GameManager::initShaders()
 {
+    //Shaders de base
     // Compile vertex shader
     if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vshader.glsl"))
     {
@@ -470,6 +481,7 @@ void GameManager::initShaders()
         close();
     }
 
+    //Shaders UI
     // Compile vertex shader
     if (!uiprogram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/uivshader.glsl"))
     {
@@ -501,6 +513,7 @@ void GameManager::initShaders()
 
 void GameManager::initTextures()
 {
+    //Initialisation de la sprite sheet
     QImage img;
     std::string s = qApp->applicationDirPath().toUtf8().constData();
     s += "/sprites.png";
@@ -562,20 +575,25 @@ void GameManager::paintGL()
     QVector3D pos = camera->getPosition();
     matrix.translate(pos.x(), pos.y(), pos.z());
     matrix.rotate(rotation);
+
+    //bind shaders UI et affichage UI
     uiprogram.bind();
     uiprogram.setUniformValue("mvp_matrix", projection * matrix);
 
     for (int i = 0; i < UI.size(); i++){
         UI[i]->Render(&uiprogram,texture);
     }
+
+    //bind UI Classique
     program.bind();
+
     QVector2D size = QVector2D(this->width(),this->height());
-    player->ChangeOrientation(this->mapFromGlobal(QCursor::pos()),matrix,projection,size);
+    player->ChangeOrientation(this->mapFromGlobal(QCursor::pos()),matrix,projection,size);//adaptation sprite joueur a la souris
 
     // Set modelview-projection matrix
     program.setUniformValue("mvp_matrix", projection * matrix);
 
-
+    //Bind des lightsources
     QRect vp = QRect(0,0,size.x(),size.y());
     program.setUniformValue("test",shader);
     int nbLights = lights.size();
@@ -618,6 +636,8 @@ void GameManager::paintGL()
     }
     // Use texture unit 0 which contains sprite sheet
     program.setUniformValue("texture", 0);
+    //rendu joueur
     player->Render(&program,texture);
+    //rendu salle
     scene[camera->getCurrentRoom()]->Render(&program,texture);//render different components of the room
 }

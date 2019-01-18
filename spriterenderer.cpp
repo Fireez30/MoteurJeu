@@ -84,7 +84,7 @@ void SpriteRenderer::SetYSpriteCoord(float y){
     spriteCoords.setY(y);
 }
 
-
+//construit la "géométrie" du sprite
 void SpriteRenderer::CreateGeometry(){
     //initTextures();
     //compute a VertexData array
@@ -108,6 +108,7 @@ void SpriteRenderer::CreateGeometry(){
     indexBuf.allocate(indices, 6 * sizeof(GLushort));
 }
 
+//s'occupe du rendu opengl
 void SpriteRenderer::Render(QOpenGLShaderProgram *program,QOpenGLTexture *text){
     //qDebug() << "SpriteRender - Render";
     // Tell OpenGL which VBOs to use

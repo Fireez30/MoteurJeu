@@ -16,16 +16,15 @@ Key::Key(Player* p,QVector2D pos,QVector2D text, bool state, QVector2D d): Inter
     splayer->setVolume(50);
 }
 
+//on pickup par le joueur, jouer son, changer de sprite et donner la clé au joueur
 int Key::OnTriggerEnter(Interactable2D* other){
     if (!picked){
         if(dynamic_cast<Player*> (other)!=NULL){
-            picked = true;
-            splayer->play();
-            //std::cout << "init text = " << this->renderer.spriteCoords.x() << " " << this->renderer.spriteCoords.y() << std::endl;
+            picked = true;//empeche de collide plusieurs fois
+            splayer->play();//son
             this->renderer.spriteCoords = altText;
             this->renderer.CreateGeometry();
-            //std::cout << "final text = " << this->renderer.spriteCoords.x() << " " << this->renderer.spriteCoords.y() << std::endl;
-            player->PickKey();
+            player->PickKey();//file la clé
         }
     }
 }

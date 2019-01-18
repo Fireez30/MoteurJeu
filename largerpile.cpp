@@ -10,6 +10,7 @@ LargerPile::LargerPile(QVector2D pos,float r,float c,int l,int maxL,int d,QVecto
 
 }
 
+//Pile fait des dégats + ralentit l'entité
 void LargerPile::Affect(Movable *m){
     Boss_torche* bt = dynamic_cast<Boss_torche*> (m);
     if(bt == nullptr){

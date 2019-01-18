@@ -3,7 +3,7 @@
 UiObject::UiObject(int x, int y, int z,QVector2D base, QVector2D alt):Base2D(x,y,z,base),posFromCam(x,y),AltTexture(alt),useMainText(true),useAltText(false),MainTexture(base){
     renderer.CreateGeometry();
 }
-
+//au cas ou l'objet possède 2 textures, passer de l'une a l'autre
 void UiObject::BindAltTexture(){
     useMainText = false;
     useAltText = true;
@@ -11,6 +11,8 @@ void UiObject::BindAltTexture(){
     renderer.SetYSpriteCoord(AltTexture.y());
     renderer.CreateGeometry();
 }
+
+//au cas ou l'objet possède 2 textures, passer de l'une a l'autre
 void UiObject::BindMainTexture(){
     useMainText = true;
     useAltText = false;

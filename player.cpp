@@ -43,6 +43,7 @@ Player::Player(int h,float x,float y, float sp,int cd,QVector2D dir,int animtime
     splayer->setVolume(50);
 }
 
+//décalée dans le game manager
 void Player::Input(){
     //change direction using keyboard
 }
@@ -51,6 +52,7 @@ int Player::OnTriggerEnter(Interactable2D* other){
 
 }
 
+//retourne la pile en fonction de laquelle est utilisée
 Pile* Player::getPileEnCours(){
     //qDebug("getPileEncours");
     if (usePileSecondaire && secondaire != nullptr){
@@ -59,14 +61,15 @@ Pile* Player::getPileEnCours(){
     return principale;
 }
 
+//perd la référence a la pile secondaire
 void Player::RemovePileSecondaire(){
     usePileSecondaire = false;
     if(secondaire!=nullptr)
         secondaire = nullptr;
 }
 
+//update la pile et la change si jamais le timer de celle ci arrive a 0
 void Player::Update(){
-    //std::cout << "update joueur" << std::endl;
     if (usePileSecondaire && secondaire != nullptr){
          if(!secondaire->Update())
              RemovePileSecondaire();
@@ -81,6 +84,7 @@ bool Player::getHoldKey(){
     return holdKey;
 }
 
+//détermine le vecteur de direction du joueur / souris pour changer le composant qui gère les états d'animations
 void Player::ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj,QVector2D size){
     QVector3D mousePos = QVector3D(s.x(),s.y(),0);//pos souris
     QRect vp = QRect(0,0,size.x(),size.y());
@@ -108,6 +112,7 @@ void Player::ChangeOrientation(QPoint s,QMatrix4x4 m,QMatrix4x4 proj,QVector2D s
     renderer.CreateGeometry();
 }
 
+//change pile secondaire
 void Player::SetPilePrincipale(Pile *p){
     principale = p;
     principale->getCollider().~Hitbox();
@@ -128,6 +133,7 @@ float Player::getRange(){
     return 0;
 }
 
+//appelé lorsqu'on passe une porte
 void Player::changeRoom(QVector2D dir){
     lastMove = dir;
     position += lastMove;
@@ -192,12 +198,14 @@ LightSource* Player::getLight(){
     return &light;
 }
 
+//renvoie la lightsource correspondante
 LightSource* Player::getLampeLight(){
     if(usePileSecondaire && secondaire != nullptr)
         return secondaire->getLightSource();
     return principale->getLightSource();
 }
 
+//update les paramètres des lightsources
 void Player::updateLights(){
     principale->getLightSource()->position = QVector2D(position.x(),position.y());
     if(secondaire != nullptr)

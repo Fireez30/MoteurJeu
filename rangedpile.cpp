@@ -10,6 +10,7 @@ RangedPile::RangedPile(QVector2D pos,float r, float c, int l,int maxL, int d,QVe
 
 }
 
+//Pile qui fait des dégats
 void RangedPile::Affect(Movable* m){
     Boss_torche* bt = dynamic_cast<Boss_torche*> (m);
     if(bt == nullptr){

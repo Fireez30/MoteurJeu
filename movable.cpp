@@ -17,25 +17,29 @@ Movable::Movable(int h,float x, float y,float sp,int damagecooldown,QVector2D po
     maxHealth = health;
 }
 
+//direction de l'entité
 QVector2D Movable::GetDirection(){
     return direction;
 }
 
-
+//utilisé pour l'affichage via UI
 float Movable::getHealthRatio(){
     return (float)health/(float)maxHealth;
 }
+
 
 float Movable::GetSpeed(){
     return speed;
 }
 
+//construit les projectiles (affichage)
 void Movable::CreateProjectileGeometry(){
     for (unsigned i = 0; i < projectiles.size(); i++){
         projectiles[i]->renderer.CreateGeometry();
     }
 }
 
+//render les projectiles de l'entité
 void Movable::RenderProjectile(QOpenGLShaderProgram *program,QOpenGLTexture *text){
     for (unsigned i = 0; i < projectiles.size(); i++){
         projectiles[i]->Render(program,text);
@@ -51,6 +55,7 @@ void Movable::ChangeDirection(QVector2D dir){
     direction = dir;
 }
 
+//mouvement + déplacement hitbox
 void Movable::Move(QVector2D dir){
     lastMove = dir;
     position += lastMove*0.01667f;
@@ -59,6 +64,7 @@ void Movable::Move(QVector2D dir){
     renderer.CreateGeometry();
 }
 
+//appelé pour reset le dernier mouvement
 void Movable::ResetMove(){
     position += -lastMove*0.01667f;
     collider.setPoint(QVector2D(position.x(),position.y()));
@@ -85,6 +91,7 @@ void Movable::setHealth(int h){
     health = h;
 }
 
+//prise de dégat, détection mort + frames d'invulnérabilité
 void Movable::Damage(int d){
     if (canCollide){
         if (health > d){
