@@ -10,15 +10,8 @@ Boss_torche::Boss_torche(int h,float x, float y, float s,QVector2D pos,QVector2D
 Boss_torche::Boss_torche(Room* r,Player* p,QVector2D pos): Ennemi(pos,QVector2D(0,0),QVector2D(0.0/16.0,12.0/16.0),10,2.1,3,200,3,true){
     this->player = p;
     this->room = r;
-    //startTimer();
     movAnim->StartAnimator();
     movAnim->Walk();
-}
-
-
-void Boss_torche::startTimer(){
-    timer.start(1000,this);
-
 }
 
 //IA
@@ -49,14 +42,6 @@ void Boss_torche::Update(){
         speed *= 3;
     }
     IA();
-    //gestion de la destruction des projectiles
-    for (unsigned i = 0; i < projectiles.size(); i++){
-        if (projectiles[i]->Update() == -1){
-            Projectile* truc = projectiles[i];
-            projectiles.erase(projectiles.begin()+i);
-            delete truc;
-        }
-    }
 }
 
 //nécessaire pour la téléportation du boss

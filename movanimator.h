@@ -10,22 +10,19 @@ class MovAnimator : public QOpenGLWidget{
 
 protected :
     Movable* Object;
-    int moveAnimTime;
     QBasicTimer moveAnimTimer;
-    int nbFrames;
-    bool walking;
+    int nbFrames,moveAnimTime, movAnimStatus;
+    bool walking, started;
     void timerEvent(QTimerEvent *e) override;
-    int movAnimStatus;
-    bool started;
 
 public :
     MovAnimator(Movable* obj);
     MovAnimator(Movable* obj,int walkTime,int frames,bool walk);
     void Walk();
     void StopWalk();
+    void StartAnimator();
     bool isWalking();
     bool isStarted();
-    void StartAnimator();
 };
 
 #endif // MOVANIMATOR_H

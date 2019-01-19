@@ -26,33 +26,24 @@ protected :
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
     float width;
-    //QOpenGLTexture *texture;
-
-    float time;
-
 
 public :
     QVector2D spriteCoords;
-    int addXCoord;
     QVector2D initText;
     SpriteRenderer(const SpriteRenderer&) = delete;
-    QTimer timer;
     SpriteRenderer(QVector3D pos);
-    SpriteRenderer(std::string p,QVector2D coords,float time,QVector3D pos);
-    //void initTextures();
-    void ReleaseBuffers();
+    SpriteRenderer(std::string p,QVector2D coords,QVector3D pos);
     ~SpriteRenderer();
-    QVector2D GetTextCoords();
-    std::string GetSpritePath();
+    void ReleaseBuffers();
     void ChangeSprite();
-    void SetPosition(QVector3D pos);
-    float GetXCoord();
-    float GetYCoord();
-    float getWidth();
-    void SetXSpriteCoord(float x);
-    void SetYSpriteCoord(float y);
     void CreateGeometry();
     void Render(QOpenGLShaderProgram *program,QOpenGLTexture *text);
+    QVector2D GetTextCoords();
+    std::string GetSpritePath();
+    float getWidth();
+    void SetPosition(QVector3D pos);
+    void SetXSpriteCoord(float x);
+    void SetYSpriteCoord(float y);
     void setWidth(float f);
 };
 

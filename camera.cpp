@@ -33,7 +33,7 @@ void Camera::setCurrentRoom(QVector3D trans){
     while(i<scene.size() && !scene[i]->isThisRoom(x,y))
         i++;
     if(i>=scene.size())
-        std::cout << "On a pas trouvé la salle à charger\n";
+        std::cout << "Caméra : On a pas trouvé la salle à charger\n";
     else
     {
         indexRoom = i;
@@ -47,7 +47,7 @@ void Camera::setCurrentRoom(int x, int y){
     while(i<scene.size() && !scene[i]->isThisRoom(x,y))
         i++;
     if(i>=scene.size())
-        std::cout << "On a pas trouvé la salle à charger\n";
+        std::cout << "Caméra : On a pas trouvé la salle à charger\n";
     else
     {
         indexRoom = i;

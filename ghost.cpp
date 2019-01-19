@@ -1,28 +1,18 @@
 #include "ghost.h"
 #include <iostream>
 
-Ghost::Ghost(int h,float x, float y, float s,QVector2D pos,QVector2D text): Ennemi(pos,QVector2D(0,0),text,0,0,0,0,0,true),canShoot(true),timerTime(){
+Ghost::Ghost(int h,float x, float y, float s,QVector2D pos,QVector2D text): Ennemi(pos,QVector2D(0,0),text,0,0,0,0,0,true){
     movAnim->StartAnimator();
     movAnim->Walk();
 }
 
-Ghost::Ghost(Room* r,Player* p,QVector2D pos): Ennemi(pos, QVector2D(0,0), QVector2D(6.0/16.0,12.0/16.0),10, 2.5, 1, 200,3,true),canShoot(true){
+Ghost::Ghost(Room* r,Player* p,QVector2D pos): Ennemi(pos, QVector2D(0,0), QVector2D(6.0/16.0,12.0/16.0),10, 2.5, 1, 200,3,true){
     this->player = p;
     this->room = r;
-    //startTimer();
     movAnim->StartAnimator();
     movAnim->Walk();
 }
 
-void Ghost::startShootTimer(){
-    shoottimer.start(timerTime*1000,this);
-}
-/*
-void Ghost::timerEvent(QTimerEvent *){
-    canShoot = true;
-    shoottimer.stop();
-}
-*/
 void Ghost::IA(){
     //se déplacer vers le joueur
     direction = QVector2D(player->position.x() - position.x(), player->position.y() - position.y());

@@ -8,9 +8,8 @@ Door::Door(QVector2D pos,QVector2D text,QVector2D Alt):Interactable2D(pos,text,0
 Door::Door(QVector2D pos,QVector2D text,QVector2D Alt, bool state, QVector2D d, Player*p, Camera* c):Interactable2D(pos,text,0),locked(state), dir(d),player(p),camera(c),altText(Alt){
 
 }
+Door::Door(const Door& d):Interactable2D(QVector2D(d.position.x(),d.position.y()),d.renderer.spriteCoords,0),locked(d.locked){
 
-bool Door::IsLocked(){
-    return locked;
 }
 
 void Door::Unlock(){
@@ -39,6 +38,6 @@ int Door::OnTriggerEnter(Interactable2D* other){
     return 1;
 }
 
-Door::Door(const Door& d):Interactable2D(QVector2D(d.position.x(),d.position.y()),d.renderer.spriteCoords,0),locked(d.locked){
-
+bool Door::IsLocked(){
+    return locked;
 }

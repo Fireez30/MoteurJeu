@@ -29,7 +29,6 @@ void Projectile::changeSpeed(float factor){
 
 //permet de supprimer un projectile ayant atteint sa portée, sinon de le bouger dans sa direction
 int Projectile::Update(){
-    //std::cout << "projectile update" << std::endl;
     if (!alive){
         return -1;
     }

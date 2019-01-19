@@ -28,11 +28,10 @@ float Hitbox::getYMax(){
 float Hitbox::getYMin(){
 	return leftCorner.y();
 }
-
+QVector2D Hitbox::getCorner(){
+    return leftCorner;
+}
 void Hitbox::setPoint(QVector2D p){
     leftCorner = p;
 }
 
-QVector2D Hitbox::getCorner(){
-    return leftCorner;
-}

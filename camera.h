@@ -12,6 +12,8 @@ class Room;
 class Camera{
 
 public :
+    std::vector<UiObject*>* ui;
+
     Camera();
     Camera(std::vector<UiObject*>* u);
     void moveCamera(QVector3D trans);
@@ -20,7 +22,7 @@ public :
     void setCurrentRoom(QVector3D trans);
     void setCurrentRoom(int x, int y);
     void setRooms(std::vector<Room*> r);
-    std::vector<UiObject*>* ui;
+
 
 private :
     QVector3D position;

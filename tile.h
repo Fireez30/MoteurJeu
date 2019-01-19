@@ -5,13 +5,9 @@
 
 class Tile : public Base2D{
 
-protected:
-    bool wall;
-
 public :
     Tile(const Tile&);
     Tile(QVector2D pos,QVector2D text);
-    Tile(bool type,QVector2D pos,QVector2D text);
 };
 
 #endif // TILE_H

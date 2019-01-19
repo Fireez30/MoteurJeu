@@ -4,7 +4,7 @@
 Base2D::Base2D():position(0,0,0),renderer(position){
 }
 
-Base2D::Base2D(float x, float y, float z,QVector2D text):position(x,y,z),renderer("sprites.png",text,100,position){
+Base2D::Base2D(float x, float y, float z,QVector2D text):position(x,y,z),renderer("sprites.png",text,position){
 }
 
 void Base2D::SetPosition(QVector3D pos){

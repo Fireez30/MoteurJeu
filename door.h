@@ -21,11 +21,11 @@ private :
 public :
     Door(const Door&d);
     Door(QVector2D pos,QVector2D text,QVector2D AltText);
-    Door(QVector2D pos,QVector2D text,QVector2D AltText, bool state, QVector2D d, Player* p, Camera* c);
-    bool IsLocked();
+    Door(QVector2D pos,QVector2D text,QVector2D AltText, bool state, QVector2D d, Player* p, Camera* c); 
     void Unlock();
     void Lock();
     int OnTriggerEnter(Interactable2D* other) override;
+    bool IsLocked();
     void setRoomAct(int i);
     void setRoomLink(int i);
 };

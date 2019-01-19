@@ -16,10 +16,10 @@ protected:
 public :
     Torche(QVector2D pos,QVector2D text);
     Torche(QVector2D pos,float r, int d,QVector2D text, Room* ro);
-    float GetRange();
     int OnTriggerEnter(Interactable2D* other) override;
     LightSource* getLightSource();
     int GetDamage();
+    float GetRange();
 };
 
 #endif // Torche

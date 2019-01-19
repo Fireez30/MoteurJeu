@@ -20,14 +20,11 @@ private :
     Player* player;
     Room* room;
     QVector2D dir;
-    void startTimer();
     QBasicTimer shoottimer;
-    float timerTime;
-    float initTime;
-    bool targetPlayer;
-    float projectileSpeed;
+    float initTime,timerTime,projectileSpeed;
+    bool targetPlayer, canShoot;
     int projectileTravelTime;
-    bool canShoot;
+    void startTimer();
 };
 
 #endif // TURRETENNEMY_H

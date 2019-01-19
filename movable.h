@@ -10,34 +10,21 @@ class MovAnimator;
 class Movable: public Interactable2D
 {
 protected :
-    float speed;
-    float initSpeed;
-    QVector2D direction;
-    QVector2D initPos;
-    QVector2D lastMove;
-    int health;
-    int maxHealth;
-    bool dead;
+    float speed, initSpeed;
+    QVector2D direction, initPos,lastMove;
+    int health, maxHealth;
+    bool dead, affected;
     std::vector<Projectile*> projectiles;
-    bool affected;
 
 public :
     MovAnimator* movAnim;
 
     Movable();
     Movable(int health,float x, float y,float sp,int damagecooldown,QVector2D pos,QVector2D text,int animtime,int nbframes,bool animstatus);
-    QVector2D GetDirection();
-    float GetSpeed();
-    float getHealthRatio();
-    void ChangeSpeed(float s);
-    void ChangeDirection(QVector2D dir);
     void Move(QVector2D dir);
     void ResetPos();
     virtual void Update() = 0;
-    QVector2D GetLastMove();
     void ResetMove();
-    int getHealth();
-    void setHealth(int h);
     void Damage(int d);
     bool isDead();
     void RenderProjectile(QOpenGLShaderProgram *program,QOpenGLTexture *text);
@@ -45,6 +32,14 @@ public :
     std::vector<Projectile*> getProjectiles();
     bool getAffected();
     QVector2D getDirection();
+    int getHealth();
+    QVector2D GetLastMove();
+    QVector2D GetDirection();
+    float GetSpeed();
+    float getHealthRatio();
+    void ChangeSpeed(float s);
+    void ChangeDirection(QVector2D dir);
+    void setHealth(int h);
     void setAffected(bool);
 };
 

@@ -9,7 +9,6 @@ protected:
     QVector2D MainTexture;
     QVector2D AltTexture;
     bool useMainText;
-    bool useAltText;
 public:
     QVector2D posFromCam;
     UiObject(const UiObject&) = delete;

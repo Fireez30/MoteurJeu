@@ -20,8 +20,6 @@ private :
     Player* player;
     Room* room;
     QVector2D dir;
-    void startTimer();
-    QBasicTimer timer;
 };
 
 
